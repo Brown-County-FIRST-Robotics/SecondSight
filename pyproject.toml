@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "SecondSight"
+version = "0.0.1"
+authors = [
+  "Josh Bressers <josh@bress.net>"
+]
+description = "A vision system for FRC robotics"
+readme = "README.md"
+license = "Apache-2.0"
+packages = [{include = "SecondSight"}]
+
+
+[project.urls]
+"Homepage" = "https://github.com/Brown-County-FIRST-Robotics/second_sight"
+"Bug Tracker" = "https://github.com/Brown-County-FIRST-Robotics/second_sight/issues"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+second-sight = "SecondSight.main:main_cli"
