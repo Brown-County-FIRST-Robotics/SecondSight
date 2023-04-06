@@ -1,3 +1,5 @@
+TEST
+
 # SecondSight
 
 A computer vision project for FRC teams.
