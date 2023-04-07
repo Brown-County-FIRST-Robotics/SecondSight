@@ -11,5 +11,5 @@ class TestMain(unittest.TestCase):
         pass
 
     def testTest(self):
-        pass
+        self.assertTrue(False)
 
