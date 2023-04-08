@@ -8,18 +8,11 @@ Before you can contribute to SecondSight, you need to configure your development
 
 ### Python Setup
 
-SecondSight is developed using Python. You should configure a virtual environment to ensure you have the correct dependencies and you avoid polluting the global python environment with dependencies.
+SecondSight uses Poetry for dependency management and building. To install poetry see the installation instructions in the Poetry [docs](https://python-poetry.org/docs/#installation)
 
-To create a python virtual environment ensure you have the 'venv' python module installed. For example on Ubuntu you would run `sudo apt-get install -y python3-venv` to install this module.
+Once Poetry is installed you need to install the dependencies by running 'poetry install'
 
-Then run
-
-```shell
-python -m venv secondsight_env
-source secondsight_env/bin/activate
-```
-
-You must remember to run the `source` command when running or developing for SecondSight.
+Then you can just use the run command to run tests (`poetry run pytest`) or even the binary (`poetry run second-sight`) for testing
 
 ## Configuring Git
 
