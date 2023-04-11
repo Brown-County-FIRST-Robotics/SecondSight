@@ -57,7 +57,7 @@ class Detection:
 
 def getCoords(img, valid_tags=range(1, 9), check_hamming=True):
     if img is None:
-        return None
+        return []
     assert len(img.shape) == 2, 'Image must be grayscale'
     options = apriltag.DetectorOptions(families='tag16h5',
                                        border=1,
@@ -81,7 +81,7 @@ def getCoords(img, valid_tags=range(1, 9), check_hamming=True):
                 continue
             if detection.hamming != 0:
                 continue
-            detections.append((detection.corners, detection.tag_id))
+            detections.append(([list(i) for i in detection.corners], detection.tag_id))
     return detections
 
 
@@ -107,7 +107,7 @@ def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), r
         for detection,tagid in detection_results:
             # Check if apriltag is allowed
 
-            image_points = detection.reshape(1, 4, 2)
+            image_points = np.array(detection).reshape(1, 4, 2)
 
             ob_pt1 = [-tag_size / 2, -tag_size / 2, 0.0]
             ob_pt2 = [tag_size / 2, -tag_size / 2, 0.0]

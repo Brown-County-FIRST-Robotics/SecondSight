@@ -4,6 +4,7 @@ import sys
 import time
 
 import SecondSight.webserver.DEATHSTARE
+import SecondSight.webserver.ApriltagAPI
 import SecondSight.config
 import SecondSight.Cameras
 from flask import Flask
@@ -22,6 +23,7 @@ def main_cli():
     app = Flask(__name__)
     app.cameras=cameras
     SecondSight.webserver.DEATHSTARE.start(app)
+    SecondSight.webserver.ApriltagAPI.start(app)
     threading.Thread(target=app.run,kwargs={'host': "0.0.0.0"}).start()
     lastframetime = 0
     while True:
