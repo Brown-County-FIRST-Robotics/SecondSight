@@ -48,6 +48,24 @@ class Detection:
         if self.error > error_threshold:
             logging.info(f'discarded a value (error:{self.error})')
 
+    def json(self, error=False):
+        res = {
+            "left_right": self.left_right,
+            "up_down": self.up_down,
+            "distance": self.distance,
+            "pitch": self.pitch,
+            "yaw": self.yaw,
+            "roll": self.roll,
+            "tagid": self.tagID
+        }
+        if error:
+            self.calcError()
+            res['rms']=self.RMSError
+            res['yaw_std']=self.yaw_std
+            res['left_right_std'] = self.left_right_std
+            res['distance_std'] = self.distance_std
+            res['error'] = self.error
+        return res
 
     def calcFieldPos(self):
         pos = SecondSight.AprilTags.Positions.apriltagPositions[str(self.tagID)]
