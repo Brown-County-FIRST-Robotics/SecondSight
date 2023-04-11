@@ -9,7 +9,7 @@ import SecondSight.config
 import SecondSight.Cameras
 from flask import Flask
 import threading
-import SecondSight.AprilTags
+import SecondSight.AprilTags.Detector
 import asyncio
 import sys
 import argparse

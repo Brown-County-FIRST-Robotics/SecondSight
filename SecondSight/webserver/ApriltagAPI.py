@@ -2,7 +2,7 @@
 
 import logging
 from flask import Flask, render_template, Response, redirect, request, jsonify
-import SecondSight.AprilTags
+import SecondSight.AprilTags.Detector
 
 
 def start(app):
@@ -10,7 +10,7 @@ def start(app):
     def pixel_coords():
         res=[]
         for i,cam in enumerate(app.cameras):# TODO: Add thread pool
-            dets=SecondSight.AprilTags.getCoords(cam.gray)
+            dets=SecondSight.AprilTags.Detector.getCoords(cam.gray)
             if dets!=[]:
                 for det in dets:
                     print(det)
