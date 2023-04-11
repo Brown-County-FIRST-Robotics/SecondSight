@@ -4,15 +4,17 @@ If you would like to contribute to this project and want to open a GitHub pull r
 
 ## Setting up your environment
 
-Before you can contribute to SecondSight, you need to configure your development environment.
+Before you can contribute to SecondSight, you need to configure your development environment so a patch can be created, tested, and submitted.
 
 ### Python Setup
 
 SecondSight uses Poetry for dependency management and building. To install poetry see the installation instructions in the Poetry [docs](https://python-poetry.org/docs/#installation)
 
-Once Poetry is installed you need to install the dependencies by running 'poetry install'
+Once Poetry is installed you need to install the dependencies by running `poetry install`
 
-Then you can just use the run command to run tests (`poetry run pytest`) or even the binary (`poetry run second-sight`) for testing
+Then you can just use the run command to run tests (`poetry run pytest`) or even the main program (`poetry run second-sight`) for testing
+
+A checkout of the main branch should result in all tests passing. If not, something is wrong with your environment.
 
 ## Configuring Git
 
@@ -31,7 +33,7 @@ You should fork the SecondSight repo using the "Fork" button at the top right of
 
 ## Commit guidelines
 
-Please keep commits limited to the feature beign worked on. Commits should not contain spurious changes. The submission should include enough details for a future developer to understand how the bugfix or feature works. Please do not try to be clever in your commit messages. Being to the point is prefered.
+Please keep commits limited to the feature being worked on. Commits should not contain spurious changes. The submission should include enough details for a future developer to understand how the bugfix or feature works. Please do not try to be clever in your commit messages. Being to the point is preferred.
 
 ## Sign off your work
 
@@ -99,11 +101,18 @@ This repository will enforce the DCO, if you forgot to add it to your commits, p
 
 ## Test your changes
 
-TODO: Add this section later
+Any features added should also have new tests added to the tests directory. Please see the existing tests to understand how they work as well as the [pytest](https://docs.pytest.org/en/7.3.x/) documentation.
+
+The tests can be run with the command
+```
+poetry run pytest
+```
 
 ## Pull Request
 
 If you made it this far and all the tests are passing, it's time to submit a Pull Request (PR) for SecondSight. Submitting a PR is always a scary moment as what happens next can be an unknown. This project strives to be easy to work with, we appreciate all contributions. Nobody is going to yell at you or try to make you feel bad. We love contributions and know how scary that first PR can be, especially if it's your first.
+
+It's likely you will receive feedback on your PR, few PRs are accepted on the first try without question, comments, and changes.
 
 Welcome to our community!
 
