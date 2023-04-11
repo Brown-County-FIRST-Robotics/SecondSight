@@ -9,7 +9,7 @@ import numpy as np
 
 class Camera:
     def __init__(self, device, calibration, position, role):
-        logging.debug("camera init %s", device)
+        logging.debug(f"camera init {device}")
         self.frame = None
         self._hsv = None
         self._gray = None
