@@ -23,8 +23,15 @@ def main_cli():
     app.cameras=cameras
     SecondSight.webserver.DEATHSTARE.start(app)
     threading.Thread(target=app.run,kwargs={'host': "0.0.0.0"}).start()
+    lastframetime = 0
     while True:
-        time.sleep(0.001)
+        newtime = time.time()
+        towait = .1 - (newtime - lastframetime)
+        if towait > 0:
+            time.sleep(towait)
+        lastframetime = newtime
+        for cam in cameras:
+            cam.update()
 
 if __name__ == "__main__":
     # This file should never be run
