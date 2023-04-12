@@ -43,7 +43,7 @@ class Detection:
             self.distance,
             self.RMSError
         ])
-        self.yaw_std, self.left_right_std, self.distance_std, self.error = [i[0] for i in
+        self.yaw_std, self.left_right_std, self.distance_std, self.error = [i for i in
                                                                             np.dot(error_matrix, input_matrix).tolist()]
         if self.error > error_threshold:
             logging.info(f'discarded a value (error:{self.error})')
