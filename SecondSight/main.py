@@ -1,10 +1,11 @@
 #!/usr/bin/env python
-
+import os.path
 import sys
 import time
 
 import SecondSight.webserver.DEATHSTARE
 import SecondSight.webserver.ApriltagAPI
+import SecondSight.webserver.Config
 import SecondSight.config
 import SecondSight.Cameras
 from flask import Flask
@@ -31,6 +32,11 @@ def fetchApriltags(cams):
 
 
 def main_cli():
+    if not os.path.exists('config.json'):
+        print('PLEASE MAKE A CONFIG FILE')
+        print('Once the server starts, go to http://localhost:5000/config')
+        with open('config.json','w') as f:
+            f.write('{"cameras":[]}')
     config = SecondSight.config.Configuration()
     config.set_path('config.json')
     cameras=[]
@@ -41,7 +47,10 @@ def main_cli():
     app.apriltags = []
     SecondSight.webserver.DEATHSTARE.start(app)
     SecondSight.webserver.ApriltagAPI.start(app)
+    SecondSight.webserver.Config.start(app)
     threading.Thread(target=app.run, kwargs={'host': "0.0.0.0"}).start()
+    while not config.get_value('cameras'):
+        print('Waiting for ')
     lastframetime = 0
     while True:
         newtime = time.time()
