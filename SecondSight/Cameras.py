@@ -4,6 +4,7 @@ import logging
 import cv2
 import time
 import threading
+import SecondSight.config
 import numpy as np
 
 
@@ -95,6 +96,12 @@ class Camera:
 #        jpg = buffer.tobytes()
 #        return jpg
 
+
+def loadCameras(config):
+    cameras=[]
+    for cam_config in config.get_value('cameras'):
+        cameras.append(SecondSight.Cameras.Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
+    return cameras
 
 if __name__ == "__main__":
     pass

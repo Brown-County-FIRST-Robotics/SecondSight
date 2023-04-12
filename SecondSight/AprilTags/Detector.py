@@ -77,6 +77,7 @@ class Detection:
         self.field_y = camera_Y
         return camera_X, camera_Y, camera_theta
 
+
 def getCoords(img, valid_tags=range(1, 9), check_hamming=True):
     if img is None:
         return []
@@ -160,6 +161,21 @@ def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), r
             detections.append(Detection(yaw, pitch, roll, left_right[0], up_down[0], distance[0], rms[0][0], tagid))
             logging.info(f'field pos:yaw:{detections[-1].calcFieldPos()}')
     return detections
+
+
+def fetchApriltags(cams):
+    res = []
+    for i, cam in enumerate(cams):  # TODO: Add thread pool
+        if cam.role not in ['apriltag', '*']:
+            continue
+
+        dets = SecondSight.AprilTags.Detector.getPosition(cam.gray, cam.camera_matrix, None, roll_threshold=10000)
+        if dets != []:
+            for det in dets:
+                det = det.json(error=True)
+                det['camera'] = i
+                res.append(det)
+    return res
 
 
 if __name__ == "main":
