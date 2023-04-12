@@ -3,7 +3,8 @@
 import logging
 from flask import Flask, render_template, Response, redirect, request, jsonify
 import SecondSight.config
-
+import SecondSight.webserver.Server
+import SecondSight.Cameras
 
 
 def start(app):
@@ -12,7 +13,6 @@ def start(app):
         if request.method=='GET':
             return render_template('config.html')
         else:
-            print(list(request.form.items()))
             conf=SecondSight.config.Configuration()  # I think this is how singleton classes work
             conf.set_value('nt_dest', request.form['nt_addr'])
             conf.set_value('cameras', [])
@@ -25,8 +25,12 @@ def start(app):
                             'role': 'conecube',
                             'pos': None
                          })
+            app.cameras = SecondSight.Cameras.loadCameras(conf)
+            conf.set_value('config_required', False)
             conf.write()
             return redirect('/')
+
+
 if __name__ == "__main__":
     # This file should never be run
     pass

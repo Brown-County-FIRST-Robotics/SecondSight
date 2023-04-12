@@ -30,11 +30,13 @@ def mainLoop(app):
 
 
 def main_cli():
-    config=SecondSight.config.loadConfig()
-    cameras=SecondSight.Cameras.loadCameras(config)
-    app=SecondSight.webserver.Server.startFlask(cameras)
+    config = SecondSight.config.loadConfig()
+    cameras = SecondSight.Cameras.loadCameras(config)
+    app = SecondSight.webserver.Server.startFlask(cameras)
     while not config.get_value('cameras'):
         print('Waiting for cameras to be added to config')
+    while config.get_value('config_required'):
+        time.sleep(0.001)
     mainLoop(app)
 
 
