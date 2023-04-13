@@ -16,6 +16,7 @@ class Camera:
         self._hsv = None
         self._gray = None
         self.uncalibrated = None
+        self._bytes = None
 
         self.id = None
         self.frame_count = 0
@@ -53,7 +54,8 @@ class Camera:
         if self.camera_matrix is not None:
             self.frame = cv2.remap(self.frame, self.map1, self.map2, cv2.INTER_CUBIC)
         self._hsv=None
-        self._gray=None
+        self._gray = None
+        self._bytes = None
 
     def get_frame(self, flipped=False):
         if flipped:
@@ -87,16 +89,16 @@ class Camera:
         logging.debug("camera.get_width")
         return len(self.frame[0])
 
-#  I removed this code for now, we can fix it later
-#    def get_jpg_bytes(self, flipped=False):
-#        # Let's block on this call if we alredy returned this frame
-#        self.last_frame_count = self.frame_count
-#        logging.debug("camera.get_jpg_bytes")
-#        frame = self.get_frame(flipped)
-#
-#        ret, buffer = cv2.imencode('.jpg', frame)
-#        jpg = buffer.tobytes()
-#        return jpg
+    def get_bytes(self, uncalibrated=False):
+        if self._bytes is None:
+            logging.debug("camera.get_bytes")
+            if uncalibrated:
+                frame = self.uncalibrated
+            else:
+                frame = self.frame
+            ret, buffer = cv2.imencode(f'.png', frame)
+            self._bytes = buffer.tobytes()
+        return self._bytes
 
 
 def loadCameras(config):
@@ -104,6 +106,7 @@ def loadCameras(config):
     for cam_config in config.get_value('cameras'):
         cameras.append(SecondSight.Cameras.Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
     return cameras
+
 
 if __name__ == "__main__":
     pass
