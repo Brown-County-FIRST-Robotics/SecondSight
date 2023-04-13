@@ -15,6 +15,7 @@ class Camera:
         self.frame = None
         self._hsv = None
         self._gray = None
+        self.uncalibrated = None
 
         self.id = None
         self.frame_count = 0
@@ -45,7 +46,8 @@ class Camera:
             assert role != 'apriltag' and role != '*', f'For the role to be "{role}", a calibration is required'
 
     def update(self):
-        success, self.frame=self.camera.read()
+        success, self.frame = self.camera.read()
+        self.uncalibrated = self.frame.copy()
         if self.frame is None or not success:
             logging.critical("Camera Read Failed")
         if self.camera_matrix is not None:
