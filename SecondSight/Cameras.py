@@ -17,6 +17,8 @@ class Camera:
         self._gray = None
         self.uncalibrated = None
         self._bytes = None
+        self._bytes_uncalibrated = None
+
 
         self.id = None
         self.frame_count = 0
@@ -56,6 +58,7 @@ class Camera:
         self._hsv=None
         self._gray = None
         self._bytes = None
+        self._bytes_uncalibrated = None
 
     def get_frame(self, flipped=False):
         if flipped:
@@ -90,15 +93,20 @@ class Camera:
         return len(self.frame[0])
 
     def get_bytes(self, uncalibrated=False):
-        if self._bytes is None:
-            logging.debug("camera.get_bytes")
-            if uncalibrated:
-                frame = self.uncalibrated
-            else:
+        if not uncalibrated:
+            if self._bytes is None:
+                logging.debug("camera.get_bytes")
                 frame = self.frame
-            ret, buffer = cv2.imencode(f'.png', frame)
-            self._bytes = buffer.tobytes()
-        return self._bytes
+                ret, buffer = cv2.imencode(f'.png', frame)
+                self._bytes = buffer.tobytes()
+            return self._bytes
+        else:
+            if self._bytes_uncalibrated is None:
+                logging.debug("camera.get_bytes")
+                frame = self.uncalibrated
+                ret, buffer = cv2.imencode(f'.png', frame)
+                self._bytes_uncalibrated = buffer.tobytes()
+            return self._bytes_uncalibrated
 
 
 def loadCameras(config):
