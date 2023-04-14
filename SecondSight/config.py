@@ -65,7 +65,15 @@ class Configuration(object):
         """
         Get a configuration value
         """
-        return self.variables[item]
+        if item in self.variables:
+            return self.variables[item]
+        return None
+
+    def del_value(self, item):
+        self.variables.pop(item)
+
+    def value_exists(self, item):
+        return item in self.variables
 
     def set_value(self, item, value):
         """
