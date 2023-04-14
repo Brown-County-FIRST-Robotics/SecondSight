@@ -6,9 +6,8 @@ import SecondSight.AprilTags.Detector
 
 
 def start(app):
-    @app.route('/apriltag/april_coords') # TODO: add query parameter for error
+    @app.route('/apriltag/april_coords')
     def april_coords():
-        print(app.apriltags)
         return jsonify(app.apriltags)
 
 
