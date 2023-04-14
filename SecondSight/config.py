@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import logging
 import sys
 import json
 import os
@@ -7,8 +7,8 @@ import os
 
 def loadConfig():
     if not os.path.exists('config.json'):
-        print('PLEASE MAKE A CONFIG FILE')
-        print('Once the server starts, go to http://localhost:5000/config')
+        logging.CRITICAL('PLEASE MAKE A CONFIG FILE')
+        logging.CRITICAL('Once the server starts, go to http://localhost:5000/config')
         with open('config.json','w') as f:
             f.write('{"cameras":[], "config_required":true}')
     config = Configuration()
