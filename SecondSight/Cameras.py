@@ -49,13 +49,14 @@ class Camera:
             assert role != 'apriltag' and role != '*', f'For the role to be "{role}", a calibration is required'
 
     def update(self):
-        success, self.frame = self.camera.read()
-        self.uncalibrated = self.frame.copy()
-        if self.frame is None or not success:
+        success, frame = self.camera.read()
+        self.uncalibrated = frame.copy()
+        if frame is None or not success:
             logging.critical("Camera Read Failed")
         if self.camera_matrix is not None:
-            self.frame = cv2.remap(self.frame, self.map1, self.map2, cv2.INTER_CUBIC)
-        self._hsv=None
+            frame = cv2.remap(frame, self.map1, self.map2, cv2.INTER_CUBIC)
+        self.frame = frame
+        self._hsv = None
         self._gray = None
         self._bytes = None
         self._bytes_uncalibrated = None
