@@ -97,14 +97,14 @@ class Camera:
             if self._bytes is None:
                 logging.debug("camera.get_bytes")
                 frame = self.frame
-                ret, buffer = cv2.imencode(f'.png', frame)
+                ret, buffer = cv2.imencode('.jpg', frame)
                 self._bytes = buffer.tobytes()
             return self._bytes
         else:
             if self._bytes_uncalibrated is None:
                 logging.debug("camera.get_bytes")
                 frame = self.uncalibrated
-                ret, buffer = cv2.imencode(f'.png', frame)
+                ret, buffer = cv2.imencode('.jpg', frame)
                 self._bytes_uncalibrated = buffer.tobytes()
             return self._bytes_uncalibrated
 
