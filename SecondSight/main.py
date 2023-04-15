@@ -39,6 +39,10 @@ def mainLoop(app, tb):
 
 
 def main_cli():
+    file_handler = logging.FileHandler(filename='logfile')
+    stderr_handler = logging.StreamHandler(stream=sys.stderr)
+    logging.basicConfig(level=getattr(logging, 'WARNING'), handlers=[file_handler, stderr_handler])
+
     config = SecondSight.config.loadConfig()
     networktables.NetworkTables.initialize(server=config.get_value('nt_dest'))
     april_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('Apriltags')
