@@ -5,9 +5,11 @@ from flask import Flask
 import threading
 
 
-def startFlask(cameras):
+def startFlask():
+    config = SecondSight.config.Configuration()
+
     app = Flask(__name__)
-    app.cameras = cameras
+    app.cameras = SecondSight.Cameras.loadCameras()
     app.apriltags = []
     SecondSight.webserver.DEATHSTARE.start(app)
     SecondSight.webserver.ApriltagAPI.start(app)

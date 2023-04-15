@@ -4,27 +4,26 @@ import sys
 import json
 import os
 
-
-def loadConfig():
-    if not os.path.exists('config.json'):
-        logging.critical('PLEASE MAKE A CONFIG FILE')
-        logging.critical('Once the server starts, go to http://localhost:5000/config')
-        with open('config.json','w') as f:
-            f.write('{"cameras":[], "config_required":true}')
-    config = Configuration()
-    config.set_path('config.json')
-    if not config.get_value('config_required') and config.get_value('config_required') is not None:
-        config.del_value('config_required')
-        config.write()
-    return config
-
-
 class Configuration(object):
     """
     A singleton class that holds the configuration data for the system.
     This object needs the set_path() to be called before configuration data
     can be read or written to
     """
+
+    # Setting some defaults makes the initial configuration much easier
+    __default_config = {
+        "cameras": [
+            {
+                "port": "/dev/video0",
+                "calibration": None,
+                "role": "conecube",
+                "pos": None
+            }
+        ],
+        "nt_dest": "127.0.0.1",
+        "cube_hsv": [150, 138, 121]
+    }
 
     variables = None
     file_path = None
@@ -41,10 +40,19 @@ class Configuration(object):
         """
         Set the file to store the configuration data.
         This method must be called before configuration data can be used
+        If the configuration file is not found, some sensible defaults will be used and a
+        configuration file will be written
         """
         self.file_path = file_path
-        with open(self.file_path, 'r') as fh_in:
-            self.variables = json.load(fh_in)
+
+        if not os.path.exists(self.file_path):
+            self.variables = self.__default_config
+            self.write()
+            logging.critical('No configuration found')
+            logging.critical('Once the server starts, please go to http://localhost:5000/config')
+        else:
+            with open(self.file_path, 'r') as fh_in:
+                self.variables = json.load(fh_in)
 
     def write(self):
         """
@@ -65,7 +73,7 @@ class Configuration(object):
         """
         Get a configuration value
         """
-        if item in self.variables:
+        if self.variables is not None and item in self.variables:
             return self.variables[item]
         return None
 

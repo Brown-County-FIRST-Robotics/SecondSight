@@ -19,40 +19,67 @@ import networktables
 import json
 
 
-def mainLoop(app, tb):
+def mainLoop():
+    """
+    Main loop for the program. Once setup is complete, this loops forever
+    """
+
+    config = SecondSight.config.Configuration()
+
+    # We can put data on NetworkTables
+    # TODO: Only do this if the configuration says to do it
+    # TODO: Every module should write to network tables, not from here
+    networktables.NetworkTables.initialize(server=config.get_value('nt_dest'))
+    april_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('Apriltags')
+
+    # We run the Flask server here. We run it via threading, this is possibly wrong
+    app = SecondSight.webserver.Server.startFlask()
+
+    # Loop this forever, it's the main work loop
+    # TODO: Any functionality specific to a module belongs in that module
     lastframetime = 0
     while True:
+        
+        # Only run the loop every 100ms
         newtime = time.time()
         towait = .1 - (newtime - lastframetime)
         if towait > 0:
             time.sleep(towait)
         lastframetime = newtime
+
+        # Update the cameras
         for cam in app.cameras:
             cam.update()
+        
+        # Acquire the AprilTag data
+        # TODO: Most of this belongs in the AprilTag module
         app.apriltags = SecondSight.AprilTags.Detector.fetchApriltags(app.cameras)
         nt_send = []
         for det in app.apriltags:
             nt_send += [det['distance'], det['left_right'], det['up_down'], det['pitch'], det['roll'], det['yaw'],
                         det['distance_std'], det['left_right_std'], det['yaw_std'], det['rms'], det['error'],
                         det['tagid'], det['camera']]
-        tb.putNumberArray('relative_positions', nt_send)
+        april_table.putNumberArray('relative_positions', nt_send)
 
 
 def main_cli():
+    """
+    This function acts like the main function in a normal program.
+    Do the setup here then jump somewhere else
+    """
+
+    # Setup logging
+    # TODO: use environment variables for these options eventually
     file_handler = logging.FileHandler(filename='logfile')
     stderr_handler = logging.StreamHandler(stream=sys.stderr)
     logging.basicConfig(level=getattr(logging, 'WARNING'), handlers=[file_handler, stderr_handler])
 
-    config = SecondSight.config.loadConfig()
-    networktables.NetworkTables.initialize(server=config.get_value('nt_dest'))
-    april_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('Apriltags')
-    cameras = SecondSight.Cameras.loadCameras(config)
-    app = SecondSight.webserver.Server.startFlask(cameras)
-    while not config.get_value('cameras'):
-        logging.critical('Waiting for cameras to be added to config, go to http://localhost:5000/config')
-    while config.get_value('config_required'):
-        time.sleep(0.001)
-    mainLoop(app, april_table)
+    # Load the config file and set the path
+    # TODO: Put this config file in a home directory someday
+    config = SecondSight.config.Configuration()
+    config.set_path("config.json")
+
+    mainLoop()
 
 
 if __name__ == "__main__":
