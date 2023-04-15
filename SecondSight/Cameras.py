@@ -9,8 +9,26 @@ import numpy as np
 
 
 class Camera:
+    """
+    Class represenging a camera object for interacting with OpenCV.
+    This object will read from the camera hardware and return frame information
+    in formats OpenCV expects.
+    """
+
+    # Calibration data shoudl be in the format of
     # calibration: {'camera_matrix': %%, 'dist':%%, 'calibration_res':%%, 'processing_res':%%}
+
     def __init__(self, device, calibration, position, role):
+        """Camera constructor
+
+        :param device: The camera device such as '/dev/video0'
+        :param calibration: Camera calibration data
+        :param position: The camera position on the robot, not currently used
+        :param role: The role of the camera in the larger system
+
+        :return:
+        """
+
         logging.debug(f"camera init {device}")
         self.frame = None
         self._hsv = None
@@ -49,6 +67,11 @@ class Camera:
             assert role != 'apriltag' and role != '*', f'For the role to be "{role}", a calibration is required'
 
     def update(self):
+        """Read a new camera frame from the camera
+
+        :return:
+        """
+
         success, frame = self.camera.read()
         self.uncalibrated = frame.copy()
         if frame is None or not success:
@@ -62,6 +85,12 @@ class Camera:
         self._bytes_uncalibrated = None
 
     def get_frame(self, flipped=False):
+        """Return the current frame
+        
+        :param flipped: Defaults to false. Mirror the image if true
+        
+        :return: OpenCV frame data
+        """
         if flipped:
             return cv2.flip(self.frame, 1)
         else:
@@ -69,6 +98,7 @@ class Camera:
 
     @property
     def hsv(self):
+        "Return the current frame HSV data"
         logging.debug("camera.get_hsv")
         if self._hsv is None:
             self._hsv = cv2.cvtColor(self.frame, cv2.COLOR_BGR2HSV)
@@ -76,6 +106,7 @@ class Camera:
 
     @property
     def gray(self):
+        "return the current frame in grayscale"
         logging.debug("camera.get_gray")
         if self.frame is None:
             return None
@@ -85,15 +116,25 @@ class Camera:
 
     @property
     def height(self):
+        "return the height of the image"
         logging.debug("camera.get_height")
         return len(self.frame)
 
     @property
     def width(self):
+        "return the width of the image"
         logging.debug("camera.get_width")
         return len(self.frame[0])
 
     def get_bytes(self, uncalibrated=False):
+        """Return the current frame as a byte array of JPG data
+
+        :param uncalibrated: Defaults to false
+
+        :return: Byte array of JPG data
+        """
+
+        # TODO: This is confusing. We should probably call it "calibrated"
         if not uncalibrated:
             if self._bytes is None:
                 logging.debug("camera.get_bytes")
@@ -111,6 +152,9 @@ class Camera:
 
 
 def loadCameras():
+    """
+    Initialize and return the cameras as defined in the configuration file
+    """
     config = SecondSight.config.Configuration()
     cameras=[]
     for cam_config in config.get_value('cameras'):
