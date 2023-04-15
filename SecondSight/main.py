@@ -19,7 +19,13 @@ import networktables
 import json
 
 
-def mainLoop(app, tb):
+def mainLoop():
+
+    config = SecondSight.config.Configuration()
+    networktables.NetworkTables.initialize(server=config.get_value('nt_dest'))
+    april_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('Apriltags')
+
+    app = SecondSight.webserver.Server.startFlask()
     lastframetime = 0
     while True:
         newtime = time.time()
@@ -35,24 +41,17 @@ def mainLoop(app, tb):
             nt_send += [det['distance'], det['left_right'], det['up_down'], det['pitch'], det['roll'], det['yaw'],
                         det['distance_std'], det['left_right_std'], det['yaw_std'], det['rms'], det['error'],
                         det['tagid'], det['camera']]
-        tb.putNumberArray('relative_positions', nt_send)
+        april_table.putNumberArray('relative_positions', nt_send)
 
 
 def main_cli():
     file_handler = logging.FileHandler(filename='logfile')
     stderr_handler = logging.StreamHandler(stream=sys.stderr)
+    config = SecondSight.config.Configuration()
+    config.set_path("config.json")
     logging.basicConfig(level=getattr(logging, 'WARNING'), handlers=[file_handler, stderr_handler])
 
-    config = SecondSight.config.loadConfig()
-    networktables.NetworkTables.initialize(server=config.get_value('nt_dest'))
-    april_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('Apriltags')
-    cameras = SecondSight.Cameras.loadCameras(config)
-    app = SecondSight.webserver.Server.startFlask(cameras)
-    while not config.get_value('cameras'):
-        logging.critical('Waiting for cameras to be added to config, go to http://localhost:5000/config')
-    while config.get_value('config_required'):
-        time.sleep(0.001)
-    mainLoop(app, april_table)
+    mainLoop()
 
 
 if __name__ == "__main__":

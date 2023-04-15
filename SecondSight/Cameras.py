@@ -110,7 +110,8 @@ class Camera:
             return self._bytes_uncalibrated
 
 
-def loadCameras(config):
+def loadCameras():
+    config = SecondSight.config.Configuration()
     cameras=[]
     for cam_config in config.get_value('cameras'):
         cameras.append(SecondSight.Cameras.Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
