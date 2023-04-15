@@ -1,10 +1,11 @@
 #!/usr/bin/env python
-
+import os.path
 import sys
 import time
 
 import SecondSight.webserver.DEATHSTARE
-import SecondSight.webserver.ApriltagAPI
+import SecondSight.webserver.Server
+import SecondSight.webserver.Config
 import SecondSight.config
 import SecondSight.Cameras
 from flask import Flask
@@ -14,17 +15,8 @@ import asyncio
 import sys
 import argparse
 
-def main_cli():
-    config = SecondSight.config.Configuration()
-    config.set_path('config.json')
-    cameras=[]
-    for cam_config in config.get_value('cameras'):
-        cameras.append(SecondSight.Cameras.Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
-    app = Flask(__name__)
-    app.cameras=cameras
-    SecondSight.webserver.DEATHSTARE.start(app)
-    SecondSight.webserver.ApriltagAPI.start(app)
-    threading.Thread(target=app.run,kwargs={'host': "0.0.0.0"}).start()
+
+def mainLoop(app):
     lastframetime = 0
     while True:
         newtime = time.time()
@@ -32,8 +24,21 @@ def main_cli():
         if towait > 0:
             time.sleep(towait)
         lastframetime = newtime
-        for cam in cameras:
+        for cam in app.cameras:
             cam.update()
+        app.apriltags = SecondSight.AprilTags.Detector.fetchApriltags(app.cameras)
+
+
+def main_cli():
+    config = SecondSight.config.loadConfig()
+    cameras = SecondSight.Cameras.loadCameras(config)
+    app = SecondSight.webserver.Server.startFlask(cameras)
+    while not config.get_value('cameras'):
+        print('Waiting for cameras to be added to config')
+    while config.get_value('config_required'):
+        time.sleep(0.001)
+    mainLoop(app)
+
 
 if __name__ == "__main__":
     # This file should never be run

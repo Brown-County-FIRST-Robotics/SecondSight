@@ -10,12 +10,15 @@ tag_size = 6
 
 
 class Detection:
-    def __init__(self, yaw, left_right, distance, rms_error, tag_id):
+    def __init__(self, yaw, pitch, roll, left_right, up_down, distance, rms, tagid):
         self.yaw = yaw
+        self.pitch=pitch
+        self.roll=roll
         self.left_right = left_right
+        self.up_down=up_down
         self.distance = distance
-        self.RMSError = rms_error
-        self.tagID = tag_id
+        self.RMSError = rms
+        self.tagID = tagid
 
         self.field_yaw = None
         self.field_x = None
@@ -40,13 +43,32 @@ class Detection:
             self.distance,
             self.RMSError
         ])
-        self.yaw_std, self.left_right_std, self.distance_std, self.error = [i[0] for i in
+        self.yaw_std, self.left_right_std, self.distance_std, self.error = [i for i in
                                                                             np.dot(error_matrix, input_matrix).tolist()]
         if self.error > error_threshold:
             logging.info(f'discarded a value (error:{self.error})')
 
+    def json(self, error=False):
+        res = {
+            "left_right": self.left_right,
+            "up_down": self.up_down,
+            "distance": self.distance,
+            "pitch": self.pitch,
+            "yaw": self.yaw,
+            "roll": self.roll,
+            "tagid": self.tagID
+        }
+        if error:
+            self.calcError()
+            res['rms']=self.RMSError
+            res['yaw_std']=self.yaw_std
+            res['left_right_std'] = self.left_right_std
+            res['distance_std'] = self.distance_std
+            res['error'] = self.error
+        return res
+
     def calcFieldPos(self):
-        pos = Positions.apriltagPositions[str(self.tagID)]
+        pos = SecondSight.AprilTags.Positions.apriltagPositions[str(self.tagID)]
         camera_theta = 180 + self.yaw + pos[3]
         thetaCA = camera_theta - math.atan(self.left_right / self.distance) * 180 / math.pi
         camera_Y = pos[1] - (math.sqrt(self.left_right ** 2 + self.distance ** 2) * math.sin(thetaCA * math.pi / 180))
@@ -54,6 +76,7 @@ class Detection:
         self.field_x = camera_X
         self.field_y = camera_Y
         return camera_X, camera_Y, camera_theta
+
 
 def getCoords(img, valid_tags=range(1, 9), check_hamming=True):
     if img is None:
@@ -135,9 +158,24 @@ def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), r
                 logging.info(f'discarded a value (roll:{roll})')
                 continue
             logging.info(f'april pos: yaw:{str(yaw)[:5]}, lr:{str(left_right)[:7]}, distance:{str(distance)[:7]}, rms:{rms}, tag:{tagid}')
-            detections.append(Detection(yaw, left_right[0], distance[0], rms[0][0], tagid))
+            detections.append(Detection(yaw, pitch, roll, left_right[0], up_down[0], distance[0], rms[0][0], tagid))
             logging.info(f'field pos:yaw:{detections[-1].calcFieldPos()}')
     return detections
+
+
+def fetchApriltags(cams):
+    res = []
+    for i, cam in enumerate(cams):  # TODO: Add thread pool
+        if cam.role not in ['apriltag', '*']:
+            continue
+
+        dets = SecondSight.AprilTags.Detector.getPosition(cam.gray, cam.camera_matrix, None, roll_threshold=10000)
+        if dets != []:
+            for det in dets:
+                det = det.json(error=True)
+                det['camera'] = i
+                res.append(det)
+    return res
 
 
 if __name__ == "main":
