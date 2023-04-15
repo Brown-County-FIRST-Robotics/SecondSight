@@ -2,7 +2,9 @@
 name = "SecondSight"
 version = "0.0.1"
 authors = [
-  "Josh Bressers <josh@bress.net>"
+  "Josh Bressers <josh@bress.net>",
+  "Colin <cfinn68916@gmail.com>",
+  "jli <coderguy50@gmail.com>"
 ]
 description = "A vision system for FRC robotics"
 readme = "README.md"
