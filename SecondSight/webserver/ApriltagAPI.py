@@ -6,16 +6,9 @@ import SecondSight.AprilTags.Detector
 
 
 def start(app):
-    @app.route('/apriltag/pixel_coords')
-    def pixel_coords():
-        res=[]
-        for i,cam in enumerate(app.cameras):# TODO: Add thread pool
-            dets=SecondSight.AprilTags.Detector.getCoords(cam.gray)
-            if dets!=[]:
-                for det in dets:
-                    print(det)
-                    res.append({"coords":det[0], "tagid":det[1], "camera":i})
-        return jsonify(res)
+    @app.route('/apriltag/april_coords')
+    def april_coords():
+        return jsonify(app.apriltags)
 
 
 

@@ -1,7 +1,23 @@
 #!/usr/bin/env python
-
+import logging
 import sys
 import json
+import os
+
+
+def loadConfig():
+    if not os.path.exists('config.json'):
+        logging.critical('PLEASE MAKE A CONFIG FILE')
+        logging.critical('Once the server starts, go to http://localhost:5000/config')
+        with open('config.json','w') as f:
+            f.write('{"cameras":[], "config_required":true}')
+    config = Configuration()
+    config.set_path('config.json')
+    if not config.get_value('config_required') and config.get_value('config_required') is not None:
+        config.del_value('config_required')
+        config.write()
+    return config
+
 
 class Configuration(object):
     """
@@ -49,7 +65,15 @@ class Configuration(object):
         """
         Get a configuration value
         """
-        return self.variables[item]
+        if item in self.variables:
+            return self.variables[item]
+        return None
+
+    def del_value(self, item):
+        self.variables.pop(item)
+
+    def value_exists(self, item):
+        return item in self.variables
 
     def set_value(self, item, value):
         """

@@ -4,6 +4,7 @@ import logging
 import cv2
 import time
 import threading
+import SecondSight.config
 import numpy as np
 
 
@@ -14,6 +15,10 @@ class Camera:
         self.frame = None
         self._hsv = None
         self._gray = None
+        self.uncalibrated = None
+        self._bytes = None
+        self._bytes_uncalibrated = None
+
 
         self.id = None
         self.frame_count = 0
@@ -44,13 +49,17 @@ class Camera:
             assert role != 'apriltag' and role != '*', f'For the role to be "{role}", a calibration is required'
 
     def update(self):
-        success, self.frame=self.camera.read()
-        if self.frame is None or not success:
+        success, frame = self.camera.read()
+        self.uncalibrated = frame.copy()
+        if frame is None or not success:
             logging.critical("Camera Read Failed")
         if self.camera_matrix is not None:
-            self.frame = cv2.remap(self.frame, self.map1, self.map2, cv2.INTER_CUBIC)
-        self._hsv=None
-        self._gray=None
+            frame = cv2.remap(frame, self.map1, self.map2, cv2.INTER_CUBIC)
+        self.frame = frame
+        self._hsv = None
+        self._gray = None
+        self._bytes = None
+        self._bytes_uncalibrated = None
 
     def get_frame(self, flipped=False):
         if flipped:
@@ -84,16 +93,28 @@ class Camera:
         logging.debug("camera.get_width")
         return len(self.frame[0])
 
-#  I removed this code for now, we can fix it later
-#    def get_jpg_bytes(self, flipped=False):
-#        # Let's block on this call if we alredy returned this frame
-#        self.last_frame_count = self.frame_count
-#        logging.debug("camera.get_jpg_bytes")
-#        frame = self.get_frame(flipped)
-#
-#        ret, buffer = cv2.imencode('.jpg', frame)
-#        jpg = buffer.tobytes()
-#        return jpg
+    def get_bytes(self, uncalibrated=False):
+        if not uncalibrated:
+            if self._bytes is None:
+                logging.debug("camera.get_bytes")
+                frame = self.frame
+                ret, buffer = cv2.imencode('.jpg', frame)
+                self._bytes = buffer.tobytes()
+            return self._bytes
+        else:
+            if self._bytes_uncalibrated is None:
+                logging.debug("camera.get_bytes")
+                frame = self.uncalibrated
+                ret, buffer = cv2.imencode('.jpg', frame)
+                self._bytes_uncalibrated = buffer.tobytes()
+            return self._bytes_uncalibrated
+
+
+def loadCameras(config):
+    cameras=[]
+    for cam_config in config.get_value('cameras'):
+        cameras.append(SecondSight.Cameras.Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
+    return cameras
 
 
 if __name__ == "__main__":
