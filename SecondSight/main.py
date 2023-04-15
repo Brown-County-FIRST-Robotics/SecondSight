@@ -45,7 +45,7 @@ def main_cli():
     cameras = SecondSight.Cameras.loadCameras(config)
     app = SecondSight.webserver.Server.startFlask(cameras)
     while not config.get_value('cameras'):
-        logging.CRITICAL('Waiting for cameras to be added to config, go to http://localhost:5000/config')
+        logging.critical('Waiting for cameras to be added to config, go to http://localhost:5000/config')
     while config.get_value('config_required'):
         time.sleep(0.001)
     mainLoop(app, april_table)

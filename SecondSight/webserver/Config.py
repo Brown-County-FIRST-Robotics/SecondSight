@@ -18,13 +18,13 @@ def start(app):
             conf.set_value('cameras', [])
             for k,v in request.form.items():
                 if k[:9]=='cam_port_':
-                    conf.variables['cameras'].append(
-                        {
+                    conf.set_value('cameras', conf.get_value('cameras')+
+                        [{
                             'port': v,
                             'calibration': None,
                             'role': 'conecube',
                             'pos': None
-                         })
+                         }])
             app.cameras = SecondSight.Cameras.loadCameras(conf)
             conf.set_value('config_required', False)
             conf.write()

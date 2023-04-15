@@ -7,14 +7,14 @@ import os
 
 def loadConfig():
     if not os.path.exists('config.json'):
-        logging.CRITICAL('PLEASE MAKE A CONFIG FILE')
-        logging.CRITICAL('Once the server starts, go to http://localhost:5000/config')
+        logging.critical('PLEASE MAKE A CONFIG FILE')
+        logging.critical('Once the server starts, go to http://localhost:5000/config')
         with open('config.json','w') as f:
             f.write('{"cameras":[], "config_required":true}')
     config = Configuration()
     config.set_path('config.json')
     if not config.get_value('config_required') and config.get_value('config_required') is not None:
-        config.variables.pop('config_required')
+        config.del_value('config_required')
         config.write()
     return config
 
