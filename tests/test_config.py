@@ -6,7 +6,7 @@ import SecondSight.config
 import os
 import json
 
-class TestMain(unittest.TestCase):
+class TestConfig(unittest.TestCase):
 
     def setUp(self):
         self.tempdir = tempfile.TemporaryDirectory()
