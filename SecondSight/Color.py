@@ -27,171 +27,36 @@ def averageColor(frame, sampleRange):
     averageColor = [ hSum / (4 * sampleRange * sampleRange), sSum / (4 * sampleRange * sampleRange), vSum / (4 * sampleRange * sampleRange) ]
     return averageColor
 
-#GamePiece - can represent a cone or a cube
-class GamePiece():
-    # position of cone in the image in terms of pixels
-    x = 0 #use this for decision
-    y = 0 #use this for decision
-    #dimensions of bounding rectangle
-    w = 0
-    h = 0
-    imgX = 0 #image coordinates
-    imgY = 0 #image coordinates
-    # is the cone upright?
-    upright = False #Do not care about this value if this is a cube
-    lower_color = np.array([ 0, 0, 0 ], np.uint8)
-    upper_color = np.array([ 0xFF, 0xFF, 0xFF ], np.uint8)
-    notfound = False
-    minRatio = -1.0
-    maxRatio = 9999999.0
 
-    def setMinRatio(self, ratio):
-        self.minRatio = ratio
-    def setMaxRatio(self, ratio):
-        self.maxRatio = ratio
+def findObject(frame, cone_color, cube_color):
+    logging.info("findObject()")
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-    def setLowerColor(self, lower):
-        self.lower_color = lower
-        for i in range(len(self.lower_color)):
-            if self.lower_color[i] < 0:
-                self.lower_color[i] = 0
-            if self.lower_color[i] > 255:
-                self.lower_color[i] = 255
+    cone_object_mask = cv2.inRange(hsv, cone_color[0], cone_color[1])
 
-    def setUpperColor(self, upper):
-        self.upper_color = upper
-        for i in range(len(self.upper_color)):
-            if self.upper_color[i] < 0:
-                self.upper_color[i] = 0
-            if self.upper_color[i] > 255:
-                self.upper_color[i] = 255
+    cone_res = cv2.bitwise_and(frame, cone_object_mask)
+    contours, _ = cv2.findContours(cv2.cvtColor(cone_res, cv2.COLOR_BGR2GRAY), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-    def getLowerColor(self):
-        return self.lower_color
+    # find largest contour
+    res = []
+    for contour in contours:
+        x, y, width, height, theta = cv2.minAreaRect(contour)
+        res.append(GamePiece(x, y, width, height, theta))
+    return res
 
-    def getUpperColor(self):
-        return self.upper_color
 
-    def isUpright(self):
-        return self.upright
-
-    def setUpright(self, up):
-        self.upright = up
-
-    def setX(self, xpos):
-        self.x = xpos
-
-    def setY(self, ypos):
-        self.y = ypos
-
-    def getX(self):
-        return self.x
-    
-    def getY(self):
-        return self.y
-
-    def getWidth(self):
-        return self.w
-
-    def setWidth(self, width):
-        self.w = width
-
-    def getHeight(self):
-        return self.h
-
-    def setHeight(self, height):
-        self.h = height
-
-    def getNotFound(self):
-        return self.notfound
-    
-    def setNotFound(self, isNotFound):
-        self.notfound = isNotFound
-
-    # Returns a cone object when it attempts to find a
-    # cone in an image (frame)
-    # also passes in the lower color of the cone and upper color of the cone
-    def findObject(self, frame):
-        logging.info("looking for cone")
-        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    
-        objectMask = cv2.inRange(hsv, self.lower_color, self.upper_color)
-          
-        res = cv2.bitwise_and(frame, frame, mask=objectMask)
-
-        gray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
-    
-        contours, hierarchy = cv2.findContours(gray, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE) 
-    
-        largestBoundRectArea = -1
-        lx = ly = lw = lh = 0
-
-        if len(contours) == 0:
-            self.notfound = True
-            return
-        self.notfound = False
-
-        #find largest contour
-        for cont in contours:
-            x,y,w,h = cv2.boundingRect(cont)
-            area = w * h
-            if w / h < self.minRatio or w / h > self.maxRatio:
-                continue
-            if area > largestBoundRectArea:
-                largestBoundRectArea = area
-                lx = x
-                ly = y
-                lw = w
-                lh = h
-       
-        """
-        # Determine if the cone is upright
-        upright = False
-        #check if the rectangle's dimensions are in
-        if(lw < lh):
-            yellowTop = 0
-            yellowBot = 0
-            for x in range(int(lx), int(lx + lw)):
-                for y in range(int(ly), int(ly + lh / 2)):
-                    if maskKone[y][x]:
-                        yellowTop += 1
-            for x in range(int(lx), int(lx + lw)):
-                for y in range(int(ly + lh / 2), int(ly + lh)):
-                    if maskKone[y][x]:
-                        yellowBot += 1
-            if yellowTop < yellowBot: 
-                upright = True
-        """
-
-        frameDimensions = frame.shape
-        self.imgX = int(lx + lw / 2)
-        self.imgY = int(ly + lh / 2)
-        self.setX(int(lx + lw / 2) - int(frameDimensions[1] / 2))
-        self.setY(int(ly + lh / 2) - int(frameDimensions[0] / 2))
-        self.setHeight(int(lh))
-        self.setWidth(int(lw)) 
-
-    def drawBoundRect(self, frame, color):
-        return cv2.rectangle(frame, (int(self.imgX - self.w / 2), int(self.imgY - self.h / 2)), (int(self.imgX + self.w / 2), int(self.imgY + self.h / 2)), color, 4, cv2.LINE_AA)
-
-    #green if frame
-    def drawCone(self, frame):
-        if self.isUpright():
-            cv2.rectangle(frame, (int(self.imgX - self.w / 2), int(self.imgY - self.h / 2)), (int(self.imgX + self.w / 2), int(self.imgY + self.h / 2)), [0,255,0], 4, cv2.LINE_AA)
-        else:
-            cv2.rectangle(frame, (int(self.imgX - self.w / 2), int(self.imgY - self.h / 2)), (int(self.imgX + self.w / 2), int(self.imgY + self.h / 2)), [0,0,255], 4, cv2.LINE_AA)
-
-    def getLowerLeft(self):
-        return (int(self.imgX - self.getWidth() / 2), int(self.imgY - self.getHeight() / 2))
-
-    def getUpperRight(self):
-        return (int(self.imgX + self.getWidth() / 2), int(self.imgY + self.getHeight() / 2))
-
-    def findCone(self, frame):
-        self.findObject(frame)
-
-    def findCube(self, frame):
-        self.findObject(frame)
+# GamePiece - can represent a cone or a cube
+class GamePiece:
+    def __init__(self, x, y, width, height, theta):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.theta = theta
+# fix this later
+#    def drawBoundRect(self, frame, color):
+#        return cv2.rectangle(frame, (int(self.imgX - self.w / 2), int(self.imgY - self.h / 2)),
+#                             (int(self.imgX + self.w / 2), int(self.imgY + self.h / 2)), color, 4, cv2.LINE_AA)
 
 #Color picker
 # This function gets called by the /video_feed route below
