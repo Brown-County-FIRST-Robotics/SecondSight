@@ -130,3 +130,6 @@ dmypy.json
 
 .idea/
 config.json
+
+# CUSTOM
+logfile
