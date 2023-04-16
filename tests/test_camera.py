@@ -60,6 +60,25 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(blue_pixel[1], 64)
         self.assertEqual(blue_pixel[2], 14)
 
+    def testCameraFrameFlip(self):
+        cameras = SecondSight.Cameras.loadCameras()
+        camera = cameras[0]
+        camera.update()
+
+        white_pixel = camera.get_frame(flipped=True)[100][924]
+        blue_pixel = camera.get_frame(flipped=True)[700][224]
+
+
+        # There's probably a better way to compare these
+        self.assertEqual(white_pixel[0], 255)
+        self.assertEqual(white_pixel[1], 255)
+        self.assertEqual(white_pixel[2], 255)
+
+        # There's probably a better way to compare these
+        self.assertEqual(blue_pixel[0], 192)
+        self.assertEqual(blue_pixel[1], 64)
+        self.assertEqual(blue_pixel[2], 14)
+
     def testCameraGray(self):
         cameras = SecondSight.Cameras.loadCameras()
         camera = cameras[0]
@@ -72,3 +91,28 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(black_pixel, 0)
         self.assertEqual(white_pixel, 255)
         self.assertEqual(blue_pixel, 64)
+
+    def testCameraHSV(self):
+        cameras = SecondSight.Cameras.loadCameras()
+        camera = cameras[0]
+        camera.update()
+
+        white_pixel = camera.hsv[100][100]
+        black_pixel = camera.hsv[200][200]
+        blue_pixel = camera.hsv[700][800]
+
+
+        # There's probably a better way to compare these
+        self.assertEqual(white_pixel[0], 0)
+        self.assertEqual(white_pixel[1], 0)
+        self.assertEqual(white_pixel[2], 255)
+
+        # There's probably a better way to compare these
+        self.assertEqual(black_pixel[0], 0)
+        self.assertEqual(black_pixel[1], 0)
+        self.assertEqual(black_pixel[2], 0)
+
+        # There's probably a better way to compare these
+        self.assertEqual(blue_pixel[0], 112)
+        self.assertEqual(blue_pixel[1], 236)
+        self.assertEqual(blue_pixel[2], 192)
