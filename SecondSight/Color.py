@@ -30,29 +30,6 @@ def averageColor(frame, sampleRange):
     return averageColor
 
 
-def findObject(frame, cone_color, cube_color):
-    logging.info("findObject()")
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-
-    cone_object_mask = cv2.inRange(hsv, cone_color[0], cone_color[1])
-    cube_object_mask = cv2.inRange(hsv, cube_color[0], cube_color[1])
-
-    cone_res = cv2.bitwise_and(frame, cone_object_mask)
-    cone_contours, _ = cv2.findContours(cv2.cvtColor(cone_res, cv2.COLOR_BGR2GRAY), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-    cube_res = cv2.bitwise_and(frame, cube_object_mask)
-    cube_contours, _ = cv2.findContours(cv2.cvtColor(cube_res, cv2.COLOR_BGR2GRAY), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-    res = []
-    for contour in cone_contours:
-        x, y, width, height, theta = cv2.minAreaRect(contour)
-        res.append(GamePiece(x, y, width, height, theta, True))
-    for contour in cube_contours:
-        x, y, width, height, theta = cv2.minAreaRect(contour)
-        res.append(GamePiece(x, y, width, height, theta, False))
-    return res
-
-
 def findCube2023(frame, cube_color):
     logging.info("findObject()")
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -65,6 +42,19 @@ def findCube2023(frame, cube_color):
     for contour in cube_contours:
         x, y, width, height, theta = cv2.minAreaRect(contour)
         res.append(GamePiece(x, y, width, height, theta, 'cube2023'))
+    return res
+
+
+def findCone2023(frame, cone_color):
+    logging.info("findCone2023()")
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    cube_object_mask = cv2.inRange(hsv, cone_color[0], cone_color[1])
+    cube_res = cv2.bitwise_and(frame, cube_object_mask)
+    cube_contours, _ = cv2.findContours(cv2.cvtColor(cube_res, cv2.COLOR_BGR2GRAY), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    res = []
+    for contour in cube_contours:
+        x, y, width, height, theta = cv2.minAreaRect(contour)
+        res.append(GamePiece(x, y, width, height, theta, 'cone2023'))
     return res
 
 
@@ -128,6 +118,10 @@ def postGamePieces(tb: networktables.NetworkTable, cams, obj_types: [str]):
                 for ii in det:
                     ii.calcRealPos(cam.camera_matrix, None)
                     dets += [ii.left_right, ii.up_down, ii.distance, ii.yaw, ii.pitch, ii.roll, i]
+            if obj == 'cone2023':
+                det = findCone2023(cam.frame, ((0, 0, 0), (255, 100, 100)))
+                for ii in det:
+                    dets += [ii.x, ii.y, ii.width, ii.height, ii.theta, i]
         tb.putNumberArray(obj, dets)
     # TODO: add return value
 
