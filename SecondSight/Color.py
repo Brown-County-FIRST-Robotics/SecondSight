@@ -3,7 +3,7 @@
 import logging
 import numpy as np
 import cv2
-import os
+import math
 import SecondSight.config
 
 #use this for calibrating the color detector
@@ -51,6 +51,9 @@ def findObject(frame, cone_color, cube_color):
     return res
 
 
+cube_size = 10  # CM
+
+
 # GamePiece - can represent a cone or a cube
 class GamePiece:
     def __init__(self, x, y, width, height, theta, is_cone):
@@ -60,6 +63,38 @@ class GamePiece:
         self.height = height
         self.theta = theta
         self.isCone = is_cone
+        self.pitch = None
+        self.yaw = None
+        self.roll = None
+        self.left_right = None
+        self.distance = None
+        self.up_down = None
+        self.rms = None
+
+    # The cube should ideally be at the same height as the camera
+    def calcRealPos(self, camera_matrix, dist):  # TODO:test
+        if not self.isCone:
+            box = cv2.boxPoints((self.x, self.y, self.width, self.height, self.theta))
+            box = np.int0(box)
+            image_points = np.array(box).reshape(1, 4, 2)
+
+            ob_pt1 = [-cube_size / 2, -cube_size / 2, -cube_size / 2]
+            ob_pt2 = [cube_size / 2, -cube_size / 2, -cube_size / 2]
+            ob_pt3 = [cube_size / 2, cube_size / 2, cube_size / 2]
+            ob_pt4 = [-cube_size / 2, cube_size / 2, cube_size / 2]
+            ob_pts = ob_pt1 + ob_pt2 + ob_pt3 + ob_pt4
+            object_pts = np.array(ob_pts).reshape(4, 3)
+            good, rotation_vector, translation_vector, self.rms = cv2.solvePnPGeneric(object_pts, image_points,
+                                                                                      camera_matrix,
+                                                                                      dist,
+                                                                                      flags=cv2.SOLVEPNP_ITERATIVE)
+            assert good, 'something went wrong with solvePnP'
+
+            self.pitch, self.yaw, self.roll = [float(i) for i in rotation_vector[0] * 180 / math.pi]
+
+            self.left_right = translation_vector[0][0]
+            self.up_down = -translation_vector[0][1]
+            self.distance = translation_vector[0][2]
 
     def drawBoundRect(self, frame, color):  # TODO: test
         box = cv2.boxPoints((self.x, self.y, self.width, self.height, self.theta))
