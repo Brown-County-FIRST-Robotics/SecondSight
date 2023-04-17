@@ -1,6 +1,3 @@
-import SecondSight.webserver.DEATHSTARE
-import SecondSight.webserver.ApriltagAPI
-import SecondSight.webserver.Config
 import SecondSight
 from flask import Flask
 import threading

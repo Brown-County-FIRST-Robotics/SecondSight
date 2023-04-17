@@ -2,7 +2,7 @@
 
 import logging
 from flask import Flask, render_template, Response, redirect, request, jsonify
-import SecondSight.AprilTags.Detector
+import SecondSight
 
 
 def start(app):

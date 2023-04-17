@@ -3,19 +3,11 @@ import logging
 import os.path
 import sys
 import time
-
-import SecondSight.webserver.DEATHSTARE
-import SecondSight.webserver.Server
-import SecondSight.webserver.Config
 import SecondSight
-from flask import Flask
 import threading
-import SecondSight.AprilTags.Detector
 import asyncio
 import sys
-import argparse
 import networktables
-import json
 
 
 def mainLoop():

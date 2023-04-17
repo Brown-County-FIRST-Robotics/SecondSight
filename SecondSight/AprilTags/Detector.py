@@ -4,7 +4,7 @@ import math
 import apriltag
 import cv2
 import numpy as np
-import SecondSight.AprilTags.Positions
+import SecondSight
 
 tag_size = 6
 

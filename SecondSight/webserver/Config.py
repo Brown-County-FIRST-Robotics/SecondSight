@@ -2,9 +2,7 @@
 
 import logging
 from flask import Flask, render_template, Response, redirect, request, jsonify
-import SecondSight.config
-import SecondSight.webserver.Server
-import SecondSight.Cameras
+import SecondSight
 
 
 def start(app):

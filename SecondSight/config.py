@@ -4,6 +4,7 @@ import sys
 import json
 import os
 
+
 class Configuration(object):
     """
     A singleton class that holds the configuration data for the system.

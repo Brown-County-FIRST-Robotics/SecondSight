@@ -4,7 +4,7 @@ import logging
 import cv2
 import time
 import threading
-import SecondSight.config
+import SecondSight
 import numpy as np
 
 
