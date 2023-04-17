@@ -53,18 +53,33 @@ def findObject(frame, cone_color, cube_color):
     return res
 
 
+def findCube2023(frame, cube_color):
+    logging.info("findObject()")
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    cube_object_mask = cv2.inRange(hsv, cube_color[0], cube_color[1])
+    cube_res = cv2.bitwise_and(frame, cube_object_mask)
+    cube_contours, _ = cv2.findContours(cv2.cvtColor(cube_res, cv2.COLOR_BGR2GRAY), cv2.RETR_TREE,
+                                        cv2.CHAIN_APPROX_SIMPLE)
+
+    res = []
+    for contour in cube_contours:
+        x, y, width, height, theta = cv2.minAreaRect(contour)
+        res.append(GamePiece(x, y, width, height, theta, 'cube2023'))
+    return res
+
+
 cube_size = 10  # CM
 
 
 # GamePiece - can represent a cone or a cube
 class GamePiece:
-    def __init__(self, x, y, width, height, theta, is_cone):
+    def __init__(self, x, y, width, height, theta, piece):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.theta = theta
-        self.isCone = is_cone
+        self.piece = piece
         self.pitch = None
         self.yaw = None
         self.roll = None
@@ -75,7 +90,7 @@ class GamePiece:
 
     # The cube should ideally be at the same height as the camera
     def calcRealPos(self, camera_matrix, dist):  # TODO:test
-        if not self.isCone:
+        if self.piece == 'cube2023':
             box = cv2.boxPoints((self.x, self.y, self.width, self.height, self.theta))
             box = np.int0(box)
             image_points = np.array(box).reshape(1, 4, 2)
@@ -104,18 +119,16 @@ class GamePiece:
         cv2.drawContours(frame, [box], 0, color, 2)
 
 
-def postGamePieces(tb: networktables.NetworkTable, cams):
-    cones = []
-    cubes = []
-    for i, cam in enumerate(cams):
-        for gp in findObject(cam.frame, ((0, 0, 0), (255, 255, 255)), ((0, 0, 0), (255, 255, 255))):
-            if gp.isCone:
-                cones += [gp.x, gp.y, gp.width, gp.height, gp.theta, i]
-            else:
-                gp.calcRealPos(cam.camera_matrix, None)
-                cubes += [gp.left_right, gp.up_down, gp.distance, gp.roll, gp.pitch, gp.yaw, i]
-    tb.putNumberArray('cubes', cubes)
-    tb.putNumberArray('cones', cones)
+def postGamePieces(tb: networktables.NetworkTable, cams, obj_types: [str]):
+    for obj in obj_types:
+        dets = []
+        for i, cam in enumerate(cams):
+            if obj == 'cube2023':
+                det = findCube2023(cam.frame, ((0, 0, 0), (255, 100, 100)))
+                for ii in det:
+                    ii.calcRealPos(cam.camera_matrix, None)
+                    dets += [ii.left_right, ii.up_down, ii.distance, ii.yaw, ii.pitch, ii.roll, i]
+        tb.putNumberArray(obj, dets)
     # TODO: add return value
 
 

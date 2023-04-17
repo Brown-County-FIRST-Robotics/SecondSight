@@ -61,7 +61,7 @@ def mainLoop():
                             det['distance_std'], det['left_right_std'], det['yaw_std'], det['rms'], det['error'],
                             det['tagid'], det['camera']]
             april_table.putNumberArray('relative_positions', nt_send)
-        app.game_pieces = SecondSight.Color.postGamePieces(conecube_table)
+        app.game_pieces = SecondSight.Color.postGamePieces(conecube_table, app.cameras, config.get_value('detects'))
 
 
 def main_cli():
