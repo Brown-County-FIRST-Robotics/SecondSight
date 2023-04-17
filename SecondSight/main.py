@@ -7,8 +7,7 @@ import time
 import SecondSight.webserver.DEATHSTARE
 import SecondSight.webserver.Server
 import SecondSight.webserver.Config
-import SecondSight.config
-import SecondSight.Cameras
+import SecondSight
 from flask import Flask
 import threading
 import SecondSight.AprilTags.Detector
