@@ -4,12 +4,14 @@ import logging
 import numpy as np
 import cv2
 import math
-import SecondSight.config
+import SecondSight
+import networktables
 
-#use this for calibrating the color detector
-#pass in frame
-#pass in range from center of image that you want to sample
-#returns average color is an array
+
+# use this for calibrating the color detector
+# pass in frame
+# pass in range from center of image that you want to sample
+# returns average color is an array
 def averageColor(frame, sampleRange):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     height = len(hsv)
@@ -93,13 +95,28 @@ class GamePiece:
             self.pitch, self.yaw, self.roll = [float(i) for i in rotation_vector[0] * 180 / math.pi]
 
             self.left_right = translation_vector[0][0]
-            self.up_down = -translation_vector[0][1]
+            self.up_down = translation_vector[0][1]
             self.distance = translation_vector[0][2]
 
     def drawBoundRect(self, frame, color):  # TODO: test
         box = cv2.boxPoints((self.x, self.y, self.width, self.height, self.theta))
         box = np.int0(box)
         cv2.drawContours(frame, [box], 0, color, 2)
+
+
+def postGamePieces(tb: networktables.NetworkTable, cams):
+    cones = []
+    cubes = []
+    for i, cam in enumerate(cams):
+        for gp in findObject(cam.frame, ((0, 0, 0), (255, 255, 255)), ((0, 0, 0), (255, 255, 255))):
+            if gp.isCone:
+                cones += [gp.x, gp.y, gp.width, gp.height, gp.theta, i]
+            else:
+                gp.calcRealPos(cam.camera_matrix, None)
+                cubes += [gp.left_right, gp.up_down, gp.distance, gp.roll, gp.pitch, gp.yaw, i]
+    tb.putNumberArray('cubes', cubes)
+    tb.putNumberArray('cones', cones)
+    # TODO: add return value
 
 
 # Color picker

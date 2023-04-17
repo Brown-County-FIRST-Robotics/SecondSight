@@ -30,6 +30,7 @@ def mainLoop():
     # TODO: Every module should write to network tables, not from here
     networktables.NetworkTables.initialize(server=config.get_value('nt_dest'))
     april_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('Apriltags')
+    conecube_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('GamePieces')
 
     # We run the Flask server here. We run it via threading, this is possibly wrong
     app = SecondSight.webserver.Server.startFlask()
@@ -59,6 +60,7 @@ def mainLoop():
                         det['distance_std'], det['left_right_std'], det['yaw_std'], det['rms'], det['error'],
                         det['tagid'], det['camera']]
         april_table.putNumberArray('relative_positions', nt_send)
+        app.game_pieces = SecondSight.Color.postGamePieces(conecube_table)
 
 
 def main_cli():
