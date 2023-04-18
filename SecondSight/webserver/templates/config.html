@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <title>Start here</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     </head>
     <body>
         <form action="/config" method="post">
