@@ -8,22 +8,29 @@ import SecondSight
 def start(app):
     @app.route('/config', methods=['GET', 'POST'])
     def config():
+        conf = SecondSight.config.Configuration()  # I think this is how singleton classes work
         if request.method=='GET':
-            return render_template('config.html')
+            return render_template('config.html', nt_dest=conf.get_value('nt_dest'))  # , cams=cams)
         else:
-            conf=SecondSight.config.Configuration()  # I think this is how singleton classes work
             conf.set_value('nt_dest', request.form['nt_addr'])
             conf.set_value('cameras', [])
-            for k,v in request.form.items():
-                if k[:9]=='cam_port_':
-                    conf.set_value('cameras', conf.get_value('cameras')+
-                        [{
-                            'port': v,
-                            'calibration': None,
-                            'role': 'conecube',
-                            'pos': None
-                         }])
-            app.cameras = SecondSight.Cameras.loadCameras(conf)
+            for k, v in request.form.items():
+                if k.startswith('cam_port_'):
+                    roles = []
+                    if f"apriltags_{k.split('_')[-1]}" in request.form:
+                        if request.form[f"apriltags_{k.split('_')[-1]}"] == 'on':
+                            roles.append('apriltag')
+                    if f"game_objs_{k.split('_')[-1]}" in request.form:
+                        if request.form[f"game_objs_{k.split('_')[-1]}"] == 'on':
+                            roles.append('conecube')
+                    conf.set_value('cameras', conf.get_value('cameras') +
+                                   [{
+                                       'port': v,
+                                       'calibration': None,
+                                       'role': roles,
+                                       'pos': None
+                                   }])
+            app.cameras = SecondSight.Cameras.loadCameras()
             conf.set_value('config_required', False)
             conf.write()
             return redirect('/')

@@ -17,6 +17,14 @@
                 $("form").append(`
                     <label for="cam_port_${cam_count}">Camera port</label><br>
                     <input type="text" id="cam_port_${cam_count}" name="cam_port_${cam_count}"><br>
+                    <label>
+                        <input type="checkbox" name="game_objs_${cam_count}">
+                         game objects
+                    </label><br>
+                    <label>
+                        <input type="checkbox" name="apritags_${cam_count}">
+                         apriltags
+                    </label><br>
                 `);
                 cam_count+=1;
             });
