@@ -6,6 +6,10 @@
     </head>
     <body>
         <form action="/config" method="post">
+            <label>
+                <input type="checkbox" name="cube2023">
+                2023 cubes
+            </label><br>
             <label for="nt_addr">Networktables address</label><br>
             <input type="text" id="nt_addr" name="nt_addr"><br>
         </form>
@@ -22,7 +26,7 @@
                          game objects
                     </label><br>
                     <label>
-                        <input type="checkbox" name="apritags_${cam_count}">
+                        <input type="checkbox" name="apriltags_${cam_count}">
                          apriltags
                     </label><br>
                 `);
