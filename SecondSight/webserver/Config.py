@@ -18,6 +18,9 @@ def start(app):
             for k, v in request.form.items():
                 if k == 'cube2023':
                     conf.set_value('detects', conf.get_value('detects')+['cube2023'])
+                if k == 'apriltags2023':
+                    assert not any([i.startswith('apriltags') for i in conf.get_value('detects')]), 'Only one year of apriltags are allowed'  # TODO: turn this into a web response
+                    conf.set_value('detects', conf.get_value('detects')+['apriltags2023'])
                 if k.startswith('cam_port_'):
                     roles = []
                     if f"apriltags_{k.split('_')[-1]}" in request.form:
