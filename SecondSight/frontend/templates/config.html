@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Start here</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    </head>
+    <body>
+        <form action="/config" method="post">
+            <label for="nt_addr">Networktables address</label><br>
+            <input type="text" id="nt_addr" name="nt_addr"><br>
+        </form>
+        <button id="add_cam">Add camera</button>
+        <button id="submit">Make Config</button>
+        <script>
+            let cam_count=0;
+            $("#add_cam").on('click', function (){
+                $("form").append(`
+                    <label for="cam_port_${cam_count}">Camera port</label><br>
+                    <input type="text" id="cam_port_${cam_count}" name="cam_port_${cam_count}"><br>
+                `);
+                cam_count+=1;
+            });
+            $("#submit").on('click', function (){
+                $('form').submit();
+            });
+
+        </script>
+    </body>
+</html>
