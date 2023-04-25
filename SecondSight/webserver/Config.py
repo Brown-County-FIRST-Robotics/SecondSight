@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import logging
-from flask import Flask, render_template, Response, redirect, request, jsonify
+from flask import Flask, render_template, Response, redirect, request, jsonify, Markup
 import SecondSight
 
 
@@ -9,8 +9,24 @@ def start(app):
     @app.route('/config', methods=['GET', 'POST'])
     def config():
         conf = SecondSight.config.Configuration()  # I think this is how singleton classes work
-        if request.method=='GET':
-            return render_template('config.html', nt_dest=conf.get_value('nt_dest'))  # , cams=cams)
+        if request.method == 'GET':
+            cams = ''
+            if conf.get_value('cameras') is None:
+                conf.set_value('cameras', [])
+            for i, cam in enumerate(conf.get_value('cameras')):
+                cams += f'''
+                <label for="cam_port_{i}">Camera port</label><br>
+                <input type="text" id="cam_port_{i}" name="cam_port_{i}" value="{cam['port']}"><br>
+                <label>
+                        <input type="checkbox" name="game_objs_{i}" {'checked' if 'conecube' in cam['role'] else ''}>
+                         game objects
+                    </label><br>
+                    <label>
+                        <input type="checkbox" name="apriltags_{i}" {'checked' if 'apriltag' in cam['role'] else ''}>
+                         apriltags
+                </label><br>
+                '''
+            return render_template('config.html', nt_dest=conf.get_value('nt_dest'), cams=Markup(cams))
         else:
             conf.set_value('nt_dest', request.form['nt_addr'])
             conf.set_value('cameras', [])

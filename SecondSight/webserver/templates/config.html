@@ -15,7 +15,8 @@
                 2023 apriltags
             </label><br>
             <label for="nt_addr">Networktables address</label><br>
-            <input type="text" id="nt_addr" name="nt_addr"><br>
+            <input type="text" id="nt_addr" name="nt_addr" value="{{ nt_dest }}"><br>
+            {{ cams|safe }}
         </form>
         <button id="add_cam">Add camera</button>
         <button id="submit">Make Config</button>
