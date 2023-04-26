@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
-
-#mostly coppied from https://github.com/kyle-bersani/opencv-examples/blob/master/CalibrationByCharucoBoard/CalibrateCamera.py
-#with a little from https://mecaruco2.readthedocs.io/en/latest/notebooks_rst/Aruco/sandbox/ludovic/aruco_calibration_rotation.html
+# mostly coppied from https://github.com/kyle-bersani/opencv-examples/blob/master/CalibrationByCharucoBoard/CalibrateCamera.py
+# with a little from https://mecaruco2.readthedocs.io/en/latest/notebooks_rst/Aruco/sandbox/ludovic/aruco_calibration_rotation.html
 
 import sys
 import numpy
@@ -10,51 +9,34 @@ import cv2
 import json
 import glob
 
-def main():
-    # ChAruco board variables
+
+def makeArucoDict():
+    CHARUCOBOARD_ROWCOUNT = 7
+    CHARUCOBOARD_COLCOUNT = 5
     ARUCO_DICT = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_1000)
 
     # Create constants to be passed into OpenCV and Aruco methods
-    #CHARUCO_BOARD = cv2.aruco.CharucoBoard(1,
-    #        squaresX=CHARUCOBOARD_COLCOUNT,
-    #        squaresY=CHARUCOBOARD_ROWCOUNT,
-    #        squareLength=0.029,
-    #        markerLength=0.014,
-    #        dictionary=ARUCO_DICT)
+    CHARUCO_BOARD = cv2.aruco.CharucoBoard((5, 7), 0.04, 0.02, ARUCO_DICT, None)
+    return ARUCO_DICT, CHARUCO_BOARD
 
 
-    paper_size = (20,30) #inches
-    min_square_size = 2 #inches
-    num_squares = [(s-2)//min_square_size for s in paper_size] #leave a border row of one inch around edge
-    square_size=[(paper_size[i]-2)/num_squares[i] for i in range(2)] #inches
-    size = min(square_size)
+def makeImage():
+    ARUCO_DICT, CHARUCO_BOARD = makeArucoDict()
+    imboard = CHARUCO_BOARD.generateImage((2000, 2000))
+    cv2.imwrite("SecondSight/webserver/static/charuco.tiff", imboard)
+    print('charuco file written')
 
-    ppi=11 * 10 #found by hand to be minimum (11) for the 20,30.  you should try other values to not have the blur
 
-    CHARUCO_BOARD = cv2.aruco.CharucoBoard(num_squares, size, size*.6, ARUCO_DICT, None)
-    #print(CHARUCO_BOARD.getChessboardCorners())
-
-    if 'generate' in sys.argv[1:]:
-        imboard=CHARUCO_BOARD.generateImage((ppi*(num_squares[0]+2), ppi*(num_squares[1]+2)), None, ppi)
-        cv2.imwrite("chessboard.tiff", imboard)
-        print('chessboard.tiff written')
-        sys.exit()
-
+def main(ARUCO_DICT, CHARUCO_BOARD):
+    # ChAruco board variables
 
     # Create the arrays and variables we'll use to store info like corners and IDs from images processed
-    corners_all = [] # Corners discovered in all images processed
-    ids_all = [] # Aruco ids corresponding to corners discovered
-    image_size = None # Determined at runtime
-
+    corners_all = []  # Corners discovered in all images processed
+    ids_all = []  # Aruco ids corresponding to corners discovered
+    image_size = None  # Determined at runtime
 
     camnum = 0
     cam = cv2.VideoCapture(camnum)
-
-    #cam.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-    #cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
-
-    cam.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-    cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
     video_size = (cam.get(cv2.CAP_PROP_FRAME_WIDTH), cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
     as_int = tuple(int(x) for x in video_size)

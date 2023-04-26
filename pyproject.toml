@@ -33,3 +33,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 second-sight = "SecondSight.main:main_cli"
+make-charuco = "SecondSight.Calibration:makeImage"
