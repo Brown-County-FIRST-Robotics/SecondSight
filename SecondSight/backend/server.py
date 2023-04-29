@@ -8,14 +8,6 @@ import SecondSight.Color
 import SecondSight.Cameras
 import SecondSight.config
 
-
-config = SecondSight.config.Configuration()
-config.set_path("config.json")
-
-# Do this to open the cameras before we need them
-cameras = SecondSight.Cameras.loadCameras()
-cameras[0].update()
-
 app = FastAPI()
 
 @app.get("/")
