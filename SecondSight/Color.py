@@ -34,14 +34,14 @@ def findCube2023(frame, cube_color):
     logging.info("findObject()")
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     cube_object_mask = cv2.inRange(hsv, cube_color[0], cube_color[1])
-    cube_res = cv2.bitwise_and(frame, cube_object_mask)
+    cube_res = cv2.bitwise_and(frame, frame, mask=cube_object_mask)
     cube_contours, _ = cv2.findContours(cv2.cvtColor(cube_res, cv2.COLOR_BGR2GRAY), cv2.RETR_TREE,
                                         cv2.CHAIN_APPROX_SIMPLE)
 
     res = []
     for contour in cube_contours:
-        x, y, width, height, theta = cv2.minAreaRect(contour)
-        res.append(GamePiece(x, y, width, height, theta, 'cube2023'))
+        pos, dims, theta = cv2.minAreaRect(contour)
+        res.append(GamePiece(pos[0], pos[1], dims[0], dims[1], theta, 'cube2023'))
     return res
 
 
@@ -49,12 +49,13 @@ def findCone2023(frame, cone_color):
     logging.info("findCone2023()")
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     cube_object_mask = cv2.inRange(hsv, cone_color[0], cone_color[1])
-    cube_res = cv2.bitwise_and(frame, cube_object_mask)
-    cube_contours, _ = cv2.findContours(cv2.cvtColor(cube_res, cv2.COLOR_BGR2GRAY), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    cube_res = cv2.bitwise_and(frame, frame, mask=cube_object_mask)
+    cube_contours, _ = cv2.findContours(cv2.cvtColor(cube_res, cv2.COLOR_BGR2GRAY), cv2.RETR_TREE,
+                                        cv2.CHAIN_APPROX_SIMPLE)
     res = []
     for contour in cube_contours:
-        x, y, width, height, theta = cv2.minAreaRect(contour)
-        res.append(GamePiece(x, y, width, height, theta, 'cone2023'))
+        pos, dims, theta = cv2.minAreaRect(contour)
+        res.append(GamePiece(pos[0], pos[1], dims[0], dims[1], theta, 'cone2023'))
     return res
 
 
@@ -81,8 +82,7 @@ class GamePiece:
     # The cube should ideally be at the same height as the camera
     def calcRealPos(self, camera_matrix, dist):  # TODO:test
         if self.piece == 'cube2023':
-            box = cv2.boxPoints((self.x, self.y, self.width, self.height, self.theta))
-            box = np.int0(box)
+            box = cv2.boxPoints(((self.x, self.y), (self.width, self.height), self.theta))
             image_points = np.array(box).reshape(1, 4, 2)
 
             ob_pt1 = [-cube_size / 2, -cube_size / 2, -cube_size / 2]
@@ -116,7 +116,7 @@ def postGamePieces(tb: networktables.NetworkTable, cams, obj_types: [str]):
         res[obj] = []
         for i, cam in enumerate(cams):
             if obj == 'cube2023':
-                det = findCube2023(cam.frame, ((0, 0, 0), (255, 100, 100)))
+                det = findCube2023(cam.frame, ((50, 0, 200), (230, 50, 255)))
                 for ii in det:
                     ii.calcRealPos(cam.camera_matrix, None)
                     res[obj].append({
@@ -146,6 +146,7 @@ def postGamePieces(tb: networktables.NetworkTable, cams, obj_types: [str]):
     return res
 
 
+# This function is now very broken
 # Color picker
 # This function gets called by the /video_feed route below
 def gen_preview_picker(camera):  # generate frame by frame from camera
