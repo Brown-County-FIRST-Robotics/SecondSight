@@ -24,3 +24,30 @@ class TestBackend(unittest.TestCase):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"application": "SecondSight"})
+
+    def testAllConfig(self):
+
+        config_data = self.config_object.get_all()
+
+        response = self.client.get("/config")
+        self.assertEqual(response.status_code, 200)
+
+        json_resp = response.json()
+        self.assertEqual(json_resp, config_data)
+
+    def testOneConfig(self):
+        response = self.client.get("/config/nt_dest")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), "127.0.0.1")
+
+        response = self.client.get("/config/cube_hsv")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), [150, 138, 121])
+    
+    def testSetConfig(self):
+        response = self.client.post("/config", json={"nt_dest": "127.0.0.2"})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get("/config/nt_dest")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), "127.0.0.2")

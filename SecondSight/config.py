@@ -12,10 +12,12 @@ class Configuration(object):
     """
 
     # Setting some defaults makes the initial configuration much easier
+    # Remove this eventually
     __default_config = {
+        "default": True,
         "cameras": [
             {
-                "port": "/dev/video0",
+                "port": 0,
                 "calibration": None,
                 "role": "conecube",
                 "pos": None
@@ -35,7 +37,7 @@ class Configuration(object):
         if not hasattr(cls, 'instance'):
             cls.instance = super(Configuration, cls).__new__(cls)
         return cls.instance
-    
+
     def set_path(self, file_path):
         """
         Set the file to store the configuration data.
@@ -58,6 +60,11 @@ class Configuration(object):
         """
         Write the current configuration file to disk
         """
+
+        # If we're saving this, it's not the default config anymore
+        if "default" in self.variables:
+            del(self.variables["default"])
+
         with open(self.file_path, 'w') as fh_out:
             json.dump(self.variables, fh_out)
 
@@ -68,6 +75,12 @@ class Configuration(object):
         """
         self.write()
         self.variables = None
+
+    def get_all(self):
+        """
+        Return the entire configuration structure
+        """
+        return self.variables
 
     def get_value(self, item):
         """
