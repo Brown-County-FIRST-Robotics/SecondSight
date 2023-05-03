@@ -67,8 +67,8 @@ class Detection:
             res['error'] = self.error
         return res
 
-    def calcFieldPos(self):
-        pos = SecondSight.AprilTags.Positions.apriltagPositions[str(self.tagID)]
+    def calcFieldPos(self, year):
+        pos = SecondSight.AprilTags.Positions.apriltagPositions[year][str(self.tagID)]
         camera_theta = 180 + self.yaw + pos[3]
         thetaCA = camera_theta - math.atan(self.left_right / self.distance) * 180 / math.pi
         camera_Y = pos[1] - (math.sqrt(self.left_right ** 2 + self.distance ** 2) * math.sin(thetaCA * math.pi / 180))
