@@ -33,3 +33,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 second-sight = "SecondSight.main:main_cli"
+show-apriltag-tests = "tests.make_apriltag_cases:displayImages"
