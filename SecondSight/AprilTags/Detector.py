@@ -81,7 +81,8 @@ class Detection:
 def getCoords(img, valid_tags=range(1, 9), check_hamming=True):
     if img is None:
         return []
-    assert len(img.shape) == 2, 'Image must be grayscale'
+    if len(img.shape) != 2:
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     options = apriltag.DetectorOptions(families='tag16h5',
                                        border=1,
                                        nthreads=1,
@@ -159,7 +160,6 @@ def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), r
                 continue
             logging.info(f'april pos: yaw:{str(yaw)[:5]}, lr:{str(left_right)[:7]}, distance:{str(distance)[:7]}, rms:{rms}, tag:{tagid}')
             detections.append(Detection(yaw, pitch, roll, left_right[0], up_down[0], distance[0], rms[0][0], tagid))
-            logging.info(f'field pos:yaw:{detections[-1].calcFieldPos()}')
     return detections
 
 
