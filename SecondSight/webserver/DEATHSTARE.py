@@ -2,7 +2,7 @@
 
 import logging
 from flask import Flask, render_template, Response, redirect, request, jsonify
-import SecondSight.Color
+import SecondSight
 import time
 
 

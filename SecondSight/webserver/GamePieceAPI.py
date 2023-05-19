@@ -6,11 +6,9 @@ import SecondSight
 
 
 def start(app):
-    @app.route('/apriltag/april_coords')
-    def april_coords():
-        return jsonify(app.apriltags)
-
-
+    @app.route('/game_pieces/cone_2023')
+    def cone_2023():
+        return jsonify(app.game_pieces['cone2023'])
 
 
 if __name__ == "__main__":

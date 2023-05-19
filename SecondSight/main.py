@@ -3,20 +3,11 @@ import logging
 import os.path
 import sys
 import time
-
-import SecondSight.webserver.DEATHSTARE
-import SecondSight.webserver.Server
-import SecondSight.webserver.Config
-import SecondSight.config
-import SecondSight.Cameras
-from flask import Flask
+import SecondSight
 import threading
-import SecondSight.AprilTags.Detector
 import asyncio
 import sys
-import argparse
 import networktables
-import json
 
 
 def mainLoop():
@@ -31,6 +22,7 @@ def mainLoop():
     # TODO: Every module should write to network tables, not from here
     networktables.NetworkTables.initialize(server=config.get_value('nt_dest'))
     april_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('Apriltags')
+    conecube_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('GamePieces')
 
     # We run the Flask server here. We run it via threading, this is possibly wrong
     app = SecondSight.webserver.Server.startFlask()
@@ -53,13 +45,15 @@ def mainLoop():
         
         # Acquire the AprilTag data
         # TODO: Most of this belongs in the AprilTag module
-        app.apriltags = SecondSight.AprilTags.Detector.fetchApriltags(app.cameras)
-        nt_send = []
-        for det in app.apriltags:
-            nt_send += [det['distance'], det['left_right'], det['up_down'], det['pitch'], det['roll'], det['yaw'],
-                        det['distance_std'], det['left_right_std'], det['yaw_std'], det['rms'], det['error'],
-                        det['tagid'], det['camera']]
-        april_table.putNumberArray('relative_positions', nt_send)
+        if "apriltags" in [i[:min(len(i)-1,9)] for i in config.get_value('detects')]:
+            app.apriltags = SecondSight.AprilTags.Detector.fetchApriltags(app.cameras)
+            nt_send = []
+            for det in app.apriltags:
+                nt_send += [det['distance'], det['left_right'], det['up_down'], det['pitch'], det['roll'], det['yaw'],
+                            det['distance_std'], det['left_right_std'], det['yaw_std'], det['rms'], det['error'],
+                            det['tagid'], det['camera']]
+            april_table.putNumberArray('relative_positions', nt_send)
+        app.game_pieces = SecondSight.Color.postGamePieces(conecube_table, app.cameras, config.get_value('detects'))
 
 
 def main_cli():

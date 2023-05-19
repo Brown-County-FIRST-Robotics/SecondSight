@@ -19,8 +19,9 @@ flask = "^2.2.3"
 pytest = "^7.2.2"
 apriltag = "^0.0.16"
 numpy = "^1.24.2"
-opencv-python = "^4.7.0"
 pynetworktables = "^2021.0.0"
+opencv-contrib-python = "^4.7.0"
+opencv-python = "^4.7.0"
 
 [project.urls]
 "Homepage" = "https://github.com/Brown-County-FIRST-Robotics/second_sight"
@@ -32,3 +33,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 second-sight = "SecondSight.main:main_cli"
+show-apriltag-tests = "tests.make_apriltag_cases:displayImages"

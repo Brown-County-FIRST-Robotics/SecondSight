@@ -2,12 +2,21 @@
 <html lang="en">
     <head>
         <title>Start here</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     </head>
     <body>
         <form action="/config" method="post">
+            <label>
+                <input type="checkbox" name="cube2023">
+                2023 cubes
+            </label><br>
+            <label>
+                <input type="checkbox" name="apriltags2023">
+                2023 apriltags
+            </label><br>
             <label for="nt_addr">Networktables address</label><br>
-            <input type="text" id="nt_addr" name="nt_addr"><br>
+            <input type="text" id="nt_addr" name="nt_addr" value="{{ nt_dest }}"><br>
+            {{ cams|safe }}
         </form>
         <button id="add_cam">Add camera</button>
         <button id="submit">Make Config</button>
@@ -17,6 +26,14 @@
                 $("form").append(`
                     <label for="cam_port_${cam_count}">Camera port</label><br>
                     <input type="text" id="cam_port_${cam_count}" name="cam_port_${cam_count}"><br>
+                    <label>
+                        <input type="checkbox" name="game_objs_${cam_count}">
+                         game objects
+                    </label><br>
+                    <label>
+                        <input type="checkbox" name="apriltags_${cam_count}">
+                         apriltags
+                    </label><br>
                 `);
                 cam_count+=1;
             });
