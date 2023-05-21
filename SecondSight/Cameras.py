@@ -4,7 +4,7 @@ import logging
 import cv2
 import time
 import threading
-import SecondSight.config
+import SecondSight
 import numpy as np
 
 
@@ -54,12 +54,19 @@ class Camera:
             assert tuple(test_video_size) == tuple(video_size), 'camera resolution didnt set'
 
             raw_camera_matrix = np.array(calibration['camera_matrix'])
-            dist_coefficients = np.array(calibration['dist'])
             processing_resolution = np.array(calibration['processing_res'])
-
-            self.camera_matrix, roi = cv2.getOptimalNewCameraMatrix(raw_camera_matrix, dist_coefficients, tuple(video_size), 0,tuple(processing_resolution))
-            self.map1, self.map2 = cv2.initUndistortRectifyMap(raw_camera_matrix, dist_coefficients, None, self.camera_matrix,
-                                                 tuple(processing_resolution), cv2.CV_16SC2)
+            if calibration['dist'] is not None:
+                dist_coefficients = np.array(calibration['dist'])
+                self.camera_matrix, roi = cv2.getOptimalNewCameraMatrix(raw_camera_matrix, dist_coefficients,
+                                                                        tuple(video_size), 0,
+                                                                        tuple(processing_resolution))
+                self.map1, self.map2 = cv2.initUndistortRectifyMap(raw_camera_matrix, dist_coefficients, None,
+                                                                   self.camera_matrix,
+                                                                   tuple(processing_resolution), cv2.CV_16SC2)
+            else:
+                self.map1 = None
+                self.map2 = None
+                self.camera_matrix = raw_camera_matrix
         else:
             self.map1=None
             self.map2=None
@@ -76,7 +83,7 @@ class Camera:
         self.uncalibrated = frame.copy()
         if frame is None or not success:
             logging.critical("Camera Read Failed")
-        if self.camera_matrix is not None:
+        if self.map2 is not None:
             frame = cv2.remap(frame, self.map1, self.map2, cv2.INTER_CUBIC)
         self.frame = frame
         self._hsv = None
