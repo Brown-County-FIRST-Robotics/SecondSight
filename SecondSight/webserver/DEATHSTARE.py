@@ -35,6 +35,11 @@ def start(app):
 
     @app.route('/')
     def index():
+        # if config is needed, redirect to create config screen
+        config = SecondSight.config.Configuration() 
+        if config.get_value('config_required') == True:
+            return redirect('/config')
+        
         """The default page"""
         return render_template('index.html')
 
@@ -44,8 +49,6 @@ def start(app):
         the_camera = app.cameras[0]
         #Video streaming route. Put this in the src attribute of an img tag
         return Response(SecondSight.Color.gen_preview_picker(the_camera), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
 
 if __name__ == "__main__":
     # This file should never be run

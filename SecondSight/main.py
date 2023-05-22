@@ -15,7 +15,7 @@ def mainLoop():
     Main loop for the program. Once setup is complete, this loops forever
     """
 
-    config = SecondSight.config.Configuration()
+    config = SecondSight.config.Configuration() 
 
     # We can put data on NetworkTables
     # TODO: Only do this if the configuration says to do it
@@ -25,7 +25,7 @@ def mainLoop():
     conecube_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('GamePieces')
 
     # We run the Flask server here. We run it via threading, this is possibly wrong
-    app = SecondSight.webserver.Server.startFlask()
+    app = SecondSight.webserver.Server.startFlask() 
 
     # Loop this forever, it's the main work loop
     # TODO: Any functionality specific to a module belongs in that module
@@ -45,7 +45,7 @@ def mainLoop():
         
         # Acquire the AprilTag data
         # TODO: Most of this belongs in the AprilTag module
-        if "apriltags" in [i[:min(len(i)-1,9)] for i in config.get_value('detects')]:
+        if config.get_value('detects') is not None and "apriltags" in [i[:min(len(i)-1,9)] for i in config.get_value('detects')]:
             app.apriltags = SecondSight.AprilTags.Detector.fetchApriltags(app.cameras)
             nt_send = []
             for det in app.apriltags:

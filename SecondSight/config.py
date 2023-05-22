@@ -23,7 +23,8 @@ class Configuration(object):
             }
         ],
         "nt_dest": "127.0.0.1",
-        "cube_hsv": [150, 138, 121]
+        "cube_hsv": [150, 138, 121],
+        "config_required": True
     }
 
     variables = None
