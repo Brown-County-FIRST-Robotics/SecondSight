@@ -75,6 +75,7 @@ class Detection:
         camera_X = pos[0] - (math.sqrt(self.left_right ** 2 + self.distance ** 2) * math.cos(thetaCA * math.pi / 180))
         self.field_x = camera_X
         self.field_y = camera_Y
+        self.field_yaw=camera_theta
         return camera_X, camera_Y, camera_theta
 
 

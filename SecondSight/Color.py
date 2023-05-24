@@ -115,7 +115,7 @@ def postGamePieces(tb: networktables.NetworkTable, cams, obj_types: [str]):
         for obj in obj_types:
             dets = []
             res[obj] = []
-            for i, cam in enumerate(cams): 
+            for i, cam in enumerate(cams):
                 if obj == 'cube2023':
                     det = findCube2023(cam.frame, ((50, 0, 200), (230, 50, 255)))
                     for ii in det:

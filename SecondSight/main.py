@@ -45,6 +45,7 @@ def mainLoop():
         
         # Acquire the AprilTag data
         # TODO: Most of this belongs in the AprilTag module
+
         if config.get_value('detects') is not None and "apriltags" in [i[:min(len(i)-1,9)] for i in config.get_value('detects')]:
             app.apriltags = SecondSight.AprilTags.Detector.fetchApriltags(app.cameras)
             nt_send = []
