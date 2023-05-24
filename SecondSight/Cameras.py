@@ -80,9 +80,10 @@ class Camera:
         """
 
         success, frame = self.camera.read()
-        self.uncalibrated = frame.copy()
         if frame is None or not success:
             logging.critical("Camera Read Failed")
+            return 
+        self.uncalibrated = frame.copy() 
         if self.map2 is not None:
             frame = cv2.remap(frame, self.map1, self.map2, cv2.INTER_CUBIC)
         self.frame = frame
