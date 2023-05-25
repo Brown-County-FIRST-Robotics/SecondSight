@@ -167,7 +167,10 @@ def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), r
 def fetchApriltags(cams):
     res = []
     for i, cam in enumerate(cams):  # TODO: Add thread pool
-        if cam.role not in ['apriltag', '*']:
+        for role in cam.role:
+            if role in ['apriltags', '*']:
+                break
+        else:
             continue
 
         dets = SecondSight.AprilTags.Detector.getPosition(cam.gray, cam.camera_matrix, None, roll_threshold=10000)
