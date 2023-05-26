@@ -5,6 +5,7 @@ import apriltag
 import cv2
 import numpy as np
 import SecondSight
+import concurrent.futures
 
 tag_size = 6
 
@@ -166,14 +167,18 @@ def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), r
 
 def fetchApriltags(cams):
     res = []
-    for i, cam in enumerate(cams):  # TODO: Add thread pool
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=len(cams))
+    futures = {}
+    for i, cam in enumerate(cams):
         if 'apriltags' in cam.roles:
-            dets = SecondSight.AprilTags.Detector.getPosition(cam.gray, cam.camera_matrix, None, roll_threshold=10000)
-            if dets != []:
-                for det in dets:
-                    det = det.json(error=True)
-                    det['camera'] = i
-                    res.append(det)
+            futures[i] = executor.submit(SecondSight.AprilTags.Detector.getPosition, cam.gray, cam.camera_matrix, None)
+    for i, future in futures.items():
+        dets = future.result()
+        if dets != []:
+            for det in dets:
+                det = det.json(error=True)
+                det['camera'] = i
+                res.append(det)
     return res
 
 
