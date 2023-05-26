@@ -18,13 +18,13 @@ class Camera:
     # Calibration data shoudl be in the format of
     # calibration: {'camera_matrix': %%, 'dist':%%, 'calibration_res':%%, 'processing_res':%%}
 
-    def __init__(self, device, calibration, position, role):
+    def __init__(self, device, calibration, position, roles):
         """Camera constructor
 
         :param device: The camera device such as '/dev/video0'
         :param calibration: Camera calibration data
         :param position: The camera position on the robot, not currently used
-        :param role: The role of the camera in the larger system
+        :param roles: The role of the camera in the larger system
 
         :return:
         """
@@ -43,7 +43,7 @@ class Camera:
         self.last_frame_count = 0
         self.device = device
         self.camera = cv2.VideoCapture(device)
-        self.role = role
+        self.roles = roles
         self.pos=position
 
         if calibration is not None:
@@ -71,7 +71,6 @@ class Camera:
             self.map1=None
             self.map2=None
             self.camera_matrix=None
-            assert role != 'apriltag' and role != '*', f'For the role to be "{role}", a calibration is required'
 
     def update(self):
         """Read a new camera frame from the camera
