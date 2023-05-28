@@ -6,7 +6,9 @@ import time
 import threading
 import SecondSight
 import numpy as np
+from typing import List
 
+camera_cache = []
 
 class Camera:
     """
@@ -159,15 +161,37 @@ class Camera:
             return self._bytes_uncalibrated
 
 
-def loadCameras():
+def loadCameras() -> List[Camera]:
     """
-    Initialize and return the cameras as defined in the configuration file
+    Initialize the cameras as defined in the configuration file
     """
-    config = SecondSight.config.Configuration()
-    cameras=[]
-    for cam_config in config.get_value('cameras'):
-        cameras.append(SecondSight.Cameras.Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
-    return cameras
+
+    global camera_cache
+
+    if len(camera_cache) == 0:
+        # Only load the cameras once, use the cache after this
+        config = SecondSight.config.Configuration()
+        for cam_config in config.get_value('cameras'):
+            camera_cache.append(SecondSight.Cameras.Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
+        
+    return camera_cache
+
+def getCamera(cam_index) -> Camera:
+    """
+    Return a camera object by its index
+    """
+
+    global camera_cache
+
+    loadCameras()
+    return camera_cache[cam_index]
+
+def updateAll() -> None:
+    """
+    Update all the cameras
+    """
+    for cam in loadCameras():
+        cam.update()
 
 
 if __name__ == "__main__":

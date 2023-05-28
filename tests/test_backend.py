@@ -5,6 +5,7 @@ import os
 import json
 from fastapi.testclient import TestClient
 import SecondSight.backend.server
+import SecondSight.Cameras
 
 from . import config_helper
 
@@ -51,3 +52,11 @@ class TestBackend(unittest.TestCase):
         response = self.client.get("/config/nt_dest")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), "127.0.0.2")
+
+#    def testStreamImage(self):
+#        # The stream never returns, we can't test this right now
+#
+#        cam = SecondSight.Cameras.getCamera(0)
+#        cam.update()
+#        response = self.client.get("/camera/0")
+#        self.assertEqual(response.status_code, 200)

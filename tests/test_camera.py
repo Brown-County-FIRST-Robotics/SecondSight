@@ -18,11 +18,29 @@ class TestCamera(unittest.TestCase):
     def tearDown(self):
         del self.config_helper
 
+    def testgetCamera(self):
+        camera = SecondSight.Cameras.getCamera(0)
+        camera.update()
+
+        self.assertEqual(camera.width, 1024)
+        self.assertEqual(camera.height, 1024)
+
     def testCameraOpen(self):
         cameras = SecondSight.Cameras.loadCameras()
         camera = cameras[0]
         camera.update()
 
+        self.assertEqual(len(cameras), 1)
+        self.assertEqual(camera.width, 1024)
+        self.assertEqual(camera.height, 1024)
+
+    def testCameraUpdateAll(self):
+
+        SecondSight.Cameras.updateAll()
+        cameras = SecondSight.Cameras.loadCameras()
+        camera = cameras[0]
+
+        # These will fail if the camera hasn't been udpated
         self.assertEqual(len(cameras), 1)
         self.assertEqual(camera.width, 1024)
         self.assertEqual(camera.height, 1024)

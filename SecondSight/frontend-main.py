@@ -5,8 +5,8 @@ import SecondSight.frontend.server
 
 def main_cli():
     app = SecondSight.frontend.server.app
-    uvicorn.run(app)
+    app.run()
 
 if __name__ == "__main__":
     # This file should never be run
-    pass
+    main_cli()
