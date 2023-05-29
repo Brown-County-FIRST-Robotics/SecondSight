@@ -5,6 +5,7 @@ import apriltag
 import cv2
 import numpy as np
 import SecondSight
+import concurrent.futures
 
 tag_size = 6
 
@@ -110,7 +111,7 @@ def getCoords(img, valid_tags=range(1, 9), check_hamming=True):
     return detections
 
 
-def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), roll_threshold=20, check_hamming=True):
+def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), check_hamming=True):
     """
     This function takes an image and returns the position of apriltags in the image
 
@@ -118,7 +119,6 @@ def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), r
     :param camera_matrix: The camera's calibration matrix
     :param dist_coefficients: The distortion coefficients of the camera
     :param valid_tags: (Default: 1-9) The apriltags to look for
-    :param roll_threshold: (Default: 0.3 radians/17 degrees) The maximum roll of the apriltag. Helps remove false detections.
     :param check_hamming: (Default: True) Checks if the hamming value is 0
     :return: A list of Detection objects, or None if it fails
     :rtype: list(Detection objects), or None if no apriltags are found
@@ -155,10 +155,6 @@ def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), r
             up_down = -translation_vector[0][1] * 2.54
             distance = translation_vector[0][2] * 2.54
 
-            # Check if roll is within limit
-            if math.fabs(roll) > roll_threshold:
-                logging.info(f'discarded a value (roll:{roll})')
-                continue
             logging.info(f'april pos: yaw:{str(yaw)[:5]}, lr:{str(left_right)[:7]}, distance:{str(distance)[:7]}, rms:{rms}, tag:{tagid}')
             detections.append(Detection(yaw, pitch, roll, left_right[0], up_down[0], distance[0], rms[0][0], tagid))
     return detections
@@ -166,14 +162,13 @@ def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), r
 
 def fetchApriltags(cams):
     res = []
-    for i, cam in enumerate(cams):  # TODO: Add thread pool
-        for role in cam.role:
-            if role in ['apriltags', '*']:
-                break
-        else:
-            continue
-
-        dets = SecondSight.AprilTags.Detector.getPosition(cam.gray, cam.camera_matrix, None, roll_threshold=10000)
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=len(cams))
+    futures = {}
+    for i, cam in enumerate(cams):
+        if cam.hasRole('apriltags'):
+            futures[i] = executor.submit(SecondSight.AprilTags.Detector.getPosition, cam.gray, cam.camera_matrix, None)
+    for i, future in futures.items():
+        dets = future.result()
         if dets != []:
             for det in dets:
                 det = det.json(error=True)
