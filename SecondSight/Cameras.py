@@ -8,8 +8,6 @@ import SecondSight
 import numpy as np
 from typing import List
 
-camera_cache = []
-
 class Camera:
     """
     Class represenging a camera object for interacting with OpenCV.
@@ -161,37 +159,40 @@ class Camera:
             return self._bytes_uncalibrated
 
 
-def loadCameras() -> List[Camera]:
-    """
-    Initialize the cameras as defined in the configuration file
-    """
+class CameraLoader:
 
-    global camera_cache
+    camera_cache = []
 
-    if len(camera_cache) == 0:
-        # Only load the cameras once, use the cache after this
-        config = SecondSight.config.Configuration()
-        for cam_config in config.get_value('cameras'):
-            camera_cache.append(SecondSight.Cameras.Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
+    @classmethod
+    def loadCameras(cls) -> List[Camera]:
+        """
+        Initialize the cameras as defined in the configuration file
+        """
+
+        if len(cls.camera_cache) == 0:
+            # Only load the cameras once, use the cache after this
+            config = SecondSight.config.Configuration()
+            for cam_config in config.get_value('cameras'):
+                cls.camera_cache.append(Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
         
-    return camera_cache
+        return cls.camera_cache
 
-def getCamera(cam_index) -> Camera:
-    """
-    Return a camera object by its index
-    """
+    @classmethod
+    def getCamera(cls, cam_index) -> Camera:
+        """
+        Return a camera object by its index
+        """
 
-    global camera_cache
+        cls.loadCameras()
+        return cls.camera_cache[cam_index]
 
-    loadCameras()
-    return camera_cache[cam_index]
-
-def updateAll() -> None:
-    """
-    Update all the cameras
-    """
-    for cam in loadCameras():
-        cam.update()
+    @classmethod
+    def updateAll(cls) -> None:
+        """
+        Update all the cameras
+        """
+        for cam in cls.loadCameras():
+            cam.update()
 
 
 if __name__ == "__main__":

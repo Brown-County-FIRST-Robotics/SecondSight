@@ -18,7 +18,7 @@ def gen_frames(camera):  # generate frame by frame from camera
     logging.debug("backend.gen_frames")
     
     last_frame_time = 0
-    framerate = 10 # Get this from the config file
+    framerate = 10 # Get this from the config file eventually
 
     while True:
         while time.time() - last_frame_time < 1 / framerate:
@@ -64,9 +64,7 @@ def get_config(config_id):
 @app.get("/camera/{camera_id}")
 def get_camera(camera_id) -> StreamingResponse:
 
-    c = SecondSight.config.Configuration()
-    camera = SecondSight.Cameras.getCamera(int(camera_id))
-
+    camera = SecondSight.Cameras.CameraLoader.getCamera(int(camera_id))
     return StreamingResponse(gen_frames(camera), media_type="multipart/x-mixed-replace;boundary=frame")
 
 if __name__ == "__main__":

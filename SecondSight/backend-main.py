@@ -12,7 +12,7 @@ def worker():
     config.set_path("config.json")
     
     while True:
-        SecondSight.Cameras.updateAll()
+        SecondSight.Cameras.CameraLoader.updateAll()
         time.sleep(0.1)
     pass
 

@@ -19,14 +19,14 @@ class TestCamera(unittest.TestCase):
         del self.config_helper
 
     def testgetCamera(self):
-        camera = SecondSight.Cameras.getCamera(0)
+        camera = SecondSight.Cameras.CameraLoader.getCamera(0)
         camera.update()
 
         self.assertEqual(camera.width, 1024)
         self.assertEqual(camera.height, 1024)
 
     def testCameraOpen(self):
-        cameras = SecondSight.Cameras.loadCameras()
+        cameras = SecondSight.Cameras.CameraLoader.loadCameras()
         camera = cameras[0]
         camera.update()
 
@@ -36,8 +36,8 @@ class TestCamera(unittest.TestCase):
 
     def testCameraUpdateAll(self):
 
-        SecondSight.Cameras.updateAll()
-        cameras = SecondSight.Cameras.loadCameras()
+        SecondSight.Cameras.CameraLoader.updateAll()
+        cameras = SecondSight.Cameras.CameraLoader.loadCameras()
         camera = cameras[0]
 
         # These will fail if the camera hasn't been udpated
@@ -46,7 +46,7 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(camera.height, 1024)
 
     def testCameraFrame(self):
-        cameras = SecondSight.Cameras.loadCameras()
+        cameras = SecondSight.Cameras.CameraLoader.loadCameras()
         camera = cameras[0]
         camera.update()
 
@@ -65,7 +65,7 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(blue_pixel[2], 14)
 
     def testCameraFrameFlip(self):
-        cameras = SecondSight.Cameras.loadCameras()
+        cameras = SecondSight.Cameras.CameraLoader.loadCameras()
         camera = cameras[0]
         camera.update()
 
@@ -84,7 +84,7 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(blue_pixel[2], 14)
 
     def testCameraGray(self):
-        cameras = SecondSight.Cameras.loadCameras()
+        cameras = SecondSight.Cameras.CameraLoader.loadCameras()
         camera = cameras[0]
         camera.update()
 
@@ -97,7 +97,7 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(blue_pixel, 64)
 
     def testCameraHSV(self):
-        cameras = SecondSight.Cameras.loadCameras()
+        cameras = SecondSight.Cameras.CameraLoader.loadCameras()
         camera = cameras[0]
         camera.update()
 
