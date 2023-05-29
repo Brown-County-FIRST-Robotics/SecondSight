@@ -165,7 +165,7 @@ def fetchApriltags(cams):
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=len(cams))
     futures = {}
     for i, cam in enumerate(cams):
-        if 'apriltags' in cam.roles:
+        if cam.hasRole('apriltags'):
             futures[i] = executor.submit(SecondSight.AprilTags.Detector.getPosition, cam.gray, cam.camera_matrix, None)
     for i, future in futures.items():
         dets = future.result()

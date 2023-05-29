@@ -157,6 +157,9 @@ class Camera:
                 self._bytes_uncalibrated = buffer.tobytes()
             return self._bytes_uncalibrated
 
+    def hasRole(self, role):
+        return role in self.roles
+
 
 def loadCameras():
     """
