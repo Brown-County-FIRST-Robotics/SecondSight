@@ -40,21 +40,20 @@ def mainLoop():
         lastframetime = newtime
 
         # Update the cameras
-        for cam in app.cameras:
-            cam.update()
+        SecondSight.Cameras.CameraManager.updateAll()
         
         # Acquire the AprilTag data
         # TODO: Most of this belongs in the AprilTag module
-
+        cams=SecondSight.Cameras.CameraManager.getCameras()
         if config.get_value('detects') is not None and "apriltags" in [i[:min(len(i)-1,9)] for i in config.get_value('detects')]:
-            app.apriltags = SecondSight.AprilTags.Detector.fetchApriltags(app.cameras)
+            app.apriltags = SecondSight.AprilTags.Detector.fetchApriltags(cams)
             nt_send = []
             for det in app.apriltags:
                 nt_send += [det['distance'], det['left_right'], det['up_down'], det['pitch'], det['roll'], det['yaw'],
                             det['distance_std'], det['left_right_std'], det['yaw_std'], det['rms'], det['error'],
                             det['tagid'], det['camera']]
             april_table.putNumberArray('relative_positions', nt_send)
-        app.game_pieces = SecondSight.Color.postGamePieces(conecube_table, app.cameras, config.get_value('detects'))
+        app.game_pieces = SecondSight.Color.postGamePieces(conecube_table, cams, config.get_value('detects'))
 
 
 def main_cli():
@@ -73,6 +72,7 @@ def main_cli():
     # TODO: Put this config file in a home directory someday
     config = SecondSight.config.Configuration()
     config.set_path("config.json")
+    SecondSight.Cameras.CameraManager.loadCameras()
 
     mainLoop()
 

@@ -24,13 +24,14 @@ def start(app):
     def camera_feed(number):
         args = request.args.to_dict()
         framerate = 10
+        cam = SecondSight.Cameras.CameraManager.getCamera(number)
         if 'framerate' in args:
             framerate = float(args['framerate'])
         if 'uncalibrated' in args:
             return Response(
-                gen_frames(app.cameras[number], uncalibrated=(args['uncalibrated'] == 'true'), framerate=framerate),
+                gen_frames(cam, uncalibrated=(args['uncalibrated'] == 'true'), framerate=framerate),
                 mimetype='multipart/x-mixed-replace; boundary=frame')
-        return Response(gen_frames(app.cameras[number], framerate=framerate),
+        return Response(gen_frames(cam, framerate=framerate),
                         mimetype='multipart/x-mixed-replace; boundary=frame')
 
     @app.route('/')
@@ -43,12 +44,14 @@ def start(app):
         """The default page"""
         return render_template('index.html')
 
+    # This code needs a few changes
     @app.route('/preview_image')
     def preview_image():
         logging.debug("DEATHSTARE.preview_image")
-        the_camera = app.cameras[0]
-        #Video streaming route. Put this in the src attribute of an img tag
+        the_camera = SecondSight.Cameras.CameraManager.getCamera(0)
+        # Video streaming route. Put this in the src attribute of an img tag
         return Response(SecondSight.Color.gen_preview_picker(the_camera), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 if __name__ == "__main__":
     # This file should never be run

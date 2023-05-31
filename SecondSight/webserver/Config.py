@@ -53,7 +53,6 @@ def start(app):
                                        'pos': None
                                    }])
             SecondSight.Cameras.CameraManager.loadCameras()
-            app.cameras = SecondSight.Cameras.CameraManager.getCameras()
             conf.set_value('config_required', False)
             conf.write()
             return Response('Please restart the code')
