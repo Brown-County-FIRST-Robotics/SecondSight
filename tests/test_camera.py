@@ -33,7 +33,7 @@ class TestCamera(unittest.TestCase):
         self.tempdir.cleanup()
 
     def testCameraOpen(self):
-        cameras = SecondSight.Cameras.loadCameras()
+        cameras = SecondSight.Cameras.CameraManager.getCameras()
         camera = cameras[0]
         camera.update()
 
@@ -42,7 +42,7 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(camera.height, 1024)
 
     def testCameraFrame(self):
-        cameras = SecondSight.Cameras.loadCameras()
+        cameras = SecondSight.Cameras.CameraManager.getCameras()
         camera = cameras[0]
         camera.update()
 
@@ -61,7 +61,7 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(blue_pixel[2], 14)
 
     def testCameraFrameFlip(self):
-        cameras = SecondSight.Cameras.loadCameras()
+        cameras = SecondSight.Cameras.CameraManager.getCameras()
         camera = cameras[0]
         camera.update()
 
@@ -80,7 +80,7 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(blue_pixel[2], 14)
 
     def testCameraGray(self):
-        cameras = SecondSight.Cameras.loadCameras()
+        cameras = SecondSight.Cameras.CameraManager.getCameras()
         camera = cameras[0]
         camera.update()
 
@@ -93,7 +93,7 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(blue_pixel, 64)
 
     def testCameraHSV(self):
-        cameras = SecondSight.Cameras.loadCameras()
+        cameras = SecondSight.Cameras.CameraManager.getCameras()
         camera = cameras[0]
         camera.update()
 

@@ -7,7 +7,7 @@ def startFlask():
     config = SecondSight.config.Configuration()
 
     app = Flask(__name__)
-    app.cameras = SecondSight.Cameras.loadCameras()
+    app.cameras = SecondSight.Cameras.CameraManager.getCameras()
     app.apriltags = []
     SecondSight.webserver.DEATHSTARE.start(app)
     SecondSight.webserver.ApriltagAPI.start(app)
