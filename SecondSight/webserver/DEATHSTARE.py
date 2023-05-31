@@ -38,7 +38,7 @@ def start(app):
     def index():
         # if config is needed, redirect to create config screen
         config = SecondSight.config.Configuration() 
-        if config.get_value('config_required') == True:
+        if config.get_value('config_required'):
             return redirect('/config')
         
         """The default page"""

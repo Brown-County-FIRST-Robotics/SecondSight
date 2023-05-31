@@ -169,7 +169,7 @@ def fetchApriltags(cams):
             futures[i] = executor.submit(SecondSight.AprilTags.Detector.getPosition, cam.gray, cam.camera_matrix, None)
     for i, future in futures.items():
         dets = future.result()
-        if dets != []:
+        if dets:
             for det in dets:
                 det = det.json(error=True)
                 det['camera'] = i
