@@ -7,6 +7,8 @@ import threading
 import SecondSight
 import numpy as np
 
+from typing import List
+
 
 class Camera:
     """
@@ -161,15 +163,41 @@ class Camera:
         return role in self.roles
 
 
-def loadCameras():
-    """
-    Initialize and return the cameras as defined in the configuration file
-    """
-    config = SecondSight.config.Configuration()
-    cameras=[]
-    for cam_config in config.get_value('cameras'):
-        cameras.append(SecondSight.Cameras.Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
-    return cameras
+class CameraManager:
+    camera_cache = []
+
+    @classmethod
+    def loadCameras(cls) -> None:
+        """
+        Initialize the cameras as defined in the configuration file
+        """
+        config = SecondSight.config.Configuration()
+        for cam_config in config.get_value('cameras'):
+            cls.camera_cache.append(Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
+
+    @classmethod
+    def getCameras(cls) -> List[Camera]:
+        if len(cls.camera_cache) == 0:
+            cls.loadCameras()
+        return cls.camera_cache
+
+    @classmethod
+    def getCamera(cls, cam_index) -> Camera:
+        """
+        Return a camera object by its index
+        """
+
+        if len(cls.camera_cache) == 0:
+            cls.loadCameras()
+        return cls.camera_cache[cam_index]
+
+    @classmethod
+    def updateAll(cls) -> None:
+        """
+        Update all the cameras
+        """
+        for cam in cls.getCameras():
+            cam.update()
 
 
 if __name__ == "__main__":

@@ -52,7 +52,7 @@ def start(app):
                                        'role': roles,
                                        'pos': None
                                    }])
-            app.cameras = SecondSight.Cameras.loadCameras()
+            SecondSight.Cameras.CameraManager.loadCameras()
             conf.set_value('config_required', False)
             conf.write()
             return Response('Please restart the code')
