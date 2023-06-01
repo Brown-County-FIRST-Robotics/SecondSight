@@ -32,7 +32,6 @@ def main_cli():
     # TODO: Only do this if the configuration says to do it
     # TODO: Every module should write to network tables, not from here
     networktables.NetworkTables.initialize(server=config.get_value('nt_dest'))
-    april_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('Apriltags')
     conecube_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('GamePieces')
 
     # We run the Flask server here. We run it via threading, this is possibly wrong
@@ -41,6 +40,8 @@ def main_cli():
     # Loop this forever, it's the main work loop
     # TODO: Any functionality specific to a module belongs in that module
     lastframetime = 0
+    apriltag_manager = SecondSight.AprilTags.Detector.ApriltagManager.getInst()
+    cams = SecondSight.Cameras.CameraManager.getCameras()
     while True:
         # Only run the loop every 100ms
         newtime = time.time()
@@ -53,16 +54,8 @@ def main_cli():
         SecondSight.Cameras.CameraManager.updateAll()
 
         # Acquire the AprilTag data
-        # TODO: Most of this belongs in the AprilTag module
-        cams = SecondSight.Cameras.CameraManager.getCameras()
-        if config.get_value('detects') is not None and "apriltags" in [i[:min(len(i) - 1, 9)] for i in config.get_value('detects')]:
-            app.apriltags = SecondSight.AprilTags.Detector.fetchApriltags(cams)
-            nt_send = []
-            for det in app.apriltags:
-                nt_send += [det['distance'], det['left_right'], det['up_down'], det['pitch'], det['roll'], det['yaw'],
-                            det['distance_std'], det['left_right_std'], det['yaw_std'], det['rms'], det['error'],
-                            det['tagid'], det['camera']]
-            april_table.putNumberArray('relative_positions', nt_send)
+        apriltag_manager.fetchApriltags()
+        apriltag_manager.postApriltags()
         app.game_pieces = SecondSight.Color.postGamePieces(conecube_table, cams, config.get_value('detects'))
 
 
