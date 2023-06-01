@@ -28,7 +28,7 @@ class TestCamera(unittest.TestCase):
         total_time = 0
         for img, rvec, tvec, id in tests.make_apriltag_cases.genImages():
             start_time = time.time()
-            dets = SecondSight.AprilTags.Detector.getPosition(img, camera_matrix, None, roll_threshold=1000)
+            dets = SecondSight.AprilTags.Detector.getPosition(img, camera_matrix, None)
             total_time += time.time() - start_time
             self.assertIsNotNone(dets)
             self.assertEqual(len(dets), 1 if id != 9 else 0, f"Wrong number of apriltags detected. Expected {1 if id != 9 else 0}, got {len(dets)}")
