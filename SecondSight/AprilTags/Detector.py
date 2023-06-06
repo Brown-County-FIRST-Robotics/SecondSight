@@ -162,6 +162,27 @@ def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), c
     return detections
 
 
+# Source: https://math.stackexchange.com/a/1033561
+def fuseApriltags(dets: List[Detection], year: str = '2023'):
+    assert len(dets) > 1
+    if len(dets) > 2:
+        dets = dets[:2]
+    x1, y1 = SecondSight.AprilTags.Positions.apriltagPositions[year][str(dets[0].tagID)][:2]
+    x2, y2 = SecondSight.AprilTags.Positions.apriltagPositions[year][str(dets[1].tagID)][:2]
+    d = math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+    r1 = math.sqrt(dets[0].left_right ** 2 + dets[0].distance ** 2)
+    r2 = math.sqrt(dets[1].left_right ** 2 + dets[0].distance ** 2)
+    l = (r1 ** 2 - r2 ** 2 + d ** 2) / (2 * d)
+    h = math.sqrt(r1 ** 2 - l ** 2)
+    k = -1  # or 1
+    x = (l / d) * (x2 - x1) + (k * h / d) * (y2 - y1) + x1
+    y = (l / d) * (y2 - y1) - (k * h / d) * (x2 - x1) + y1
+
+    theta = math.atan2(x2 - x, y2 - y) - math.atan2(dets[1].left_right, dets[1].distance)
+    theta = -90 - theta
+    return x, y, theta
+
+
 class ApriltagManager:
     instance = None
 
