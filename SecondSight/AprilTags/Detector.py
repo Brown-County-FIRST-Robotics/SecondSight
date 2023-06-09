@@ -32,6 +32,16 @@ class Detection:
         self.distance_std = None
         self.error = None
 
+    # xr,yr,theta_r
+    def makeRelativeToRobot(self, pos: List[float]):
+        x_r, y_r, theta_r = pos
+        theta = 90 + self.yaw - theta_r
+        x = x_r + (self.distance * math.cos(math.radians(theta_r))) + (self.left_right * math.sin(math.radians(theta_r)))
+        y = y_r + (self.distance * math.sin(math.radians(theta_r))) + (self.left_right * math.cos(math.radians(theta_r)))
+        self.distance = y
+        self.left_right = x
+        self.yaw = theta
+
     def calcError(self, error_matrix=None, error_threshold=3000):  # TODO: add error threshold
         if error_matrix is None:
             error_matrix = np.array([  # TODO: add real values
@@ -179,15 +189,18 @@ class ApriltagManager:
     def fetchApriltags(self):
         res = []
         cams = SecondSight.Cameras.CameraManager.getCameras()
+        config = SecondSight.config.Configuration()
         executor = concurrent.futures.ThreadPoolExecutor(max_workers=len(cams))
         futures = {}
         for i, cam in enumerate(cams):
             if cam.hasRole('apriltags'):
                 futures[i] = executor.submit(SecondSight.AprilTags.Detector.getPosition, cam.gray, cam.camera_matrix, None)
         for i, future in futures.items():
-            dets = future.result()
+            dets: List[Detection] = future.result()
             if dets:
                 for det in dets:
+                    if config.get_value('cameras')[i]['pos'] is not None:
+                        det.makeRelativeToRobot(config.get_value('cameras')[i]['pos'])
                     det = det.json(error=True)
                     det['camera'] = i
                     res.append(det)

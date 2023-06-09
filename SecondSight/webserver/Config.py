@@ -18,12 +18,24 @@ def start(app):
                 <label for="cam_port_{i}">Camera port</label><br>
                 <input type="text" id="cam_port_{i}" name="cam_port_{i}" value="{cam['port']}"><br>
                 <label>
-                        <input type="checkbox" name="game_objs_{i}" {'checked' if 'conecube' in cam['role'] else ''}>
-                         game objects
-                    </label><br>
-                    <label>
-                        <input type="checkbox" name="apriltags_{i}" {'checked' if 'apriltag' in cam['role'] else ''}>
-                         apriltags
+                    <input type="checkbox" name="game_objs_{i}" {'checked' if 'conecube' in cam['role'] else ''}>
+                    game objects
+                </label><br>
+                <label>
+                    <input type="checkbox" name="apriltags_{i}" {'checked' if 'apriltag' in cam['role'] else ''}>
+                     apriltags
+                </label><br>
+                <label>
+                    <input type="number" name="pos_x_{i}">
+                    X position (cm)
+                </label><br>
+                <label>
+                    <input type="number" name="pos_y_{i}">
+                    Y position (cm)
+                </label><br>
+                <label>
+                    <input type="number" name="pos_theta_{i}">
+                    Angle (degrees)
                 </label><br>
                 '''
             return render_template('config.html', nt_dest=conf.get_value('nt_dest'), cams=Markup(cams))
@@ -45,12 +57,20 @@ def start(app):
                     if f"game_objs_{k.split('_')[-1]}" in request.form:
                         if request.form[f"game_objs_{k.split('_')[-1]}"] == 'on':
                             roles.append('conecube')
+                    pos = [request.form[f'pos_x_{k.split("_")[-1]}'],
+                           request.form[f'pos_y_{k.split("_")[-1]}'],
+                           request.form[f'pos_theta_{k.split("_")[-1]}']]
+                    if '' in pos:
+                        pos=None
+                    else:
+                        pos=[float(i) for i in pos]
+
                     conf.set_value('cameras', conf.get_value('cameras') +
                                    [{
                                        'port': v,
                                        'calibration': None,
                                        'role': roles,
-                                       'pos': None
+                                       'pos': pos
                                    }])
             SecondSight.Cameras.CameraManager.loadCameras()
             conf.set_value('config_required', False)
