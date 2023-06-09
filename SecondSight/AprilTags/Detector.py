@@ -32,6 +32,16 @@ class Detection:
         self.distance_std = None
         self.error = None
 
+    # xr,yr,theta_r
+    def makeRelativeToRobot(self, pos: List[float]):
+        x_r, y_r, theta_r = pos
+        theta = 90 + self.yaw - theta_r
+        x = x_r + (self.distance * math.cos(math.radians(theta_r))) + (self.left_right * math.sin(math.radians(theta_r)))
+        y = y_r + (self.distance * math.sin(math.radians(theta_r))) + (self.left_right * math.cos(math.radians(theta_r)))
+        self.distance = y
+        self.left_right = x
+        self.yaw = theta
+
     def calcError(self, error_matrix=None, error_threshold=3000):  # TODO: add error threshold
         if error_matrix is None:
             error_matrix = np.array([  # TODO: add real values
