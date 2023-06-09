@@ -7,6 +7,8 @@ import threading
 import SecondSight
 import numpy as np
 
+from typing import List
+
 
 class Camera:
     """
@@ -18,13 +20,13 @@ class Camera:
     # Calibration data shoudl be in the format of
     # calibration: {'camera_matrix': %%, 'dist':%%, 'calibration_res':%%, 'processing_res':%%}
 
-    def __init__(self, device, calibration, position, role):
+    def __init__(self, device, calibration, position, roles):
         """Camera constructor
 
         :param device: The camera device such as '/dev/video0'
         :param calibration: Camera calibration data
         :param position: The camera position on the robot, not currently used
-        :param role: The role of the camera in the larger system
+        :param roles: The role of the camera in the larger system
 
         :return:
         """
@@ -43,7 +45,7 @@ class Camera:
         self.last_frame_count = 0
         self.device = device
         self.camera = cv2.VideoCapture(device)
-        self.role = role
+        self.roles = roles
         self.pos=position
 
         if calibration is not None:
@@ -54,17 +56,23 @@ class Camera:
             assert tuple(test_video_size) == tuple(video_size), 'camera resolution didnt set'
 
             raw_camera_matrix = np.array(calibration['camera_matrix'])
-            dist_coefficients = np.array(calibration['dist'])
             processing_resolution = np.array(calibration['processing_res'])
-
-            self.camera_matrix, roi = cv2.getOptimalNewCameraMatrix(raw_camera_matrix, dist_coefficients, tuple(video_size), 0,tuple(processing_resolution))
-            self.map1, self.map2 = cv2.initUndistortRectifyMap(raw_camera_matrix, dist_coefficients, None, self.camera_matrix,
-                                                 tuple(processing_resolution), cv2.CV_16SC2)
+            if calibration['dist'] is not None:
+                dist_coefficients = np.array(calibration['dist'])
+                self.camera_matrix, roi = cv2.getOptimalNewCameraMatrix(raw_camera_matrix, dist_coefficients,
+                                                                        tuple(video_size), 0,
+                                                                        tuple(processing_resolution))
+                self.map1, self.map2 = cv2.initUndistortRectifyMap(raw_camera_matrix, dist_coefficients, None,
+                                                                   self.camera_matrix,
+                                                                   tuple(processing_resolution), cv2.CV_16SC2)
+            else:
+                self.map1 = None
+                self.map2 = None
+                self.camera_matrix = raw_camera_matrix
         else:
             self.map1=None
             self.map2=None
             self.camera_matrix=None
-            assert role != 'apriltag' and role != '*', f'For the role to be "{role}", a calibration is required'
 
     def update(self):
         """Read a new camera frame from the camera
@@ -73,10 +81,11 @@ class Camera:
         """
 
         success, frame = self.camera.read()
-        self.uncalibrated = frame.copy()
         if frame is None or not success:
             logging.critical("Camera Read Failed")
-        if self.camera_matrix is not None:
+            return 
+        self.uncalibrated = frame.copy() 
+        if self.map2 is not None:
             frame = cv2.remap(frame, self.map1, self.map2, cv2.INTER_CUBIC)
         self.frame = frame
         self._hsv = None
@@ -150,16 +159,45 @@ class Camera:
                 self._bytes_uncalibrated = buffer.tobytes()
             return self._bytes_uncalibrated
 
+    def hasRole(self, role):
+        return role in self.roles
 
-def loadCameras():
-    """
-    Initialize and return the cameras as defined in the configuration file
-    """
-    config = SecondSight.config.Configuration()
-    cameras=[]
-    for cam_config in config.get_value('cameras'):
-        cameras.append(SecondSight.Cameras.Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
-    return cameras
+
+class CameraManager:
+    camera_cache = []
+
+    @classmethod
+    def loadCameras(cls) -> None:
+        """
+        Initialize the cameras as defined in the configuration file
+        """
+        config = SecondSight.config.Configuration()
+        for cam_config in config.get_value('cameras'):
+            cls.camera_cache.append(Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
+
+    @classmethod
+    def getCameras(cls) -> List[Camera]:
+        if len(cls.camera_cache) == 0:
+            cls.loadCameras()
+        return cls.camera_cache
+
+    @classmethod
+    def getCamera(cls, cam_index) -> Camera:
+        """
+        Return a camera object by its index
+        """
+
+        if len(cls.camera_cache) == 0:
+            cls.loadCameras()
+        return cls.camera_cache[cam_index]
+
+    @classmethod
+    def updateAll(cls) -> None:
+        """
+        Update all the cameras
+        """
+        for cam in cls.getCameras():
+            cam.update()
 
 
 if __name__ == "__main__":
