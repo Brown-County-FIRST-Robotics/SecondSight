@@ -189,15 +189,18 @@ class ApriltagManager:
     def fetchApriltags(self):
         res = []
         cams = SecondSight.Cameras.CameraManager.getCameras()
+        config = SecondSight.config.Configuration()
         executor = concurrent.futures.ThreadPoolExecutor(max_workers=len(cams))
         futures = {}
         for i, cam in enumerate(cams):
             if cam.hasRole('apriltags'):
                 futures[i] = executor.submit(SecondSight.AprilTags.Detector.getPosition, cam.gray, cam.camera_matrix, None)
         for i, future in futures.items():
-            dets = future.result()
+            dets: List[Detection] = future.result()
             if dets:
                 for det in dets:
+                    if config.get_value('cameras')[i]['pos'] is not None:
+                        det.makeRelativeToRobot(config.get_value('cameras')[i]['pos'])
                     det = det.json(error=True)
                     det['camera'] = i
                     res.append(det)
