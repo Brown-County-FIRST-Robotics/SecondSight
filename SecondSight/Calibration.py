@@ -110,8 +110,13 @@ def genCalibrationFrames(ind: int, min_captures: int = 30):
     img_bytes = buffer.tobytes()
     yield (b'--frame\r\n'
            b'Content-Type: image/jpeg\r\n\r\n' + img_bytes + b'\r\n')
-
+    cams = SecondSight.config.Configuration().get_value('cameras')
+    cams[ind]['calibration'] = {
+        'camera_matrix': cameraMatrix.tolist(),
+        'dist': distCoeffs.tolist(),
+        'calibration_res': [cam.width, cam.height],
+        'processing_res': [cam.width, cam.height]
+    }
     # Print matrix and distortion coefficient to the console
-    out = [cameraMatrix.tolist(), distCoeffs.tolist()]
-    print(out)
-
+    SecondSight.config.Configuration().set_value('cameras', cams)
+    SecondSight.Cameras.CameraManager.loadCameras()
