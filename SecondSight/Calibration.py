@@ -29,7 +29,8 @@ def makeImage():
     print('charuco file written')
 
 
-def genCalibrationFrames(cam: SecondSight.Cameras.Camera):
+def genCalibrationFrames(ind: int, min_captures: int = 30):
+    cam=SecondSight.Cameras.CameraManager.getCamera(ind)
     img_counter = 0
     corners_all = []
     ids_all = []
@@ -37,7 +38,7 @@ def genCalibrationFrames(cam: SecondSight.Cameras.Camera):
     captures = 0
     frames_until_capture = 5
     last_frame_time = 0
-    while captures < 100:
+    while captures < min_captures:
         while time.time() < last_frame_time + 0.1:
             time.sleep(0.001)
         frame = cam.uncalibrated.copy()
@@ -77,93 +78,21 @@ def genCalibrationFrames(cam: SecondSight.Cameras.Camera):
                 cv2.putText(frame, 'Charuco not found', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (20, 20, 255), 2,
                             cv2.LINE_AA)
             frames_until_capture = 5
+        cv2.putText(frame, f'{str(100*captures/min_captures)[:3].strip(".")}%', (cam.width-120,cam.height-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (20, 255, 0), 2,
+                    cv2.LINE_AA)
         ret, buffer = cv2.imencode('.jpg', frame)
         img_bytes = buffer.tobytes()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + img_bytes + b'\r\n')
         frames_until_capture -= 1
         last_frame_time = time.time()
-
-
-def main(ARUCO_DICT, CHARUCO_BOARD):
-    # ChAruco board variables
-
-    # Create the arrays and variables we'll use to store info like corners and IDs from images processed
-    corners_all = []  # Corners discovered in all images processed
-    ids_all = []  # Aruco ids corresponding to corners discovered
-    image_size = None  # Determined at runtime
-
-    while True:
-
-        dispimg = img.copy()
-        proportion = max(dispimg.shape) / 1000.0
-        dispimg = cv2.resize(dispimg, (int(dispimg.shape[1] / proportion), int(dispimg.shape[0] / proportion)))
-        cv2.putText(dispimg, 'press space to capture', (50,200), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 2, cv2.LINE_AA)
-
-        cv2.imshow("test", dispimg)
-
-        # Grayscale the image
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        image_size = gray.shape[::-1]
-
-        # Find aruco markers in the query image
-        corners, ids, _ = cv2.aruco.detectMarkers(image=gray, dictionary=ARUCO_DICT)
-
-        # Outline the aruco markers found in our query image
-        img = cv2.aruco.drawDetectedMarkers(image=img, corners=corners)
-
-        # Get charuco corners and ids from detected aruco markers
-        try:
-            response, charuco_corners, charuco_ids = cv2.aruco.interpolateCornersCharuco(
-                markerCorners=corners,
-                markerIds=ids,
-                image=gray,
-                board=CHARUCO_BOARD)
-
-            img = cv2.aruco.drawDetectedCornersCharuco(
-                image=img,
-                charucoCorners=charuco_corners,
-                charucoIds=charuco_ids)
-
-        except:
-            response = 0
-            # Draw the Charuco board we've detected to show our calibrator the board was properly detected
-
-        proportion = max(img.shape) / 1000.0
-        img = cv2.resize(img, (int(img.shape[1] / proportion), int(img.shape[0] / proportion)))
-
-        if response > 20:
-            #Add these corners and ids to our calibration arrays
-            corners_all.append(charuco_corners)
-            ids_all.append(charuco_ids)
-            img_counter += 1
-        else:
-            cv2.putText(img, 'Charuco not found', (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (20,20,255), 2, cv2.LINE_AA)
-
-        cv2.putText(img, 'press space to continue', (50,200), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 2, cv2.LINE_AA)
-
-        cv2.imshow("test", img)
-        k = cv2.waitKey(1)
-        if k % 256 == 27:
-            # ESC pressed
-            print("Escape hit, breaking loop...")
-            break
-
-
-
-        print("Captured image %d" % img_counter)
-
-    cam.release()
-
-    cv2.destroyAllWindows()
-
-    # Make sure at least one image was found
-    if img_counter < 5:
-        # Calibration failed because there were not enough images, warn the user
-        print("Calibration was unsuccessful. Need at least 5 images.")
-        # Exit for failure
-        exit()
-
+    frame = cam.uncalibrated.copy()
+    cv2.putText(frame, 'Processing images', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (20, 255, 20), 2,
+                cv2.LINE_AA)
+    ret, buffer = cv2.imencode('.jpg', frame)
+    img_bytes = buffer.tobytes()
+    yield (b'--frame\r\n'
+           b'Content-Type: image/jpeg\r\n\r\n' + img_bytes + b'\r\n')
 
     # Now that we've seen all of our images, perform the camera calibration
     # based on the set of points we've discovered
@@ -174,7 +103,15 @@ def main(ARUCO_DICT, CHARUCO_BOARD):
             imageSize=image_size,
             cameraMatrix=None,
             distCoeffs=None)
+    frame = cam.uncalibrated.copy()
+    cv2.putText(frame, 'Calibration complete', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (20, 255, 20), 2,
+                cv2.LINE_AA)
+    ret, buffer = cv2.imencode('.jpg', frame)
+    img_bytes = buffer.tobytes()
+    yield (b'--frame\r\n'
+           b'Content-Type: image/jpeg\r\n\r\n' + img_bytes + b'\r\n')
 
     # Print matrix and distortion coefficient to the console
     out = [cameraMatrix.tolist(), distCoeffs.tolist()]
     print(out)
+
