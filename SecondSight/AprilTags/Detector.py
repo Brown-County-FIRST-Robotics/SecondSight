@@ -205,6 +205,10 @@ class ApriltagManager:
         self.fetchApriltags()
 
     def fetchApriltags(self):
+        year: str = ''
+        for i in SecondSight.config.Configuration().get_value('detects'):
+            if i.startswith('apriltags'):
+                year = i.strip('apriltags')
         json_res = []
         res: List[Detection] = []
         cams = SecondSight.Cameras.CameraManager.getCameras()
@@ -223,10 +227,10 @@ class ApriltagManager:
                     json_res.append(det)
         self.current_apriltags = json_res
         if len(res) == 1:
-            res[0].calcFieldPos('2023')  # TODO: use the config to get the year
+            res[0].calcFieldPos(year)
             self.current_field_pos = (res[0].field_x, res[0].field_y, res[0].field_yaw)
         elif len(res) > 1:
-            self.current_field_pos = fuseApriltags(res, '2023')  # TODO: use the config to get the year
+            self.current_field_pos = fuseApriltags(res, year)
 
     def getApriltags(self):
         return self.current_apriltags
