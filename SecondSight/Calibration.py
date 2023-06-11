@@ -120,3 +120,4 @@ def genCalibrationFrames(ind: int, min_captures: int = 30):
     # Print matrix and distortion coefficient to the console
     SecondSight.config.Configuration().set_value('cameras', cams)
     SecondSight.Cameras.CameraManager.loadCameras()
+    SecondSight.config.Configuration().write()
