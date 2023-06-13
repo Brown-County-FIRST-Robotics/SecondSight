@@ -85,13 +85,7 @@ class GamePiece:
             box = cv2.boxPoints(((self.x, self.y), (self.width, self.height), self.theta))
             image_points = np.array(box).reshape(1, 4, 2)
 
-            ob_pt1 = [-cube_size / 2, -cube_size / 2, -cube_size / 2]
-            ob_pt2 = [cube_size / 2, -cube_size / 2, -cube_size / 2]
-            ob_pt3 = [cube_size / 2, cube_size / 2, cube_size / 2]
-            ob_pt4 = [-cube_size / 2, cube_size / 2, cube_size / 2]
-            ob_pts = ob_pt1 + ob_pt2 + ob_pt3 + ob_pt4
-            object_pts = np.array(ob_pts).reshape(4, 3)
-            good, rotation_vector, translation_vector, self.rms = cv2.solvePnPGeneric(object_pts, image_points,
+            good, rotation_vector, translation_vector, self.rms = cv2.solvePnPGeneric(SecondSight.GamePiece.PieceConstants.CUBE_2023_PTS, image_points,
                                                                                       camera_matrix,
                                                                                       dist,
                                                                                       flags=cv2.SOLVEPNP_ITERATIVE)

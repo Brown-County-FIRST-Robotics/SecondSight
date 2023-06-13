@@ -1,1 +1,2 @@
 import SecondSight.GamePiece.Detector
+import SecondSight.GamePiece.PieceConstants
