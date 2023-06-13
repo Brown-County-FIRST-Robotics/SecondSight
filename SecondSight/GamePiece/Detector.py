@@ -85,7 +85,7 @@ class GamePiece:
             box = cv2.boxPoints(((self.x, self.y), (self.width, self.height), self.theta))
             image_points = np.array(box).reshape(1, 4, 2)
 
-            good, rotation_vector, translation_vector, self.rms = cv2.solvePnPGeneric(SecondSight.GamePiece.PieceConstants.CUBE_2023_PTS, image_points,
+            good, rotation_vector, translation_vector, self.rms = cv2.solvePnPGeneric(SecondSight.GamePiece.PieceConstants.PTS['cube2023'], image_points,
                                                                                       camera_matrix,
                                                                                       dist,
                                                                                       flags=cv2.SOLVEPNP_ITERATIVE)
