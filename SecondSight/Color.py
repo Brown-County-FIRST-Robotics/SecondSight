@@ -34,6 +34,7 @@ def findCube2023(frame, cube_color):
     logging.info("findObject()")
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     cube_object_mask = cv2.inRange(hsv, cube_color[0], cube_color[1])
+
     cube_res = cv2.bitwise_and(frame, frame, mask=cube_object_mask)
     cube_contours, _ = cv2.findContours(cv2.cvtColor(cube_res, cv2.COLOR_BGR2GRAY), cv2.RETR_TREE,
                                         cv2.CHAIN_APPROX_SIMPLE)

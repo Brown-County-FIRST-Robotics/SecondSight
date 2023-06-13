@@ -9,7 +9,6 @@ import asyncio
 import sys
 import networktables
 
-
 def main_cli():
     """
     This function acts like the main function in a normal program.
