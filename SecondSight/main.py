@@ -56,7 +56,7 @@ def main_cli():
         # Acquire the AprilTag data
         apriltag_manager.fetchApriltags()
         apriltag_manager.postApriltags()
-        app.game_pieces = SecondSight.Color.postGamePieces(conecube_table, cams, config.get_value('detects'))
+        app.game_pieces = SecondSight.GamePiece.Detector.postGamePieces(conecube_table, cams, config.get_value('detects'))
 
 
 if __name__ == "__main__":
