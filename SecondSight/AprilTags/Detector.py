@@ -12,13 +12,13 @@ import networktables
 tag_size = 6
 
 
-class Detection:
+class ApriltagDetection:
     def __init__(self, yaw, pitch, roll, left_right, up_down, distance, rms, tagid):
         self.yaw = yaw
-        self.pitch=pitch
-        self.roll=roll
+        self.pitch = pitch
+        self.roll = roll
         self.left_right = left_right
-        self.up_down=up_down
+        self.up_down = up_down
         self.distance = distance
         self.RMSError = rms
         self.tagID = tagid
@@ -101,7 +101,7 @@ def getCoords(img, valid_tags=range(1, 9), check_hamming=True):
     detector = apriltag.Detector(options)
     # Find the apriltags
     detection_results = detector.detect(img)
-    detections=[]
+    detections = []
     if len(detection_results) > 0:  # Check if there are any apriltags
         for detection in detection_results:
             # Check if apriltag is allowed
@@ -122,8 +122,8 @@ def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), c
     :param dist_coefficients: The distortion coefficients of the camera
     :param valid_tags: (Default: 1-9) The apriltags to look for
     :param check_hamming: (Default: True) Checks if the hamming value is 0
-    :return: A list of Detection objects, or None if it fails
-    :rtype: list(Detection objects), or None if no apriltags are found
+    :return: A list of ApriltagDetection objects, or None if it fails
+    :rtype: list(ApriltagDetection objects), or None if no apriltags are found
     """
     # Check if image is grayscale
     if img is None:
@@ -131,7 +131,7 @@ def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), c
     detection_results=getCoords(img, valid_tags=valid_tags, check_hamming=check_hamming)
     detections = []
     if len(detection_results) > 0:  # Check if there are any apriltags
-        for detection,tagid in detection_results:
+        for detection, tagid in detection_results:
             # Check if apriltag is allowed
 
             image_points = np.array(detection).reshape(1, 4, 2)
@@ -158,7 +158,7 @@ def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), c
             distance = translation_vector[0][2] * 2.54
 
             logging.info(f'april pos: yaw:{str(yaw)[:5]}, lr:{str(left_right)[:7]}, distance:{str(distance)[:7]}, rms:{rms}, tag:{tagid}')
-            detections.append(Detection(yaw, pitch, roll, left_right[0], up_down[0], distance[0], rms[0][0], tagid))
+            detections.append(ApriltagDetection(yaw, pitch, roll, left_right[0], up_down[0], distance[0], rms[0][0], tagid))
     return detections
 
 
@@ -172,7 +172,7 @@ class ApriltagManager:
         return cls.instance
 
     def __init__(self):
-        self.current_apriltags: List[Detection] = []
+        self.current_apriltags: List[ApriltagDetection] = []
         self.april_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('Apriltags')
         self.fetchApriltags()
 
