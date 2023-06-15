@@ -36,9 +36,10 @@ class BaseGamePiece:
         self.up_down = translation_vector[0][1]
         self.distance = translation_vector[0][2]
 
-    def draw(self, frame, color: tuple[int, int, int]):  # TODO: test
-        box = cv2.boxPoints((self.x, self.y, self.width, self.height, self.theta))
+    def draw(self, frame, color: tuple[int, int, int], thickness: int = 2):  # TODO: test
+        box = cv2.boxPoints((self.x, self.y), (self.width, self.height), self.theta)
         box = np.int0(box)
-        cv2.drawContours(frame, [box], 0, color, 2)
+        return cv2.drawContours(frame, [box], 0, color, thickness)
+
 
 
