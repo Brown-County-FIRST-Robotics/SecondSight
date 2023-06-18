@@ -30,10 +30,9 @@ def averageColor(frame, sampleRange):
     return averageColor
 
 
-def findCube2023(frame, cube_color):
-    logging.info("findObject()")
+def findCube2023(frame):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    cube_object_mask = cv2.inRange(hsv, cube_color[0], cube_color[1])
+    cube_object_mask = cv2.inRange(hsv, *SecondSight.GamePiece.PieceConstants.CUBE_2023_COLOR_RANGE)
     cube_res = cv2.bitwise_and(frame, frame, mask=cube_object_mask)
     cube_contours, _ = cv2.findContours(cv2.cvtColor(cube_res, cv2.COLOR_BGR2GRAY), cv2.RETR_TREE,
                                         cv2.CHAIN_APPROX_SIMPLE)
@@ -41,22 +40,9 @@ def findCube2023(frame, cube_color):
     res = []
     for contour in cube_contours:
         pos, dims, theta = cv2.minAreaRect(contour)
-        res.append(GamePiece(pos[0], pos[1], dims[0], dims[1], theta, 'cube2023'))
+        res.append(SecondSight.GamePiece.Pieces.Cube2023(pos[0], pos[1], dims[0], dims[1], theta))
     return res
 
-
-def findCone2023(frame, cone_color):
-    logging.info("findCone2023()")
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    cube_object_mask = cv2.inRange(hsv, cone_color[0], cone_color[1])
-    cube_res = cv2.bitwise_and(frame, frame, mask=cube_object_mask)
-    cube_contours, _ = cv2.findContours(cv2.cvtColor(cube_res, cv2.COLOR_BGR2GRAY), cv2.RETR_TREE,
-                                        cv2.CHAIN_APPROX_SIMPLE)
-    res = []
-    for contour in cube_contours:
-        pos, dims, theta = cv2.minAreaRect(contour)
-        res.append(GamePiece(pos[0], pos[1], dims[0], dims[1], theta, 'cone2023'))
-    return res
 
 def postGamePieces(tb: networktables.NetworkTable, cams, obj_types: [str]):
     res = {}
