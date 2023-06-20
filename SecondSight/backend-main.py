@@ -46,4 +46,4 @@ def backend_cli():
 
 if __name__ == "__main__":
     # This file should never be run
-    main_cli()
+    febe_cli()
