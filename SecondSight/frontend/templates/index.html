@@ -16,6 +16,13 @@
 </div>
 <div>
 </div>
-    <a href="/camera_feed/0">Camera 0</a>
+
+<!-- Show links to all the cameras -->
+{%for i in cams%}
+<div>
+    <a href="{{backend_url}}/camera/{{i}}">Camera {{i}}</a>
+</div>
+{%endfor%}
+
 </body>
 </html>

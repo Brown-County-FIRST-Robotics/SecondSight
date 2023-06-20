@@ -53,6 +53,11 @@ class TestBackend(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), "127.0.0.2")
 
+    def testGetCamerasAPI(self):
+        response = self.client.get("/get_cameras")
+        self.assertEqual(len(response.json()), 1)
+        self.assertEqual(response.json()[0], '0')
+
 #    def testStreamImage(self):
 #        # The stream never returns, we can't test this right now
 #

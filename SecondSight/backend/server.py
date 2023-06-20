@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from typing import Union
+from typing import Union, List
 from fastapi import FastAPI, Response
 from fastapi.responses import StreamingResponse
 import logging
@@ -60,6 +60,13 @@ def get_config(config_id):
 
     c = SecondSight.config.Configuration()
     return c.get_value(config_id)
+
+@app.get("/get_cameras")
+def get_cameras() -> List[str]:
+    cameras = SecondSight.Cameras.CameraManager.getCameras()
+
+    # We return a list of integers, each integer represents a camera
+    return list(range(0, len(cameras)))
 
 @app.get("/camera/{camera_id}")
 def get_camera(camera_id) -> StreamingResponse:

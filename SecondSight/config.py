@@ -35,6 +35,7 @@ class Configuration(object):
         ],
         "nt_dest": "127.0.0.1",
         "cube_hsv": [150, 138, 121],
+        "backend_url": "http://localhost:8000",
         "config_required": True
     }
 

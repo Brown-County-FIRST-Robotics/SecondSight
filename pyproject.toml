@@ -21,6 +21,7 @@ fastapi = "^0.95.1"
 uvicorn = "^0.21.1"
 opencv-contrib-python = "^4.7.0"
 opencv-python = "^4.7.0"
+requests = "^2.31.0"
 
 [tool.poetry.group.dev.dependencies]
 httpx = "^0.24.0"
