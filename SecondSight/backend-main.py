@@ -2,6 +2,7 @@
 
 import uvicorn
 import SecondSight.backend.server
+import SecondSight.frontend.server
 import SecondSight.Cameras
 from threading import Thread
 import time
@@ -12,7 +13,7 @@ def worker():
     config.set_path("config.json")
     
     while True:
-        SecondSight.Cameras.CameraLoader.updateAll()
+        SecondSight.Cameras.CameraManager.updateAll()
         time.sleep(0.1)
     pass
 

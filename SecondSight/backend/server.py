@@ -64,7 +64,7 @@ def get_config(config_id):
 @app.get("/camera/{camera_id}")
 def get_camera(camera_id) -> StreamingResponse:
 
-    camera = SecondSight.Cameras.CameraLoader.getCamera(int(camera_id))
+    camera = SecondSight.Cameras.CameraManager.getCamera(int(camera_id))
     return StreamingResponse(gen_frames(camera), media_type="multipart/x-mixed-replace;boundary=frame")
 
 if __name__ == "__main__":
