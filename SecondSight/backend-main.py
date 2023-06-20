@@ -17,7 +17,22 @@ def worker():
         time.sleep(0.1)
     pass
 
-def main_cli():
+def frontend_cli():
+    # Launch the frontend
+    app = SecondSight.frontend.server.app
+    app.run()
+
+def febe_cli():
+    # Launch the frontend and backends
+
+    frontend_app = SecondSight.frontend.server.app
+    thread = Thread(target=frontend_app.run)
+    thread.setDaemon(True)
+    thread.start()
+
+    backend_cli()
+
+def backend_cli():
 
     # We spawn a worker thread for background tasks
     thread = Thread(target=worker)
