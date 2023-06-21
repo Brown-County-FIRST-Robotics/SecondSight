@@ -4,6 +4,7 @@ import apriltag
 import cv2
 import numpy as np
 import SecondSight
+from typing import List
 
 
 tag_size = 6
@@ -110,7 +111,7 @@ def getCoords(img, valid_tags=range(1, 9), check_hamming=True):
     return detections
 
 
-def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), check_hamming=True):
+def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), check_hamming=True) -> List[ApriltagDetection]:
     """
     This function takes an image and returns the position of apriltags in the image
 
@@ -157,6 +158,33 @@ def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), c
             logging.info(f'april pos: yaw:{str(yaw)[:5]}, lr:{str(left_right)[:7]}, distance:{str(distance)[:7]}, rms:{rms}, tag:{tagid}')
             detections.append(ApriltagDetection(yaw, pitch, roll, left_right[0], up_down[0], distance[0], rms[0][0], tagid))
     return detections
+
+
+# Source: https://math.stackexchange.com/a/1033561
+def fuseApriltags(dets: List[ApriltagDetection], year: str = '2023') -> tuple[float, float, float]:
+    """
+    :param dets: The detections to fuse
+    :param year: The year of the apriltag field positions to use
+    :return: Field x, y, and theta values
+    :rtype: tuple[float, float, float]
+    """
+    assert len(dets) > 1
+    if len(dets) > 2:
+        dets = dets[:2]
+    x1, y1 = SecondSight.AprilTags.Positions.apriltagPositions[year][str(dets[0].tagID)][:2]
+    x2, y2 = SecondSight.AprilTags.Positions.apriltagPositions[year][str(dets[1].tagID)][:2]
+    d = math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+    r1 = math.sqrt(dets[0].left_right ** 2 + dets[0].distance ** 2)
+    r2 = math.sqrt(dets[1].left_right ** 2 + dets[0].distance ** 2)
+    l = (r1 ** 2 - r2 ** 2 + d ** 2) / (2 * d)
+    h = math.sqrt(r1 ** 2 - l ** 2)
+    k = -1  # or 1
+    x: float = (l / d) * (x2 - x1) + (k * h / d) * (y2 - y1) + x1
+    y: float = (l / d) * (y2 - y1) - (k * h / d) * (x2 - x1) + y1
+
+    theta: float = math.atan2(x2 - x, y2 - y) - math.atan2(dets[1].left_right, dets[1].distance)
+    theta = -90 - theta
+    return x, y, theta
 
 
 if __name__ == "main":
