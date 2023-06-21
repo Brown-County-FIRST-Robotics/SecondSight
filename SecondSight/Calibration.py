@@ -127,8 +127,9 @@ def genCalibrationFrames(ind: int, min_captures: int = 30):
             cameraMatrix=None,
             distCoeffs=None)
     frame = cam.uncalibrated.copy()
-    cv2.putText(frame, 'Calibration complete', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (20, 255, 20), 2,
-                cv2.LINE_AA)
+    cv2.putText(frame, 'Calibration complete', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (20, 255, 20), 2, cv2.LINE_AA)
+    cv2.putText(frame, 'You may have to restart the code', (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (20, 255, 20), 2, cv2.LINE_AA)
+
     ret, buffer = cv2.imencode('.jpg', frame)
     img_bytes = buffer.tobytes()
     yield (b'--frame\r\n'
@@ -142,5 +143,5 @@ def genCalibrationFrames(ind: int, min_captures: int = 30):
     }
     # Print matrix and distortion coefficient to the console
     SecondSight.config.Configuration().set_value('cameras', cams)
-    SecondSight.Cameras.CameraManager.loadCameras()
     SecondSight.config.Configuration().write()
+    SecondSight.Cameras.CameraManager.loadCameras()

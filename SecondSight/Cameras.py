@@ -74,6 +74,9 @@ class Camera:
             self.map2=None
             self.camera_matrix=None
 
+    def close(self):
+        self.camera.release()
+
     def update(self):
         """Read a new camera frame from the camera
 
@@ -171,6 +174,9 @@ class CameraManager:
         """
         Initialize the cameras as defined in the configuration file
         """
+        if len(cls.camera_cache) != 0:
+            for i in cls.camera_cache:
+                i.close()
         config = SecondSight.config.Configuration()
         for cam_config in config.get_value('cameras'):
             cls.camera_cache.append(Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
