@@ -8,7 +8,7 @@ import SecondSight
 def start(app):
     @app.route('/apriltag/april_coords')
     def april_coords():
-        return jsonify(SecondSight.AprilTags.Detector.ApriltagManager.getInst().getApriltags())
+        return jsonify(SecondSight.AprilTags.Manager.ApriltagManager.getInst().getApriltags())
 
 
 if __name__ == "__main__":
