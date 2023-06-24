@@ -9,7 +9,7 @@ import time
 import SecondSight.Color
 import SecondSight.Cameras
 import SecondSight.config
-
+from fastapi.middleware.cors import CORSMiddleware
 
 def gen_frames(camera):  # generate frame by frame from camera
     """
@@ -30,6 +30,20 @@ def gen_frames(camera):  # generate frame by frame from camera
         last_frame_time = time.time()
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:5000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 
 @app.get("/")
 def read_root():
@@ -73,6 +87,15 @@ def get_camera(camera_id) -> StreamingResponse:
 
     camera = SecondSight.Cameras.CameraManager.getCamera(int(camera_id))
     return StreamingResponse(gen_frames(camera), media_type="multipart/x-mixed-replace;boundary=frame")
+
+# This code needs a few changes
+@app.get('/preview_image')
+def preview_image():
+    logging.debug("backend.preview_image")
+    the_camera = SecondSight.Cameras.CameraManager.getCamera(0)
+    # Video streaming route. Put this in the src attribute of an img tag
+    return StreamingResponse(SecondSight.Color.gen_preview_picker(the_camera), media_type='multipart/x-mixed-replace; boundary=frame')
+
 
 if __name__ == "__main__":
     # This file should never be run
