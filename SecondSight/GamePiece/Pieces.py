@@ -45,3 +45,8 @@ class BaseGamePiece:
 class Cube2023(BaseGamePiece):
     def __init__(self, x: float, y: float, width: float, height: float, theta: float):
         super().__init__('cube2023', x, y, width, height, theta)
+
+
+class Cone2023(BaseGamePiece):
+    def __init__(self, x: float, y: float, width: float, height: float, theta: float):
+        super().__init__('cone2023', x, y, width, height, theta)
