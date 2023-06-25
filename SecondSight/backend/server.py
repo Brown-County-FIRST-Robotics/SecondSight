@@ -31,8 +31,9 @@ def gen_frames(camera):  # generate frame by frame from camera
 
 app = FastAPI()
 
+#    "http://localhost:5000",
 origins = [
-    "http://localhost:5000",
+    "*",
 ]
 
 app.add_middleware(
