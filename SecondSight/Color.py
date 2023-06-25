@@ -6,6 +6,7 @@ import cv2
 import math
 import SecondSight
 import networktables
+import time
 
 
 # use this for calibrating the color detector
@@ -158,8 +159,14 @@ def gen_preview_picker(camera):  # generate frame by frame from camera
 
     currentFrame = 0
 
+    last_frame_time = 0
+    framerate = 10
+
     # We want to loop this forever
     while True:
+        while time.time() - last_frame_time < 1 / framerate:
+            time.sleep(0.001)
+
 
         col = config.get_value("cube_hsv")
 
@@ -240,6 +247,8 @@ def gen_preview_picker(camera):  # generate frame by frame from camera
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         data = jpeg.tobytes()
+
+        last_frame_time = time.time()
 
         # Return the image to the browser
         yield (b'--frame\r\n'
