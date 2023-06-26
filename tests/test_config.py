@@ -41,7 +41,7 @@ class TestConfig(unittest.TestCase):
         self.config_object.close()
         config_path = os.path.join(new_tempdir.name, "config.json")
         self.config_object.set_path(config_path)
-        self.assertEqual(self.config_object.get_value("cameras")[0]["port"], "/dev/video0")
+        self.assertEqual(self.config_object.get_value("cameras")[0]["port"], 0)
 
         self.assertIsNone(self.config_object.get_value("not_real"))
 
@@ -82,3 +82,7 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(complex_config["one"], complex_read["one"])
         self.assertEqual(complex_config["two"], complex_read["two"])
         self.assertEqual(complex_config["arr"], complex_read["arr"])
+
+    def testConfigGetAll(self):
+        all_config = self.config_object.get_all()
+        self.assertEqual(all_config, self.config_data)
