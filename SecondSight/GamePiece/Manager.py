@@ -36,12 +36,30 @@ class GamePieceManager:
         self.pieces = res
 
     def postPieces(self):
-        res={}
+        res = {}
         conf = SecondSight.config.Configuration()
 
         for obj in conf.get_value('detects'):
             if obj in SecondSight.GamePiece.PieceConstants.PIECE_NAMES:
-                res[obj]=[]
+                res[obj] = []
                 for det, camnum in self.pieces:
                     res[obj] += [det.distance, det.left_right, det.up_down, det.pitch, det.roll, det.yaw, det.rms, camnum]
                 self.gamepiece_table.putNumberArray(obj, res[obj])
+
+    def getPieces(self):
+        return self.pieces
+
+    def getSinglePieceJson(self, piece_type: str):
+        res = []
+        for piece, camnum in self.pieces:
+            if piece.piece_type == piece_type:
+                res.append({
+                    'distance': piece.distance,
+                    'left_right': piece.left_right,
+                    'up_down': piece.up_down,
+                    'pitch': piece.pitch,
+                    'yaw': piece.yaw,
+                    'roll': piece.roll,
+                    'rms': piece.rms,
+                    'cam': camnum
+                })
