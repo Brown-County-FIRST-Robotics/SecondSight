@@ -1,52 +1,32 @@
 import SecondSight
 import logging
 import cv2
+import time
+import SecondSight
+import numpy as np
 
 
-def gen_preview_picker(camera):  # generate frame by frame from camera
-    logging.debug("Vision.gen_frames_picker")
-
-    config = SecondSight.config.Configuration()
-
-    col = config.get_value("cube_hsv")
-
-    cube = GamePiece()
-
-    lower = [col[0] - 5, col[1] - 100, col[2] - 100]
-    upper = [col[0] + 5, col[1] + 100, col[2] + 100]
-
-    for i in range(len(lower)):
-        if lower[i] < 0:
-            lower[i] = 0
-        if lower[i] > 255:
-            lower[i] = 255
-
-        if upper[i] < 0:
-            upper[i] = 0
-        if upper[i] > 255:
-            upper[i] = 255
-
-    cube.setLowerColor(np.array(lower, dtype=np.uint8))
-    cube.setUpperColor(np.array(upper, dtype=np.uint8))
-    cube.setMinRatio(3.0 / 5.0)
-    cube.setMaxRatio(5.0 / 3.0)
-
-    currentFrame = 0
-
-    # We want to loop this forever
+def gen_picker(cam_ind, lower_color: tuple[int, int, int], upper_color: tuple[int, int, int]):
+    cam = SecondSight.Cameras.CameraManager.getCamera(cam_ind)
+    last_frame_time = 0
+    framerate = 10
     while True:
-        frame = camera.get_frame()
+        while time.time() - last_frame_time < 1 / framerate:
+            time.sleep(0.001)
+        frame = cam.frame
 
-        #        if camera.frame_count == currentFrame:
-        #            continue
-        #        currentFrame = camera.frame_count
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        mask = cv2.inRange(hsv, lower_color, upper_color)
+        res = cv2.bitwise_and(frame, frame, mask=mask)
+        contours, _ = cv2.findContours(cv2.cvtColor(res, cv2.COLOR_BGR2GRAY), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-        cube.findObject(frame)
-
-        cv2.rectangle(frame, cube.getLowerLeft(), cube.getUpperRight(), (255, 0, 0), 2)
+        for contour in contours:
+            pos, dims, theta = cv2.minAreaRect(contour)
+            box = cv2.boxPoints((pos, dims, theta))
+            box = np.int0(box)
+            frame = cv2.drawContours(frame, [box], 0, (0, 0, 0), 2)
+        # Return the image to the browser
         ret, jpeg = cv2.imencode('.jpg', frame)
         data = jpeg.tobytes()
-
-        # Return the image to the browser
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + data + b'\r\n')  # concat frame one by one and show result
