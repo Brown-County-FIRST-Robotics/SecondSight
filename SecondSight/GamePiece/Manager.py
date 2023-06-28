@@ -19,11 +19,11 @@ class GamePieceManager:
 
     def fetchPieces(self):
         cams = SecondSight.Cameras.CameraManager.getCameras()
-        executor = concurrent.futures.ThreadPoolExecutor(max_workers=len(cams) * 2)
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=len(cams) * len(SecondSight.GamePiece.PieceConstants.PTS))
         conf = SecondSight.config.Configuration()
         futures = []
         for obj in conf.get_value('detects'):
-            if obj in ['cube2023', 'cone2023']:
+            if obj in SecondSight.GamePiece.PieceConstants.PIECE_NAMES:
                 for i, cam in enumerate(cams):
                     if cam.hasRole('conecube'):
                         futures.append((executor.submit(SecondSight.GamePiece.Detector.findGivenPieceType, cam.frame, obj), i))

@@ -18,3 +18,5 @@ PTS = {'cube2023': np.array([-CUBE_2023_SIZE / 2, -CUBE_2023_SIZE / 2, -CUBE_202
                             [CONE_2023_WIDTH / 2, CONE_2023_HEIGHT / 2, 0] +
                             [-CONE_2023_WIDTH / 2, CONE_2023_HEIGHT / 2, 0]).reshape(4, 3)
        }
+
+PIECE_NAMES = ['cube2023', 'cone2023']
