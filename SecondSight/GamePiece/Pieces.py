@@ -51,7 +51,7 @@ class BaseGamePiece:
         return res
 
     def draw(self, frame, color: tuple[int, int, int], thickness: int = 2):  # TODO: test
-        box = cv2.boxPoints((self.x, self.y), (self.width, self.height), self.theta)
+        box = cv2.boxPoints(((self.x, self.y), (self.width, self.height), self.theta))
         box = np.int0(box)
         return cv2.drawContours(frame, [box], 0, color, thickness)
 
