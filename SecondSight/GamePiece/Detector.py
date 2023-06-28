@@ -57,42 +57,11 @@ def findCone2023(frame):
     return res
 
 
-def postGamePieces(tb: networktables.NetworkTable, cams, obj_types: [str]):
-    res = {}
-    if obj_types is not None:
-        for obj in obj_types:
-            dets = []
-            res[obj] = []
-            for i, cam in enumerate(cams):
-                if obj == 'cube2023':
-                    det = findCube2023(cam.frame, ((50, 0, 200), (230, 50, 255)))
-                    for ii in det:
-                        ii.calcRealPos(cam.camera_matrix, None)
-                        res[obj].append({
-                            "left_right": ii.left_right,
-                            "up_down": ii.up_down,
-                            "distance": ii.distance,
-                            "yaw": ii.yaw,
-                            "pitch": ii.pitch,
-                            "roll": ii.roll,
-                            "rms": ii.rms,
-                            "camera": i
-                        })
-                        dets += [ii.left_right, ii.up_down, ii.distance, ii.yaw, ii.pitch, ii.roll, i]
-                if obj == 'cone2023':
-                    det = findCone2023(cam.frame, ((0, 0, 0), (255, 100, 100)))
-                    for ii in det:
-                        res[obj].append({
-                            "x": ii.x,
-                            "y": ii.y,
-                            "width": ii.width,
-                            "height": ii.height,
-                            "theta": ii.theta,
-                            "camera": i
-                        })
-                        dets += [ii.x, ii.y, ii.width, ii.height, ii.theta, i]
-            tb.putNumberArray(obj, dets)
-    return res
+def findGivenPieceType(frame, piece_type):
+    if piece_type == 'cube2023':
+        return findCube2023(frame)
+    elif piece_type == 'cone2023':
+        return findCone2023(frame)
 
 
 # This function is now very broken
