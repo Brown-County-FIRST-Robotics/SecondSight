@@ -38,6 +38,7 @@ def main_cli():
     # TODO: Any functionality specific to a module belongs in that module
     lastframetime = 0
     apriltag_manager = SecondSight.AprilTags.Detector.ApriltagManager.getInst()
+    gamepiece_manager = SecondSight.GamePiece.Manager.GamePieceManager.getInst()
     cams = SecondSight.Cameras.CameraManager.getCameras()
     while True:
         # Only run the loop every 100ms
@@ -53,7 +54,8 @@ def main_cli():
         # Acquire the AprilTag data
         apriltag_manager.fetchApriltags()
         apriltag_manager.postApriltags()
-        app.game_pieces = SecondSight.GamePiece.Detector.postGamePieces(conecube_table, cams, config.get_value('detects'))
+        gamepiece_manager.fetchPieces()
+        gamepiece_manager.postPieces()
 
 
 if __name__ == "__main__":

@@ -34,3 +34,14 @@ class GamePieceManager:
                 det.computePose(cams[i].camera_matrix, None)
                 res.append((det, i))
         self.pieces = res
+
+    def postPieces(self):
+        res={}
+        conf = SecondSight.config.Configuration()
+
+        for obj in conf.get_value('detects'):
+            if obj in SecondSight.GamePiece.PieceConstants.PIECE_NAMES:
+                res[obj]=[]
+                for det, camnum in self.pieces:
+                    res[obj] += [det.distance, det.left_right, det.up_down, det.pitch, det.roll, det.yaw, det.rms, camnum]
+                self.gamepiece_table.putNumberArray(obj, res[obj])
