@@ -44,6 +44,17 @@ def start(app):
         """The default page"""
         return render_template('index.html')
 
+    @app.route('/calibration')
+    def calibration():
+        args = request.args.to_dict()
+        logging.debug("DEATHSTARE.calibration")
+        if 'camera' not in args:
+            args['camera'] = '0'
+        if 'min_captures' not in args:
+            args['min_captures'] = '30'
+        # Video streaming route. Put this in the src attribute of an img tag
+        return Response(SecondSight.Calibration.genCalibrationFrames(int(args['camera']), min_captures=int(args['min_captures'])), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 if __name__ == "__main__":
     # This file should never be run
