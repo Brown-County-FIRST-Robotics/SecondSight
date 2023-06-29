@@ -10,3 +10,7 @@ def start(app):
         upper = (int(args['upper_h']), int(args['upper_s']), int(args['upper_v']))
         # Video streaming route. Put this in the src attribute of an img tag
         return Response(SecondSight.GamePiece.Picker.gen_picker(number, low, upper), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+    @app.route('/picker')
+    def picker_page():
+        return render_template('picker.html')
