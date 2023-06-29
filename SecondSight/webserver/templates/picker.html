@@ -10,23 +10,25 @@
         <label htmlFor="min_h">Minimum Hue</label>
         <input type="range" id="min_h" min="0" max="255" onchange="handleChange('min_h', $('#min_h').prop('value'));">
         <span id="min_h_val">0</span>
+        <label htmlFor="max_h">Maximum Hue</label>
+        <input type="range" id="max_h" min="0" max="255" onchange="handleChange('max_h', $('#max_h').prop('value'));">
+        <span id="max_h_val">0</span><br>
+
+
         <label htmlFor="min_s">Minimum Saturation</label>
         <input type="range" id="min_s" min="0" max="255" onchange="handleChange('min_s', $('#min_s').prop('value'));">
         <span id="min_s_val">0</span>
+        <label htmlFor="max_s">Maximum Saturation</label>
+        <input type="range" id="max_s" min="0" max="255" onchange="handleChange('max_s', $('#max_s').prop('value'));">
+        <span id="max_s_val">0</span><br>
+
+
         <label htmlFor="min_v">Minimum Value</label>
         <input type="range" id="min_v" min="0" max="255" onchange="handleChange('min_v', $('#min_v').prop('value'));">
         <span id="min_v_val">0</span>
-
-
-        <label htmlFor="max_h">Maximum Hue</label>
-        <input type="range" id="max_h" min="0" max="255" onchange="handleChange('max_h', $('#max_h').prop('value'));">
-        <span id="max_h_val">0</span>
-        <label htmlFor="max_s">Maximum Saturation</label>
-        <input type="range" id="max_s" min="0" max="255" onchange="handleChange('max_s', $('#max_s').prop('value'));">
-        <span id="max_s_val">0</span>
         <label htmlFor="max_v">Maximum Value</label>
         <input type="range" id="max_v" min="0" max="255" onchange="handleChange('max_v', $('#max_v').prop('value'));">
-        <span id="max_v_val">0</span>
+        <span id="max_v_val">0</span><br>
 
         <script>
             var min_h=0;
