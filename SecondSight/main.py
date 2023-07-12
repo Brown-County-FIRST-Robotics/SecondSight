@@ -28,10 +28,7 @@ def main_cli():
     SecondSight.Cameras.CameraManager.loadCameras()
 
     # We can put data on NetworkTables
-    # TODO: Only do this if the configuration says to do it
-    # TODO: Every module should write to network tables, not from here
     networktables.NetworkTables.initialize(server=config.get_value('nt_dest'))
-    conecube_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('GamePieces')
 
     # We run the Flask server here. We run it via threading, this is possibly wrong
     app = SecondSight.webserver.Server.startFlask()
@@ -39,6 +36,7 @@ def main_cli():
     # Loop this forever, it's the main work loop
     # TODO: Any functionality specific to a module belongs in that module
     lastframetime = 0
+    gamepiece_manager = SecondSight.GamePiece.Manager.GamePieceManager.getInst()
     apriltag_manager = SecondSight.AprilTags.Manager.ApriltagManager.getInst()
     cams = SecondSight.Cameras.CameraManager.getCameras()
     while True:
@@ -55,7 +53,8 @@ def main_cli():
         # Acquire the AprilTag data
         apriltag_manager.fetchApriltags()
         apriltag_manager.postApriltags()
-        app.game_pieces = SecondSight.Color.postGamePieces(conecube_table, cams, config.get_value('detects'))
+        gamepiece_manager.fetchPieces()
+        gamepiece_manager.postPieces()
 
 
 if __name__ == "__main__":
