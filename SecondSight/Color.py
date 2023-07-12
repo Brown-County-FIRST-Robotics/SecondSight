@@ -7,6 +7,8 @@ import math
 import SecondSight
 import networktables
 
+# This comment will cause a merge conflict, which will remind me to change conecube role to gamepieces
+
 
 # use this for calibrating the color detector
 # pass in frame

@@ -41,10 +41,10 @@ def start(app):
                     roles = []
                     if f"apriltags_{k.split('_')[-1]}" in request.form:
                         if request.form[f"apriltags_{k.split('_')[-1]}"] == 'on':
-                            roles.append('apriltag')
+                            roles.append('apriltags')
                     if f"game_objs_{k.split('_')[-1]}" in request.form:
                         if request.form[f"game_objs_{k.split('_')[-1]}"] == 'on':
-                            roles.append('conecube')
+                            roles.append('gamepieces')
                     conf.set_value('cameras', conf.get_value('cameras') +
                                    [{
                                        'port': v,
