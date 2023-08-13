@@ -25,7 +25,7 @@ class GamePieceManager:
         for obj in conf.get_value('detects'):
             if obj in SecondSight.GamePiece.PieceConstants.PIECE_NAMES:
                 for i, cam in enumerate(cams):
-                    if cam.hasRole('conecube'):
+                    if cam.hasRole('gamepieces'):
                         futures.append((executor.submit(SecondSight.GamePiece.Detector.findGivenPieceType, cam.frame, obj), i))
         res: List[Tuple[SecondSight.GamePiece.Pieces.BaseGamePiece, int]] = []
         for future, i in futures:
