@@ -1,5 +1,5 @@
 import SecondSight
-from flask import Flask, render_template, Response, redirect, request, jsonify
+from flask import Flask, render_template, Response, redirect, request, jsonify, Markup
 
 
 def start(app):
@@ -13,4 +13,8 @@ def start(app):
 
     @app.route('/picker')
     def picker_page():
-        return render_template('picker.html')
+        cam_html = ''
+        for i in range(len(SecondSight.Cameras.CameraManager.getCameras())):
+            cam_html += f'<option value="{i}" selected="selected">{i}</option>'
+        return render_template('picker.html', cams=Markup(cam_html))
+

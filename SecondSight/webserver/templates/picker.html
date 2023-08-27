@@ -7,6 +7,10 @@
     <body>
         <img src="/picker/0?low_h=0&low_s=0&low_v=0&upper_h=0&upper_s=0&upper_v=20">
         <br>
+        <select id="cam" onchange="handleChange('cam', $('select#cam').value);">
+            {{ cams|safe }}
+        </select>
+
         <label htmlFor="min_h">Minimum Hue</label>
         <input type="range" id="min_h" min="0" max="255" onchange="handleChange('min_h', $('#min_h').prop('value'));">
         <span id="min_h_val">0</span>
@@ -50,9 +54,12 @@
                     max_s=val;
                 }else if(id==='max_v'){
                     max_v=val;
+                }else if(id=='cam'){
+                    cam=$('select#cams').prop('value');
                 }
                 $(`#${id}_val`).html(val);
-                $('img').prop('src', `/picker/0?low_h=${min_h}&low_s=${min_s}&low_v=${min_v}&upper_h=${max_h}&upper_s=${max_s}&upper_v=2${max_v}`);
+
+                $('img').prop('src', `/picker/${cam}?low_h=${min_h}&low_s=${min_s}&low_v=${min_v}&upper_h=${max_h}&upper_s=${max_s}&upper_v=2${max_v}`);
             }
         </script>
     </body>
