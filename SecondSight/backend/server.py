@@ -3,6 +3,9 @@
 from typing import Union, List
 from fastapi import FastAPI, Response
 from fastapi.responses import StreamingResponse
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+
 import logging
 import time
 
@@ -97,6 +100,7 @@ def preview_image():
     # Video streaming route. Put this in the src attribute of an img tag
     return StreamingResponse(SecondSight.Color.gen_preview_picker(the_camera), media_type='multipart/x-mixed-replace; boundary=frame')
 
+app.mount("/frontend", StaticFiles(directory="/home/bress/src/SecondSight-josh/SecondSight/frontend/static/build/"), name="frontend")
 
 if __name__ == "__main__":
     # This file should never be run
