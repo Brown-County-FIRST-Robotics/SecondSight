@@ -6,9 +6,7 @@ import time
 import threading
 import SecondSight
 import numpy as np
-
 from typing import List
-
 
 class Camera:
     """
@@ -162,18 +160,21 @@ class Camera:
     def hasRole(self, role):
         return role in self.roles
 
-
 class CameraManager:
     camera_cache = []
 
     @classmethod
-    def loadCameras(cls) -> None:
+    def loadCameras(cls) -> List[Camera]:
         """
         Initialize the cameras as defined in the configuration file
         """
-        config = SecondSight.config.Configuration()
-        for cam_config in config.get_value('cameras'):
-            cls.camera_cache.append(Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
+
+        if len(cls.camera_cache) == 0:
+            # Only load the cameras once, use the cache after this
+            config = SecondSight.config.Configuration()
+            for cam_config in config.get_value('cameras'):
+                cls.camera_cache.append(Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
+        return cls.camera_cache
 
     @classmethod
     def getCameras(cls) -> List[Camera]:

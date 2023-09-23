@@ -6,6 +6,7 @@ import cv2
 import math
 import SecondSight
 import networktables
+import time
 
 
 # use this for calibrating the color detector
@@ -156,44 +157,98 @@ def gen_preview_picker(camera):  # generate frame by frame from camera
 
     config = SecondSight.config.Configuration()
 
-    col = config.get_value("cube_hsv")
-
-    cube = GamePiece()
-
-    lower = [col[0] - 5, col[1] - 100, col[2] - 100]
-    upper = [col[0] + 5, col[1] + 100, col[2] + 100]
-
-    for i in range(len(lower)):
-        if lower[i] < 0:
-            lower[i] = 0
-        if lower[i] > 255:
-            lower[i] = 255
-
-        if upper[i] < 0:
-            upper[i] = 0
-        if upper[i] > 255:
-            upper[i] = 255
-
-    cube.setLowerColor(np.array(lower, dtype=np.uint8))
-    cube.setUpperColor(np.array(upper, dtype=np.uint8)) 
-    cube.setMinRatio(3.0 / 5.0)
-    cube.setMaxRatio(5.0 / 3.0)
-
     currentFrame = 0
+
+    last_frame_time = 0
+    framerate = 10
 
     # We want to loop this forever
     while True:
-        frame = camera.get_frame()
-       
-#        if camera.frame_count == currentFrame:
-#            continue     
-#        currentFrame = camera.frame_count
+        while time.time() - last_frame_time < 1 / framerate:
+            time.sleep(0.001)
 
-        cube.findObject(frame)  
-        
-        cv2.rectangle(frame, cube.getLowerLeft(), cube.getUpperRight(), (255, 0, 0), 2)
+
+        col = config.get_value("cube_hsv")
+
+        lower = [col[0] - 10, col[1] - 50, col[2] - 50]
+        upper = [col[0] + 10, col[1] + 50, col[2] + 50]
+
+        for i in range(len(lower)):
+            if lower[i] < 0:
+                lower[i] = 0
+            if lower[i] > 255:
+                lower[i] = 255
+
+            if upper[i] < 0:
+                upper[i] = 0
+            if upper[i] > 255:
+                upper[i] = 255
+
+        lower_color = np.array([lower[0],lower[1],lower[2]], dtype=np.uint8)
+        upper_color = np.array([upper[0],upper[1],upper[2]], dtype=np.uint8)
+
+
+        frame = camera.get_frame()
+        hsv = camera.hsv
+
+        # We now take the lower and upper bound colors and look for
+        # anything that falls inside of this range.
+        mask = cv2.inRange(hsv, lower_color, upper_color)
+
+        # Bitwise-AND mask and original image
+        res = cv2.bitwise_and(frame,frame, mask= mask)
+
+        # Convert the image to grayscale
+        imgray = cv2.cvtColor(res,cv2.COLOR_BGR2GRAY)
+
+        # This turns the image into a black and white. Lighter pixels are
+        # turned white, darker pixels turn black
+        ret,thresh = cv2.threshold(imgray,127,255,0)
+
+        # This step looks for shapes in the black and white image
+        contours, hierarchy = cv2.findContours(imgray,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+
+
+        # This variable is going to hold the largest rectangle we find. We
+        # can do multiple object tracking, but it's easier for us to track
+        # just the largest rectangle
+        rectangle = {
+            "area": 0,
+            "x": 0,
+            "y": 0,
+            "w": 0,
+            "h": 0
+        }
+
+        # We will loop over all the rectangles found
+        for cnt in contours:
+
+            # Get the rectangle dimensions
+            x,y,w,h = cv2.boundingRect(cnt)
+
+            # If this rectangle is larger than the currently largest
+            # recrangle, store it
+            if w * h > rectangle["area"]:
+                rectangle["area"] = w * h
+                rectangle["x"] = x
+                rectangle["y"] = y
+                rectangle["w"] = w
+                rectangle["h"] = h
+
+        # Only frame the biggest rectangle
+        x = rectangle["x"]
+        y = rectangle["y"]
+        w = rectangle["w"]
+        h = rectangle["h"]
+
+        # We draw the rectangle onto the screen here
+        # frame, start, end, color, thickness
+        frame = cv2.rectangle(frame, (x,y),(x+w,y+h),[255,0,0],2)
+
         ret, jpeg = cv2.imencode('.jpg', frame)
         data = jpeg.tobytes()
+
+        last_frame_time = time.time()
 
         # Return the image to the browser
         yield (b'--frame\r\n'
