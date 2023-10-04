@@ -54,7 +54,6 @@ def main_cli():
 
         # Acquire the AprilTag data
         apriltag_manager.fetchApriltags()
-        apriltag_manager.postApriltags()
 
 
 if __name__ == "__main__":
