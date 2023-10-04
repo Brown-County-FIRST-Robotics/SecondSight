@@ -7,7 +7,7 @@ import SecondSight
 import threading
 import asyncio
 import sys
-import networktables
+import ntcore
 
 def main_cli():
     """
@@ -30,8 +30,8 @@ def main_cli():
     # We can put data on NetworkTables
     # TODO: Only do this if the configuration says to do it
     # TODO: Every module should write to network tables, not from here
-    networktables.NetworkTables.initialize(server=config.get_value('nt_dest'))
-    conecube_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('GamePieces')
+    inst=ntcore.NetworkTableInstance.getDefault()
+    inst.setServer(config.get_value('nt_dest'))
 
     # We run the Flask server here. We run it via threading, this is possibly wrong
     app = SecondSight.webserver.Server.startFlask()
@@ -55,7 +55,6 @@ def main_cli():
         # Acquire the AprilTag data
         apriltag_manager.fetchApriltags()
         apriltag_manager.postApriltags()
-        app.game_pieces = SecondSight.Color.postGamePieces(conecube_table, cams, config.get_value('detects'))
 
 
 if __name__ == "__main__":

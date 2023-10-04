@@ -1,7 +1,7 @@
 import SecondSight
 import concurrent.futures
 from typing import List
-import networktables
+import ntcore
 
 
 class ApriltagManager:
@@ -15,7 +15,7 @@ class ApriltagManager:
 
     def __init__(self):
         self.current_apriltags: List[SecondSight.AprilTags.Detector.ApriltagDetection] = []
-        self.april_table = networktables.NetworkTables.getTable('SecondSight').getSubTable('Apriltags')
+        self.april_table = ntcore.NetworkTableInstance.getDefault().getTable('Apriltags')
         self.fetchApriltags()
 
     def fetchApriltags(self):
