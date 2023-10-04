@@ -11,9 +11,9 @@ class PoseEstimate:
         self.yaw = yaw
         self.pitch = pitch
         self.roll = roll
-        self.left_right = left_right
-        self.up_down = up_down
-        self.distance = distance
+        self.left_right_x = left_right
+        self.up_down_z = up_down
+        self.distance_y = distance
         self.tagID = tagid
 
 
@@ -90,10 +90,10 @@ def getFieldPosition(dets, camera_matrix, dist_coefficients):
     # Map rotation_vector
     pitch, yaw, roll = [float(i) for i in rotation_vector[0]]
 
-    left_right = translation_vector[0][0]
-    up_down = -translation_vector[0][1]
-    distance = translation_vector[0][2]
-    return PoseEstimate(yaw, pitch, roll, left_right, up_down, distance, None)
+    x = translation_vector[0][0]
+    z = -translation_vector[0][1]
+    y = translation_vector[0][2]
+    return PoseEstimate(yaw, pitch, roll, x, z, y, None)
 
 
 if __name__ == "main":
