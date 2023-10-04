@@ -165,6 +165,7 @@ class Camera:
 
 class CameraManager:
     camera_cache = []
+    capture_time=[]
 
     @classmethod
     def loadCameras(cls) -> None:
@@ -173,6 +174,7 @@ class CameraManager:
         """
         config = SecondSight.config.Configuration()
         for cam_config in config.get_value('cameras'):
+            cls.capture_time.append(0)
             cls.camera_cache.append(Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
 
     @classmethod
@@ -196,8 +198,13 @@ class CameraManager:
         """
         Update all the cameras
         """
-        for cam in cls.getCameras():
+        for i,cam in enumerate(cls.getCameras()):
             cam.update()
+            cls.capture_time[i]=time.time()
+
+    @classmethod
+    def getTime(cls,ind):
+        return cls.capture_time[ind]
 
 
 if __name__ == "__main__":
