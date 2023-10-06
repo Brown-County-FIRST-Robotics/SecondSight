@@ -16,6 +16,12 @@ class PoseEstimate:
         self.distance_y = distance
         self.tagID = tagid
 
+    def __repr__(self):
+        if self.tagID is not None:
+            return f'RelativePoseEstimate({self.yaw}, {self.pitch}, {self.roll}, {self.left_right_x}, {self.up_down_z}, {self.distance_y}, {self.tagID})'
+        else:
+            return f'FieldPoseEstimate({self.yaw}, {self.pitch}, {self.roll}, {self.left_right_x}, {self.up_down_z}, {self.distance_y})'
+
 
 def getCoords(img, valid_tags=range(1, 9)):
     if img is None:
