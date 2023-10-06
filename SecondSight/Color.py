@@ -5,9 +5,9 @@ import numpy as np
 import cv2
 import math
 import SecondSight
-import networktables
 
 # This comment will cause a merge conflict, which will remind me to change conecube role to gamepieces
+# This other comment will cause another merge conflict, which will remind me to switch to pyntcore
 
 
 # use this for calibrating the color detector
@@ -110,45 +110,6 @@ class GamePiece:
         box = cv2.boxPoints((self.x, self.y, self.width, self.height, self.theta))
         box = np.int0(box)
         cv2.drawContours(frame, [box], 0, color, 2)
-
-
-def postGamePieces(tb: networktables.NetworkTable, cams, obj_types: [str]):
-    res = {}
-    if obj_types is not None:
-        for obj in obj_types:
-            dets = []
-            res[obj] = []
-            for i, cam in enumerate(cams):
-                if obj == 'cube2023':
-                    det = findCube2023(cam.frame, ((50, 0, 200), (230, 50, 255)))
-                    for ii in det:
-                        ii.calcRealPos(cam.camera_matrix, None)
-                        res[obj].append({
-                            "left_right": ii.left_right,
-                            "up_down": ii.up_down,
-                            "distance": ii.distance,
-                            "yaw": ii.yaw,
-                            "pitch": ii.pitch,
-                            "roll": ii.roll,
-                            "rms": ii.rms,
-                            "camera": i
-                        })
-                        dets += [ii.left_right, ii.up_down, ii.distance, ii.yaw, ii.pitch, ii.roll, i]
-                if obj == 'cone2023':
-                    det = findCone2023(cam.frame, ((0, 0, 0), (255, 100, 100)))
-                    for ii in det:
-                        res[obj].append({
-                            "x": ii.x,
-                            "y": ii.y,
-                            "width": ii.width,
-                            "height": ii.height,
-                            "theta": ii.theta,
-                            "camera": i
-                        })
-                        dets += [ii.x, ii.y, ii.width, ii.height, ii.theta, i]
-            tb.putNumberArray(obj, dets)
-    return res
-
 
 # This function is now very broken
 # Color picker
