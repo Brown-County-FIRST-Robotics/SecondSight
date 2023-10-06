@@ -3,6 +3,7 @@ import logging
 import sys
 import json
 import os
+from SecondSight.utils import LogMe
 
 
 class Configuration(object):
@@ -37,7 +38,8 @@ class Configuration(object):
         if not hasattr(cls, 'instance'):
             cls.instance = super(Configuration, cls).__new__(cls)
         return cls.instance
-    
+
+    @LogMe
     def set_path(self, file_path):
         """
         Set the file to store the configuration data.
@@ -56,6 +58,7 @@ class Configuration(object):
             with open(self.file_path, 'r') as fh_in:
                 self.variables = json.load(fh_in)
 
+    @LogMe
     def write(self):
         """
         Write the current configuration file to disk
@@ -63,6 +66,7 @@ class Configuration(object):
         with open(self.file_path, 'w') as fh_out:
             json.dump(self.variables, fh_out)
 
+    @LogMe
     def close(self):
         """
         Write the current configuration file to disk and set the
@@ -71,6 +75,7 @@ class Configuration(object):
         self.write()
         self.variables = None
 
+    @LogMe
     def get_value(self, item):
         """
         Get a configuration value
@@ -79,12 +84,15 @@ class Configuration(object):
             return self.variables[item]
         return None
 
+    @LogMe
     def del_value(self, item):
         self.variables.pop(item)
 
+    @LogMe
     def value_exists(self, item):
         return item in self.variables
 
+    @LogMe
     def set_value(self, item, value):
         """
         Store a configuration value
