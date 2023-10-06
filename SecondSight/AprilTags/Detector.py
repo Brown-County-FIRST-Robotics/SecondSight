@@ -4,6 +4,7 @@ import apriltag
 import cv2
 import numpy as np
 import SecondSight
+from SecondSight.utils import LogMe
 
 
 class PoseEstimate:
@@ -23,6 +24,7 @@ class PoseEstimate:
             return f'FieldPoseEstimate({self.yaw}, {self.pitch}, {self.roll}, {self.left_right_x}, {self.up_down_z}, {self.distance_y})'
 
 
+@LogMe
 def getCoords(img, valid_tags=range(1, 9)):
     if img is None:
         return []
@@ -54,6 +56,7 @@ def getCoords(img, valid_tags=range(1, 9)):
     return detections
 
 
+@LogMe
 def getRelativePosition(det, camera_matrix, dist_coefficients):
     image_points = np.array(det[0]).reshape(1, 5, 2)
 
@@ -81,6 +84,7 @@ def getRelativePosition(det, camera_matrix, dist_coefficients):
     return PoseEstimate(yaw, pitch, roll, left_right, up_down, distance, det[1])
 
 
+@LogMe
 def getFieldPosition(dets, camera_matrix, dist_coefficients):
     image_points = np.array([i[0] for i in dets]).reshape(1, 5 * len(dets), 2)
 
