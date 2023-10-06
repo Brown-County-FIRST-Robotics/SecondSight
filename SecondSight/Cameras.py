@@ -9,6 +9,8 @@ import numpy as np
 
 from typing import List
 
+from SecondSight.utils import LogMe
+
 
 class Camera:
     """
@@ -20,6 +22,7 @@ class Camera:
     # Calibration data shoudl be in the format of
     # calibration: {'camera_matrix': %%, 'dist':%%, 'calibration_res':%%, 'processing_res':%%}
 
+    @LogMe
     def __init__(self, device, calibration, position, roles):
         """Camera constructor
 
@@ -31,7 +34,6 @@ class Camera:
         :return:
         """
 
-        logging.debug(f"camera init {device}")
         self.frame = None
         self._hsv = None
         self._gray = None
@@ -74,6 +76,7 @@ class Camera:
             self.map2=None
             self.camera_matrix=None
 
+    @LogMe
     def update(self):
         """Read a new camera frame from the camera
 
@@ -93,6 +96,7 @@ class Camera:
         self._bytes = None
         self._bytes_uncalibrated = None
 
+    @LogMe
     def get_frame(self, flipped=False):
         """Return the current frame
         
@@ -106,17 +110,17 @@ class Camera:
             return self.frame
 
     @property
+    @LogMe
     def hsv(self):
         "Return the current frame HSV data"
-        logging.debug("camera.get_hsv")
         if self._hsv is None:
             self._hsv = cv2.cvtColor(self.frame, cv2.COLOR_BGR2HSV)
         return self._hsv
 
     @property
+    @LogMe
     def gray(self):
         "return the current frame in grayscale"
-        logging.debug("camera.get_gray")
         if self.frame is None:
             return None
         if self._gray is None:
@@ -124,17 +128,18 @@ class Camera:
         return self._gray
 
     @property
+    @LogMe
     def height(self):
         "return the height of the image"
-        logging.debug("camera.get_height")
         return len(self.frame)
 
     @property
+    @LogMe
     def width(self):
         "return the width of the image"
-        logging.debug("camera.get_width")
         return len(self.frame[0])
 
+    @LogMe
     def get_bytes(self, uncalibrated=False):
         """Return the current frame as a byte array of JPG data
 
@@ -146,19 +151,18 @@ class Camera:
         # TODO: This is confusing. We should probably call it "calibrated"
         if not uncalibrated:
             if self._bytes is None:
-                logging.debug("camera.get_bytes")
                 frame = self.frame
                 ret, buffer = cv2.imencode('.jpg', frame)
                 self._bytes = buffer.tobytes()
             return self._bytes
         else:
             if self._bytes_uncalibrated is None:
-                logging.debug("camera.get_bytes")
                 frame = self.uncalibrated
                 ret, buffer = cv2.imencode('.jpg', frame)
                 self._bytes_uncalibrated = buffer.tobytes()
             return self._bytes_uncalibrated
 
+    @LogMe
     def hasRole(self, role):
         return role in self.roles
 
