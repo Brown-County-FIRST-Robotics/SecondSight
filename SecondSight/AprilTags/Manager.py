@@ -5,6 +5,8 @@ import concurrent.futures
 from typing import Dict
 import ntcore
 
+from SecondSight.utils import LogMe
+
 
 class ApriltagManager:
     instance = None
@@ -20,7 +22,7 @@ class ApriltagManager:
         self.tables: Dict[int, ntcore.NetworkTable] = {i: inst.getTable(f'SecondSight_{i}') for i in range(len(SecondSight.Cameras.CameraManager.getCameras()))}
         self.fetchApriltags()
 
-
+    @LogMe
     def fetchApriltags(self):
         cams = SecondSight.Cameras.CameraManager.getCameras()
         executor = concurrent.futures.ThreadPoolExecutor(max_workers=len(cams))

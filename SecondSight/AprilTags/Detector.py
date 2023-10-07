@@ -79,7 +79,7 @@ def getRelativePosition(det, camera_matrix, dist_coefficients):
     pitch, yaw, roll = [float(i) for i in rotation_vector[0]]
 
     left_right = translation_vector[0][0]
-    up_down = -translation_vector[0][1]
+    up_down = translation_vector[0][1]
     distance = translation_vector[0][2]
     return PoseEstimate(yaw, pitch, roll, left_right, up_down, distance, det[1])
 
@@ -88,7 +88,7 @@ def getRelativePosition(det, camera_matrix, dist_coefficients):
 def getFieldPosition(dets, camera_matrix, dist_coefficients):
     image_points = np.array([i[0] for i in dets]).reshape(1, 5 * len(dets), 2)
 
-    object_pts = np.array([SecondSight.AprilTags.Positions.apriltagFeatures[str(i[1])] for i in dets]).reshape(5 * len(dets), 3)
+    object_pts = np.array([SecondSight.AprilTags.Positions.apriltagFeatures['2023'][str(i[1])] for i in dets]).reshape(5 * len(dets), 3)  # TODO: make year configured
 
     # Solve for rotation and translation
     good, rotation_vector, translation_vector, _ = cv2.solvePnPGeneric(object_pts, image_points,
@@ -101,7 +101,7 @@ def getFieldPosition(dets, camera_matrix, dist_coefficients):
     pitch, yaw, roll = [float(i) for i in rotation_vector[0]]
 
     x = translation_vector[0][0]
-    z = -translation_vector[0][1]
+    z = translation_vector[0][1]
     y = translation_vector[0][2]
     return PoseEstimate(yaw, pitch, roll, x, z, y, None)
 
