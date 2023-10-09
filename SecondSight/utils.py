@@ -47,3 +47,19 @@ def waitForNT() -> bool:
     else:
         return False
     return True
+
+
+def getMatchRepr():
+    inst = ntcore.NetworkTableInstance.getDefault()
+    table = inst.getTable('FMSInfo')
+
+    match_type = int(table.getEntry('MatchType').getInteger(None))
+    replay_number = table.getEntry('ReplayNumber').getInteger(None)
+    match_number = table.getEntry('MatchNumber').getInteger(None)
+
+    match_type_dict = {
+        1: 'P',
+        2: 'Q',
+        3: 'E'
+    }
+    return f'{match_type_dict[match_type]}{match_number}_{replay_number}'
