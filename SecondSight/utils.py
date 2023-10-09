@@ -63,3 +63,11 @@ def getMatchRepr():
         3: 'E'
     }
     return f'{match_type_dict[match_type]}{match_number}_{replay_number}'
+
+
+def getEventName():
+    inst = ntcore.NetworkTableInstance.getDefault()
+    table = inst.getTable('FMSInfo')
+    name = table.getString('EventName', None)
+    assert name is not None
+    return name
