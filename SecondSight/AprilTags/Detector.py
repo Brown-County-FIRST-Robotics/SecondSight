@@ -8,20 +8,20 @@ from SecondSight.utils import LogMe
 
 
 class PoseEstimate:
-    def __init__(self, yaw, pitch, roll, left_right, up_down, distance, tagid):
+    def __init__(self, yaw, pitch, roll, y, z, x, tagid):
         self.yaw = yaw
         self.pitch = pitch
         self.roll = roll
-        self.left_right_x = left_right
-        self.up_down_z = up_down
-        self.distance_y = distance
+        self.y = y
+        self.z = z
+        self.x = x
         self.tagID = tagid
 
     def __repr__(self):
         if self.tagID is not None:
-            return f'RelativePoseEstimate({self.yaw}, {self.pitch}, {self.roll}, {self.left_right_x}, {self.up_down_z}, {self.distance_y}, {self.tagID})'
+            return f'RelativePoseEstimate({self.yaw}, {self.pitch}, {self.roll}, {self.y}, {self.z}, {self.x}, {self.tagID})'
         else:
-            return f'FieldPoseEstimate({self.yaw}, {self.pitch}, {self.roll}, {self.left_right_x}, {self.up_down_z}, {self.distance_y})'
+            return f'FieldPoseEstimate({self.yaw}, {self.pitch}, {self.roll}, {self.y}, {self.z}, {self.x})'
 
 
 @LogMe
