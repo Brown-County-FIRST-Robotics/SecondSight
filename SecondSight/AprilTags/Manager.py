@@ -55,6 +55,8 @@ class ApriltagManager:
                 self.tables[i].putNumber('offset', time.time() - SecondSight.Cameras.CameraManager.getTime(i))
                 self.tables[i].putNumberArray("Pose", [a.x, a.y, a.yaw])
                 self.tables[i].putNumberArray("Pose2", [b.x, b.y, b.yaw])
-                self.tables[i].putNumberArray("Pose3", [SecondSight.AprilTags.Positions.apriltagFeatures['2023']['1'][-1],SecondSight.AprilTags.Positions.apriltagFeatures['2023']['1'][-3]*-2,0])
+                # self.tables[i].putNumberArray("Pose3", [SecondSight.AprilTags.Positions.apriltagFeatures['2023']['1'][-1],SecondSight.AprilTags.Positions.apriltagFeatures['2023']['1'][-3]*-1,0])
+                # self.tables[i].putNumberArray("Pose4", [0,0,0])
+
 
 

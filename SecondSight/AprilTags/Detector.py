@@ -52,21 +52,20 @@ def getCoords(img, valid_tags=range(1, 9)):
                 continue
             if detection.hamming != 0:
                 continue
-            detections.append(([list(i) for i in detection.corners] + [list(detection.center)], detection.tag_id))
+            detections.append(([list(i) for i in detection.corners], detection.tag_id))
     return detections
 
 
 @LogMe
 def getRelativePosition(det, camera_matrix, dist_coefficients):
-    image_points = np.array(det[0]).reshape(1, 5, 2)
+    image_points = np.array(det[0]).reshape(1, 4, 2)
 
     ob_pt1 = [-SecondSight.AprilTags.Positions.tag_size / 2, -SecondSight.AprilTags.Positions.tag_size / 2, 0.0]
     ob_pt2 = [SecondSight.AprilTags.Positions.tag_size / 2, -SecondSight.AprilTags.Positions.tag_size / 2, 0.0]
     ob_pt3 = [SecondSight.AprilTags.Positions.tag_size / 2, SecondSight.AprilTags.Positions.tag_size / 2, 0.0]
     ob_pt4 = [-SecondSight.AprilTags.Positions.tag_size / 2, SecondSight.AprilTags.Positions.tag_size / 2, 0.0]
-    ob_pt5 = [0.0, 0.0, 0.0]
-    ob_pts = ob_pt1 + ob_pt2 + ob_pt3 + ob_pt4 + ob_pt5
-    object_pts = np.array(ob_pts).reshape(5, 3)
+    ob_pts = ob_pt1 + ob_pt2 + ob_pt3 + ob_pt4
+    object_pts = np.array(ob_pts).reshape(4, 3)
 
     # Solve for rotation and translation
     good, rotation_vector, translation_vector, _ = cv2.solvePnPGeneric(object_pts, image_points,
@@ -86,15 +85,16 @@ def getRelativePosition(det, camera_matrix, dist_coefficients):
 
 @LogMe
 def getFieldPosition(dets, camera_matrix, dist_coefficients):
-    image_points = np.array([i[0] for i in dets]).reshape(1, 5 * len(dets), 2)
+    image_points = np.array([i[0] for i in dets]).reshape(1, 4 * len(dets), 2)
 
-    object_pts = np.array([SecondSight.AprilTags.Positions.apriltagFeatures['2023'][str(i[1])] for i in dets]).reshape(5 * len(dets), 3)  # TODO: make year configured
+    object_pts = np.array([SecondSight.AprilTags.Positions.apriltagFeatures['2023'][str(i[1])] for i in dets])  # TODO: make year configured
 
     # Solve for rotation and translation
     good, rotation_vector, translation_vector, _ = cv2.solvePnPGeneric(object_pts, image_points,
                                                                        camera_matrix,
                                                                        dist_coefficients,
-                                                                       flags=cv2.SOLVEPNP_SQPNP)
+
+                                                                       flags=cv2.SOLVEPNP_IPPE)
     assert good, 'something went wrong with solvePnP'
 
 
