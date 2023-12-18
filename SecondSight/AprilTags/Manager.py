@@ -32,7 +32,7 @@ class ApriltagManager:
                 futures[i] = executor.submit(SecondSight.AprilTags.Detector.getCoords, cam.gray)
         for i, future in futures.items():
             dets = future.result()
-            if len(dets) == 1:
+            if len(dets) == -1:
                 a = SecondSight.AprilTags.Detector.getRelativePosition(dets[0], SecondSight.Cameras.CameraManager.getCamera(i).camera_matrix, None)
                 self.tables[i].putNumber('y', a.y)
                 self.tables[i].putNumber('z', a.z)
@@ -43,13 +43,18 @@ class ApriltagManager:
                 self.tables[i].putString('proc', 'Single')
                 self.tables[i].putNumber('tagid', a.tagID)
                 self.tables[i].putNumber('offset', time.time() - SecondSight.Cameras.CameraManager.getTime(i))
-            elif len(dets) > 1:
-                a = SecondSight.AprilTags.Detector.getFieldPosition(dets, SecondSight.Cameras.CameraManager.getCamera(i).camera_matrix, None)
-                self.tables[i].putNumber('x', a.y)
+            elif len(dets) >= 1:
+                a,b = SecondSight.AprilTags.Detector.getFieldPosition(dets, SecondSight.Cameras.CameraManager.getCamera(i).camera_matrix, None)
+                self.tables[i].putNumber('x', a.x)
                 self.tables[i].putNumber('z', a.z)
-                self.tables[i].putNumber('y', a.x)
+                self.tables[i].putNumber('y', a.y)
                 self.tables[i].putNumber('pitch', a.pitch)
                 self.tables[i].putNumber('roll', a.roll)
                 self.tables[i].putNumber('yaw', a.yaw)
                 self.tables[i].putString('proc', 'Multiple')
                 self.tables[i].putNumber('offset', time.time() - SecondSight.Cameras.CameraManager.getTime(i))
+                self.tables[i].putNumberArray("Pose", [a.x, a.y, a.yaw])
+                self.tables[i].putNumberArray("Pose2", [b.x, b.y, b.yaw])
+                self.tables[i].putNumberArray("Pose3", [SecondSight.AprilTags.Positions.apriltagFeatures['2023']['1'][-1],SecondSight.AprilTags.Positions.apriltagFeatures['2023']['1'][-3]*-2,0])
+
+

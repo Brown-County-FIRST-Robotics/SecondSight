@@ -72,7 +72,7 @@ def getRelativePosition(det, camera_matrix, dist_coefficients):
     good, rotation_vector, translation_vector, _ = cv2.solvePnPGeneric(object_pts, image_points,
                                                                        camera_matrix,
                                                                        dist_coefficients,
-                                                                       flags=cv2.SOLVEPNP_ITERATIVE)
+                                                                       flags=cv2.SOLVEPNP_IPPE_SQUARE)
     assert good, 'something went wrong with solvePnP'
 
     # Map rotation_vector
@@ -94,16 +94,24 @@ def getFieldPosition(dets, camera_matrix, dist_coefficients):
     good, rotation_vector, translation_vector, _ = cv2.solvePnPGeneric(object_pts, image_points,
                                                                        camera_matrix,
                                                                        dist_coefficients,
-                                                                       flags=cv2.SOLVEPNP_ITERATIVE)
+                                                                       flags=cv2.SOLVEPNP_SQPNP)
     assert good, 'something went wrong with solvePnP'
+
 
     # Map rotation_vector
     pitch, yaw, roll = [float(i) for i in rotation_vector[0]]
 
-    x = translation_vector[0][0]
-    z = translation_vector[0][1]
-    y = translation_vector[0][2]
-    return PoseEstimate(yaw, pitch, roll, x, z, y, None)
+    y = -translation_vector[0][0]
+    z = -translation_vector[0][1]
+    x = translation_vector[0][2]
+
+    pitch2, yaw2, roll2 = [float(i) for i in rotation_vector[-1]]
+
+    y2 = -translation_vector[-1][0]
+    z2 = -translation_vector[-1][1]
+    x2 = translation_vector[-1][2]
+
+    return PoseEstimate(-yaw, pitch, -roll, y, z, x, None),PoseEstimate(-yaw2, pitch2, -roll2, y2, z2, x2, None)
 
 
 if __name__ == "main":
