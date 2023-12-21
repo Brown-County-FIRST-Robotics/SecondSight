@@ -41,6 +41,6 @@ class ApriltagManager:
                 for det in dets:
                     pos = SecondSight.AprilTags.Detector.getRelativePosition(det, SecondSight.Cameras.CameraManager.getCamera(i).camera_matrix, None)
                     ids.append(str(pos.tagID))
-                    poses+=[pos.x,pos.y,pos.z,pos.pitch,pos.yaw,pos.roll]
+                    poses+=[pos.x,pos.y,pos.z,pos.roll,pos.pitch,pos.yaw]
                 self.publishers[i][0].set(poses,math.floor(SecondSight.Cameras.CameraManager.getTime(i)*1000000))
                 self.publishers[i][1].set(ids,math.floor(SecondSight.Cameras.CameraManager.getTime(i)*1000000))

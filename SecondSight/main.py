@@ -31,8 +31,10 @@ def main_cli():
     # TODO: Only do this if the configuration says to do it
     # TODO: Every module should write to network tables, not from here
     inst = ntcore.NetworkTableInstance.getDefault()
-    inst.startClient4('Secondsight')
+    inst.startClient4(config.get_value('inst_name'))
     inst.setServer(config.get_value('nt_dest'))
+    table = inst.getTable(config.get_value('inst_name'))
+    table.putString('config', config.stringify())
 
     # We run the Flask server here. We run it via threading, this is possibly wrong
     app = SecondSight.webserver.Server.startFlask()

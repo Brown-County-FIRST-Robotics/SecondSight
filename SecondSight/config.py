@@ -99,6 +99,10 @@ class Configuration(object):
         """
         self.variables[item] = value
 
+    @LogMe
+    def stringify(self):
+        return str(self.variables)
+
 
 if __name__ == "__main__":
     # This file should never be run
