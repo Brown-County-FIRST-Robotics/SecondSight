@@ -1,8 +1,9 @@
+import math
 import time
 
 import SecondSight
 import concurrent.futures
-from typing import Dict
+from typing import Dict, Tuple
 import ntcore
 
 from SecondSight.utils import LogMe
@@ -19,7 +20,9 @@ class ApriltagManager:
 
     def __init__(self):
         inst = ntcore.NetworkTableInstance.getDefault()
-        self.tables: Dict[int, ntcore.NetworkTable] = {i: inst.getTable(f'SecondSight_{i}') for i in range(len(SecondSight.Cameras.CameraManager.getCameras()))}
+        rtable=inst.getTable(SecondSight.config.Configuration().get_value('inst_name'))
+        pub_config=ntcore.PubSubOptions(periodic=0, sendAll=True, keepDuplicates=True)
+        self.publishers: Dict[int, Tuple[ntcore.DoubleArrayPublisher, ntcore.StringArrayPublisher]] = {i: (rtable.getSubTable(str(i)).getDoubleArrayTopic("Poses").publish(pub_config),rtable.getSubTable(str(i)).getStringArrayTopic("IDs").publish(pub_config)) for i in range(len(SecondSight.Cameras.CameraManager.getCameras()))}
         self.fetchApriltags()
 
     @LogMe
@@ -32,31 +35,12 @@ class ApriltagManager:
                 futures[i] = executor.submit(SecondSight.AprilTags.Detector.getCoords, cam.gray)
         for i, future in futures.items():
             dets = future.result()
-            if len(dets) == -1:
-                a = SecondSight.AprilTags.Detector.getRelativePosition(dets[0], SecondSight.Cameras.CameraManager.getCamera(i).camera_matrix, None)
-                self.tables[i].putNumber('y', a.y)
-                self.tables[i].putNumber('z', a.z)
-                self.tables[i].putNumber('x', a.x)
-                self.tables[i].putNumber('pitch', a.pitch)
-                self.tables[i].putNumber('roll', a.roll)
-                self.tables[i].putNumber('yaw', a.yaw)
-                self.tables[i].putString('proc', 'Single')
-                self.tables[i].putNumber('tagid', a.tagID)
-                self.tables[i].putNumber('offset', time.time() - SecondSight.Cameras.CameraManager.getTime(i))
-            elif len(dets) >= 1:
-                a,b = SecondSight.AprilTags.Detector.getFieldPosition(dets, SecondSight.Cameras.CameraManager.getCamera(i).camera_matrix, None)
-                self.tables[i].putNumber('x', a.x)
-                self.tables[i].putNumber('z', a.z)
-                self.tables[i].putNumber('y', a.y)
-                self.tables[i].putNumber('pitch', a.pitch)
-                self.tables[i].putNumber('roll', a.roll)
-                self.tables[i].putNumber('yaw', a.yaw)
-                self.tables[i].putString('proc', 'Multiple')
-                self.tables[i].putNumber('offset', time.time() - SecondSight.Cameras.CameraManager.getTime(i))
-                self.tables[i].putNumberArray("Pose", [a.x, a.y, a.yaw])
-                self.tables[i].putNumberArray("Pose2", [b.x, b.y, b.yaw])
-                # self.tables[i].putNumberArray("Pose3", [SecondSight.AprilTags.Positions.apriltagFeatures['2023']['1'][-1],SecondSight.AprilTags.Positions.apriltagFeatures['2023']['1'][-3]*-1,0])
-                # self.tables[i].putNumberArray("Pose4", [0,0,0])
-
-
-
+            if len(dets) > 0:
+                poses=[]
+                ids=[]
+                for det in dets:
+                    pos = SecondSight.AprilTags.Detector.getRelativePosition(det, SecondSight.Cameras.CameraManager.getCamera(i).camera_matrix, None)
+                    ids.append(str(pos.tagID))
+                    poses+=[pos.x,pos.y,pos.z,pos.pitch,pos.yaw,pos.roll]
+                self.publishers[i][0].set(poses,math.floor(SecondSight.Cameras.CameraManager.getTime(i)*1000000))
+                self.publishers[i][1].set(ids,math.floor(SecondSight.Cameras.CameraManager.getTime(i)*1000000))
