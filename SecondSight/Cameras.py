@@ -41,14 +41,13 @@ class Camera:
         self._bytes = None
         self._bytes_uncalibrated = None
 
-
         self.id = None
         self.frame_count = 0
         self.last_frame_count = 0
         self.device = device
         self.camera = cv2.VideoCapture(device)
         self.roles = roles
-        self.pos=position
+        self.pos = position
 
         if calibration is not None:
             video_size = tuple(calibration["calibration_res"])
@@ -72,9 +71,10 @@ class Camera:
                 self.map2 = None
                 self.camera_matrix = raw_camera_matrix
         else:
-            self.map1=None
-            self.map2=None
-            self.camera_matrix=None
+            self.map1 = None
+            self.map2 = None
+            self.camera_matrix = None
+
     @LogMe
     def grab(self):
         success = self.camera.grab()
@@ -91,8 +91,8 @@ class Camera:
         success, frame = self.camera.retrieve()
         if frame is None or not success:
             logging.critical("Camera Read Failed")
-            return 
-        self.uncalibrated = frame.copy() 
+            return
+        self.uncalibrated = frame.copy()
         if self.map2 is not None:
             frame = cv2.remap(frame, self.map1, self.map2, cv2.INTER_CUBIC)
         self.frame = frame
@@ -174,7 +174,7 @@ class Camera:
 
 class CameraManager:
     camera_cache = []
-    capture_time=[]
+    capture_time = []
 
     @classmethod
     def loadCameras(cls) -> None:
@@ -207,14 +207,14 @@ class CameraManager:
         """
         Update all the cameras
         """
-        for i,cam in enumerate(cls.getCameras()):
+        for i, cam in enumerate(cls.getCameras()):
             cam.grab()
-            cls.capture_time[i]=time.time()
+            cls.capture_time[i] = time.time()
         for cam in cls.getCameras():
             cam.update()
 
     @classmethod
-    def getTime(cls,ind):
+    def getTime(cls, ind):
         return cls.capture_time[ind]
 
 
