@@ -75,6 +75,11 @@ class Camera:
             self.map1=None
             self.map2=None
             self.camera_matrix=None
+    @LogMe
+    def grab(self):
+        success = self.camera.grab()
+        if not success:
+            logging.critical("Camera Read Failed")
 
     @LogMe
     def update(self):
@@ -83,7 +88,7 @@ class Camera:
         :return:
         """
 
-        success, frame = self.camera.read()
+        success, frame = self.camera.retrieve()
         if frame is None or not success:
             logging.critical("Camera Read Failed")
             return 
@@ -203,8 +208,10 @@ class CameraManager:
         Update all the cameras
         """
         for i,cam in enumerate(cls.getCameras()):
-            cam.update()
+            cam.grab()
             cls.capture_time[i]=time.time()
+        for cam in cls.getCameras():
+            cam.update()
 
     @classmethod
     def getTime(cls,ind):
