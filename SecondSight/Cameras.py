@@ -55,6 +55,7 @@ class Camera:
             self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, video_size[1])
             test_video_size = (self.camera.get(cv2.CAP_PROP_FRAME_WIDTH), self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
             assert tuple(test_video_size) == tuple(video_size), 'camera resolution didnt set'
+            self.width, self.height=test_video_size
 
             raw_camera_matrix = np.array(calibration['camera_matrix'])
             processing_resolution = np.array(calibration['processing_res'])
@@ -131,18 +132,6 @@ class Camera:
         if self._gray is None:
             self._gray = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
         return self._gray
-
-    @property
-    @LogMe
-    def height(self):
-        "return the height of the image"
-        return len(self.frame)
-
-    @property
-    @LogMe
-    def width(self):
-        "return the width of the image"
-        return len(self.frame[0])
 
     @LogMe
     def get_bytes(self, uncalibrated=False):
