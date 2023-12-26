@@ -49,23 +49,19 @@ def main_cli():
 
     # Loop this forever, it's the main work loop
     # TODO: Any functionality specific to a module belongs in that module
-    lastframetime = 0
     apriltag_manager = SecondSight.AprilTags.Manager.ApriltagManager.getInst()
     cams = SecondSight.Cameras.CameraManager.getCameras()
-    while True:
-        # Only run the loop every 100ms
-        newtime = time.time()
-        towait = .1 - (newtime - lastframetime)
-        if towait > 0:
-            time.sleep(towait)
-        lastframetime = newtime
+    SecondSight.Recorder.RecordingManager.getInst().startRecording()
+    try:
+        while True:
+            # Update the cameras
+            SecondSight.Cameras.CameraManager.updateAll()
+            SecondSight.Recorder.RecordingManager.getInst().loop()
 
-        # Update the cameras
-        SecondSight.Cameras.CameraManager.updateAll()
-        SecondSight.Recorder.RecordingManager.getInst().loop()
-
-        # Acquire the AprilTag data
-        apriltag_manager.fetchApriltags()
+            # Acquire the AprilTag data
+            apriltag_manager.fetchApriltags()
+    except Exception as _:
+        SecondSight.Recorder.RecordingManager.getInst().stopRecording()
 
 
 if __name__ == "__main__":

@@ -25,12 +25,21 @@ class RecordingManager:
     def startRecording(self, name: str = SecondSight.utils.get8601date()):
         if self.isRecording:
             return
+        self.isRecording=True
         for i, cam in enumerate(SecondSight.Cameras.CameraManager.getCameras()):
-            self.writers[i] = cv2.VideoWriter(f'{name}_{i}.avi', cv2.VideoWriter_fourcc(*'MP42'), 15.0, (cam.width, cam.height))
+            self.writers[i] = cv2.VideoWriter(f'{name}_{i}.avi', cv2.VideoWriter_fourcc(*'MP42'), 15.0, (int(cam.width), int(cam.height)))
             self.publishers[i][0].set(True)
             self.publishers[i][1].set(f'{name}_{i}.avi')
 
     def loop(self):
-        while self.isRecording:
+        if self.isRecording:
             for cam, writer in zip(SecondSight.Cameras.CameraManager.getCameras(), self.writers):
-                writer.write(cam.read())
+                writer.write(cam.frame)
+
+    def stopRecording(self):
+        isRecording = False
+        for i,writer in enumerate(self.writers):
+            self.publishers[i][0].set(False)
+            writer.release()
+
+
