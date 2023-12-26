@@ -54,6 +54,7 @@ def main_cli():
 
         # Update the cameras
         SecondSight.Cameras.CameraManager.updateAll()
+        SecondSight.Recorder.RecordingManager.getInst().loop()
 
         # Acquire the AprilTag data
         apriltag_manager.fetchApriltags()
