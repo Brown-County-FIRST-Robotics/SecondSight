@@ -18,9 +18,9 @@ def main_cli():
 
     # Setup logging
     # TODO: use environment variables for these options eventually
-    file_handler = logging.FileHandler(filename='logfile')
+    file_handler = logging.FileHandler(filename=f'logs/{SecondSight.utils.get8601date()}')
     stderr_handler = logging.StreamHandler(stream=sys.stderr)
-    logging.basicConfig(level=getattr(logging, 'WARNING'), handlers=[file_handler, stderr_handler])
+    logging.basicConfig(level=logging.DEBUG, handlers=[file_handler, stderr_handler])
 
     # Load the config file and set the path
     # TODO: Put this config file in a home directory someday
