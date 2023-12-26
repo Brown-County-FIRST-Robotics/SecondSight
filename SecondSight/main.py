@@ -7,6 +7,7 @@ import SecondSight
 import threading
 import asyncio
 import sys
+import git
 import ntcore
 
 def main_cli():
@@ -35,6 +36,13 @@ def main_cli():
     inst.setServer(config.get_value('nt_dest'))
     table = inst.getTable(config.get_value('inst_name'))
     table.putString('config', config.stringify())
+    repo=git.Repo('.')
+    git_hash=repo.active_branch.commit.hexsha
+    git_branch_name=repo.active_branch.name
+    logging.debug(f"Commit Hash:{git_hash}")
+    logging.debug(f"Branch Name:{git_branch_name}")
+    table.putString("Hash", git_hash)
+    table.putString("Branch", git_branch_name)
 
     # We run the Flask server here. We run it via threading, this is possibly wrong
     app = SecondSight.webserver.Server.startFlask()

@@ -65,8 +65,31 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "gitdb"
+version = "4.0.11"
+description = "Git Object Database"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+smmap = ">=3.0.1,<6"
+
+[[package]]
+name = "gitpython"
+version = "3.1.24"
+description = "GitPython is a python library used to interact with Git repositories"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+gitdb = ">=4.0.1,<5"
+typing-extensions = {version = ">=3.7.4.3", markers = "python_version < \"3.10\""}
+
+[[package]]
 name = "importlib-metadata"
-version = "7.0.0"
+version = "7.0.1"
 description = "Read metadata from Python packages"
 category = "main"
 optional = false
@@ -235,12 +258,28 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "smmap"
+version = "5.0.1"
+description = "A pure Python implementation of a sliding window memory map manager"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
 category = "main"
 optional = false
 python-versions = ">=3.7"
+
+[[package]]
+name = "typing-extensions"
+version = "4.9.0"
+description = "Backported and Experimental Type Hints for Python 3.8+"
+category = "main"
+optional = false
+python-versions = ">=3.8"
 
 [[package]]
 name = "werkzeug"
@@ -271,7 +310,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-ena
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "4a4fad819400de1bdf489602a3b666da36c853073e7e4c8a4f51c3a659c9a0a0"
+content-hash = "ffd2204192744157c128c43a686e90100a6983c166a75e52618edc065c56a85c"
 
 [metadata.files]
 apriltag = []
@@ -280,6 +319,8 @@ click = []
 colorama = []
 exceptiongroup = []
 flask = []
+gitdb = []
+gitpython = []
 importlib-metadata = []
 iniconfig = []
 itsdangerous = []
@@ -294,6 +335,8 @@ pyntcore = []
 pytest = []
 robotpy-wpinet = []
 robotpy-wpiutil = []
+smmap = []
 tomli = []
+typing-extensions = []
 werkzeug = []
 zipp = []
