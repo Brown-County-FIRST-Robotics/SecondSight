@@ -134,3 +134,4 @@ config.json
 # CUSTOM
 logs/
 secondsight_env
+recordings/
