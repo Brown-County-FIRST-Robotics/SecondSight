@@ -26,6 +26,10 @@ class RecordingManager:
         if self.isRecording:
             return
         self.isRecording=True
+        self.writers = [None for _ in SecondSight.Cameras.CameraManager.getCameras()]
+        inst = ntcore.NetworkTableInstance.getDefault()
+        rtable = inst.getTable(SecondSight.config.Configuration().get_value('inst_name'))
+        self.publishers = [(rtable.getSubTable(str(i)).getBooleanTopic("isRecording").publish(), rtable.getSubTable(str(i)).getStringTopic("recordingPath").publish()) for i in range(len(SecondSight.Cameras.CameraManager.getCameras()))]
         for i, cam in enumerate(SecondSight.Cameras.CameraManager.getCameras()):
             self.writers[i] = cv2.VideoWriter(f'{name}_{i}.avi', cv2.VideoWriter_fourcc(*'MP42'), 15.0, (int(cam.width), int(cam.height)))
             self.publishers[i][0].set(True)
@@ -37,7 +41,7 @@ class RecordingManager:
                 writer.write(cam.frame)
 
     def stopRecording(self):
-        isRecording = False
+        self.isRecording = False
         for i,writer in enumerate(self.writers):
             self.publishers[i][0].set(False)
             writer.release()
