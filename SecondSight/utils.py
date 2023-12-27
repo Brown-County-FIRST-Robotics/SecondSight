@@ -17,6 +17,7 @@ def LogMe(func):
         msg += f': {repr(fn_out)}'
         logging.debug(msg)
         return fn_out
+
     return inner
 
 

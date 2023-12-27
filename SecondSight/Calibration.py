@@ -53,7 +53,7 @@ def makeImage():
 
 
 def genCalibrationFrames(ind: int, min_captures: int = 30):
-    cam=SecondSight.Cameras.CameraManager.getCamera(ind)
+    cam = SecondSight.Cameras.CameraManager.getCamera(ind)
     img_counter = 0
     corners_all = []
     ids_all = []
@@ -101,7 +101,7 @@ def genCalibrationFrames(ind: int, min_captures: int = 30):
                 cv2.putText(frame, 'Charuco not found', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (20, 20, 255), 2,
                             cv2.LINE_AA)
             frames_until_capture = 5
-        cv2.putText(frame, f'{str(100*captures/min_captures)[:3].strip(".")}%', (cam.width-120,cam.height-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (20, 255, 0), 2,
+        cv2.putText(frame, f'{str(100 * captures / min_captures)[:3].strip(".")}%', (cam.width - 120, cam.height - 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (20, 255, 0), 2,
                     cv2.LINE_AA)
         ret, buffer = cv2.imencode('.jpg', frame)
         img_bytes = buffer.tobytes()
@@ -120,12 +120,12 @@ def genCalibrationFrames(ind: int, min_captures: int = 30):
     # Now that we've seen all of our images, perform the camera calibration
     # based on the set of points we've discovered
     calibration, cameraMatrix, distCoeffs, rvecs, tvecs = cv2.aruco.calibrateCameraCharuco(
-            charucoCorners=corners_all,
-            charucoIds=ids_all,
-            board=CHARUCO_BOARD,
-            imageSize=image_size,
-            cameraMatrix=None,
-            distCoeffs=None)
+        charucoCorners=corners_all,
+        charucoIds=ids_all,
+        board=CHARUCO_BOARD,
+        imageSize=image_size,
+        cameraMatrix=None,
+        distCoeffs=None)
     frame = cam.uncalibrated.copy()
     cv2.putText(frame, 'Calibration complete', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (20, 255, 20), 2,
                 cv2.LINE_AA)

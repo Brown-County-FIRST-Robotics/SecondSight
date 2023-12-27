@@ -25,7 +25,7 @@ class RecordingManager:
     def startRecording(self, name: str = SecondSight.utils.get8601date()):
         if self.isRecording:
             return
-        self.isRecording=True
+        self.isRecording = True
         self.writers = [None for _ in SecondSight.Cameras.CameraManager.getCameras()]
         inst = ntcore.NetworkTableInstance.getDefault()
         rtable = inst.getTable(SecondSight.config.Configuration().get_value('inst_name'))
@@ -42,8 +42,6 @@ class RecordingManager:
 
     def stopRecording(self):
         self.isRecording = False
-        for i,writer in enumerate(self.writers):
+        for i, writer in enumerate(self.writers):
             self.publishers[i][0].set(False)
             writer.release()
-
-

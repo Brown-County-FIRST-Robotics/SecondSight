@@ -83,7 +83,6 @@ def getRelativePosition(det, camera_matrix, dist_coefficients):
     return PoseEstimate(yaw, pitch, roll, left_right, up_down, distance, det[1])
 
 
-
 if __name__ == "main":
     pass
 else:
