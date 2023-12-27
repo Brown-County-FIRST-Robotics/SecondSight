@@ -52,7 +52,8 @@ def main_cli():
     # TODO: Any functionality specific to a module belongs in that module
     apriltag_manager = SecondSight.AprilTags.Manager.ApriltagManager.getInst()
     cams = SecondSight.Cameras.CameraManager.getCameras()
-    SecondSight.Recorder.RecordingManager.getInst().startRecording()
+    if config.get_value('record_by_default'):
+        SecondSight.Recorder.RecordingManager.getInst().startRecording()
     try:
         while True:
             # Update the cameras

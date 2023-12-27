@@ -26,11 +26,14 @@ def start(app):
                          apriltags
                 </label><br>
                 '''
-            return render_template('config.html', nt_dest=conf.get_value('nt_dest'), cams=Markup(cams), nt_name=conf.get_value('inst_name'))
+            recordsByDefault = 'checked' if conf.get_value('record_by_default') else ''
+            return render_template('config.html', nt_dest=conf.get_value('nt_dest'), cams=Markup(cams), nt_name=conf.get_value('inst_name'), recordByDefault=Markup(recordsByDefault))
         else:
-            needsRestart=(request.form['nt_addr'] != conf.get_value('nt_dest')) or (request.form['nt_name'] != conf.get_value('inst_name'))
+            needsRestart = (request.form['nt_addr'] != conf.get_value('nt_dest')) or (request.form['nt_name'] != conf.get_value('inst_name'))
             conf.set_value('nt_dest', request.form['nt_addr'])
             conf.set_value('inst_name', request.form['nt_name'])
+            conf.set_value('record_by_default', 'recordByDefault' in request.form)
+
             conf.set_value('cameras', [])
             conf.set_value('detects', [])
             for k, v in request.form.items():

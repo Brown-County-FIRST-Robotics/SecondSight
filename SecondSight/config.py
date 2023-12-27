@@ -20,7 +20,8 @@ class Configuration(object):
                 "port": "/dev/video0",
                 "calibration": None,
                 "role": "conecube",
-                "pos": None
+                "pos": None,
+                "record_by_default": False
             }
         ],
         "nt_dest": "127.0.0.1",

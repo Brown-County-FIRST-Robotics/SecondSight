@@ -18,6 +18,10 @@
             <input type="text" id="nt_addr" name="nt_addr" value="{{ nt_dest }}"><br>
             <label for="nt_name">Instance name</label><br>
             <input type="text" id="nt_name" name="nt_name" value="{{ nt_name }}"><br>
+            <label>
+                <input type="checkbox" name="recordByDefault" id="recordByDefault" {{ recordByDefault }}>
+                Records by default
+            </label><br>
             {{ cams|safe }}
         </form>
         <button id="add_cam">Add camera</button>
