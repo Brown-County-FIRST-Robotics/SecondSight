@@ -26,9 +26,11 @@ def start(app):
                          apriltags
                 </label><br>
                 '''
-            return render_template('config.html', nt_dest=conf.get_value('nt_dest'), cams=Markup(cams))
+            return render_template('config.html', nt_dest=conf.get_value('nt_dest'), cams=Markup(cams), nt_name=conf.get_value('inst_name'))
         else:
+            needsRestart=(request.form['nt_addr'] != conf.get_value('nt_dest')) or (request.form['nt_name'] != conf.get_value('inst_name'))
             conf.set_value('nt_dest', request.form['nt_addr'])
+            conf.set_value('inst_name', request.form['nt_name'])
             conf.set_value('cameras', [])
             conf.set_value('detects', [])
             for k, v in request.form.items():
@@ -55,7 +57,7 @@ def start(app):
             SecondSight.Cameras.CameraManager.loadCameras()
             conf.set_value('config_required', False)
             conf.write()
-            return Response('Please restart the code')
+            return Response('Restart required for these changes to take effect' if needsRestart else 'Config updated')
 
 
 if __name__ == "__main__":
