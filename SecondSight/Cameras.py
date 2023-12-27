@@ -7,9 +7,11 @@ import threading
 import SecondSight
 import numpy as np
 
-from typing import List
+from typing import List, Dict
 
 from SecondSight.utils import LogMe
+
+cameras: Dict[str, cv2.VideoCapture] = {}
 
 
 class Camera:
@@ -45,9 +47,13 @@ class Camera:
         self.frame_count = 0
         self.last_frame_count = 0
         self.device = device
-        self.camera = cv2.VideoCapture(device)
+        if device not in cameras:
+            cameras[device]=cv2.VideoCapture(device)
+        self.camera = cameras[device]
         self.roles = roles
         self.pos = position
+
+        self.width, self.height = self.camera.get(cv2.CAP_PROP_FRAME_WIDTH), self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
         if calibration is not None:
             video_size = tuple(calibration["calibration_res"])
@@ -133,7 +139,7 @@ class Camera:
             self._gray = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
         return self._gray
 
-    @LogMe
+
     def get_bytes(self, uncalibrated=False):
         """Return the current frame as a byte array of JPG data
 
@@ -170,6 +176,8 @@ class CameraManager:
         """
         Initialize the cameras as defined in the configuration file
         """
+        cls.camera_cache=[]
+        cls.capture_time=[]
         config = SecondSight.config.Configuration()
         for cam_config in config.get_value('cameras'):
             cls.capture_time.append(0)
