@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import logging
 import os.path
+import subprocess
 import sys
 import time
 import SecondSight
@@ -9,6 +10,20 @@ import asyncio
 import sys
 import git
 import ntcore
+
+
+def compress():
+    for fname in os.listdir('logs'):
+        if not fname.endswith('.gz'):
+            threading.Thread(target=subprocess.call, args=(['gzip', f'logs/{fname}'],)).start()
+    for fname in os.listdir('recordings'):
+        print(fname)
+        if fname.endswith('.avi'):
+            def cmpr(filename):
+                subprocess.call(['ffmpeg', '-i', f'recordings/{filename}', '-c:v', 'vp9', '-b:v', '500K', f'recordings/{filename.replace(".avi",".mp4")}'])
+                os.remove(f'recordings/{filename}')
+            threading.Thread(target=cmpr, args=(fname,)).start()
+
 
 
 def main_cli():
