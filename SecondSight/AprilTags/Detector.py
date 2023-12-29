@@ -71,7 +71,7 @@ def getRelativePosition(det, camera_matrix, dist_coefficients):
     good, rotation_vector, translation_vector, _ = cv2.solvePnPGeneric(object_pts, image_points,
                                                                        camera_matrix,
                                                                        dist_coefficients,
-                                                                       flags=cv2.SOLVEPNP_IPPE_SQUARE)
+                                                                       flags=cv2.SOLVEPNP_ITERATIVE)
     assert good, 'something went wrong with solvePnP'
 
     # Map rotation_vector
@@ -87,34 +87,32 @@ def getRelativePosition(det, camera_matrix, dist_coefficients):
 def getFieldPosition(dets, camera_matrix, dist_coefficients):
     image_points = np.array([i[0] for i in dets]).reshape(1, 4 * len(dets), 2)
 
-    object_pts = np.array([SecondSight.AprilTags.Positions.apriltagFeatures['2023'][str(i[1])] for i in dets])  # TODO: make year configured
+    q=SecondSight.AprilTags.Positions.apriltagFeatures['2023']  # TODO: make year configured
+    q2=[q[str(i[1])][:4] for i in dets]
+    object_pts = np.array(q2).reshape(1, 4 * len(dets), 3)
 
     # Solve for rotation and translation
     good, rotation_vector, translation_vector, _ = cv2.solvePnPGeneric(object_pts, image_points,
                                                                        camera_matrix,
                                                                        dist_coefficients,
-
-                                                                       flags=cv2.SOLVEPNP_IPPE)
+                                                                       flags=cv2.SOLVEPNP_ITERATIVE)
     assert good, 'something went wrong with solvePnP'
 
 
     # Map rotation_vector
-    pitch, yaw, roll = [float(i) for i in rotation_vector[0]]
+    R,_=cv2.Rodrigues(rotation_vector[0])
+    R=R.transpose()
+    translation_vector2=(R*-1).dot(translation_vector[0])
+    rvec,_=cv2.Rodrigues(R)
+    y = -translation_vector2[0]
+    z = -translation_vector2[1]
+    x = translation_vector2[2]
+    print(x,y,z)
+    ry = -rvec[0]
+    rz = -rvec[1]
+    rx = rvec[2]
+    return PoseEstimate(rz, 0, 0, y, z, x, None)
 
-    y = -translation_vector[0][0]
-    z = -translation_vector[0][1]
-    x = translation_vector[0][2]
 
-    pitch2, yaw2, roll2 = [float(i) for i in rotation_vector[-1]]
-
-    y2 = -translation_vector[-1][0]
-    z2 = -translation_vector[-1][1]
-    x2 = translation_vector[-1][2]
-
-    return PoseEstimate(-yaw, pitch, -roll, y, z, x, None),PoseEstimate(-yaw2, pitch2, -roll2, y2, z2, x2, None)
-
-
-if __name__ == "main":
-    pass
-else:
+if __name__ == "__main__":
     pass
