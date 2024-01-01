@@ -15,16 +15,18 @@ def start(app):
                 conf.set_value('cameras', [])
             for i, cam in enumerate(conf.get_value('cameras')):
                 cams += f'''
-                <label for="cam_port_{i}">Camera port</label><br>
-                <input type="text" id="cam_port_{i}" name="cam_port_{i}" value="{cam['port']}"><br>
-                <label>
-                        <input type="checkbox" name="game_objs_{i}" {'checked' if 'conecube' in cam['role'] else ''}>
-                         game objects
+                <div class="camera">
+                    <label for="cam_port_{i}">Camera port</label><br>
+                    <input type="text" id="cam_port_{i}" name="cam_port_{i}" value="{cam['port']}"><br>
+                    <label>
+                       <input type="checkbox" name="game_objs_{i}" {'checked' if 'conecube' in cam['role'] else ''}>
+                        game objects
                     </label><br>
                     <label>
                         <input type="checkbox" name="apriltags_{i}" {'checked' if 'apriltag' in cam['role'] else ''}>
                          apriltags
-                </label><br>
+                    </label><br>
+                </div>
                 '''
             recordsByDefault = 'checked' if conf.get_value('record_by_default') else ''
             return render_template('config.html', nt_dest=conf.get_value('nt_dest'), cams=Markup(cams), nt_name=conf.get_value('inst_name'), recordByDefault=Markup(recordsByDefault))
