@@ -48,9 +48,11 @@ def main_cli():
     # TODO: Only do this if the configuration says to do it
     # TODO: Every module should write to network tables, not from here
     inst = ntcore.NetworkTableInstance.getDefault()
-    inst.startClient4(config.get_value('inst_name'))
-    inst.setServer(config.get_value('nt_dest'))
-    table = inst.getTable(config.get_value('inst_name'))
+    inst.startClient4(config.get_value('inst_name', 'SS_INST'))
+    inst.setServer(config.get_value('nt_dest', 'localhost'))
+    while not inst.isConnected():
+        time.sleep(0.01)
+    table = inst.getTable(config.get_value('inst_name', 'SS_INST'))
     table.putString('config', config.stringify())
     repo = git.Repo('.')
     git_hash = repo.active_branch.commit.hexsha
@@ -59,6 +61,8 @@ def main_cli():
     logging.debug(f"Branch Name:{git_branch_name}")
     table.putString("Hash", git_hash)
     table.putString("Branch", git_branch_name)
+    if len(config.variables) == 0:
+        table.putString("Error", "No_Config")
 
     # We run the Flask server here. We run it via threading, this is possibly wrong
     app = SecondSight.webserver.Server.startFlask()

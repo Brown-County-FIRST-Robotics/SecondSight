@@ -61,13 +61,13 @@ class Configuration(object):
         self.variables = None
 
     @LogMe
-    def get_value(self, item):
+    def get_value(self, item, default=None):
         """
         Get a configuration value
         """
         if self.variables is not None and item in self.variables:
             return self.variables[item]
-        return None
+        return default
 
     @LogMe
     def del_value(self, item):

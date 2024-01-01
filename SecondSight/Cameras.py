@@ -179,7 +179,7 @@ class CameraManager:
         cls.camera_cache=[]
         cls.capture_time=[]
         config = SecondSight.config.Configuration()
-        for cam_config in config.get_value('cameras'):
+        for cam_config in config.get_value('cameras',[]):
             cls.capture_time.append(0)
             cls.camera_cache.append(Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
 
