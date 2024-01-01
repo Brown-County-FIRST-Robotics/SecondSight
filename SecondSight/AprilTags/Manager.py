@@ -22,7 +22,7 @@ class ApriltagManager:
         inst = ntcore.NetworkTableInstance.getDefault()
         rtable = inst.getTable(SecondSight.config.Configuration().get_value('inst_name'))
         pub_config = ntcore.PubSubOptions(periodic=0, sendAll=True, keepDuplicates=True)
-        self.publishers: Dict[int, Tuple[ntcore.DoubleArrayPublisher, ntcore.StringArrayPublisher]] = {i: (rtable.getSubTable(str(i)).getDoubleArrayTopic("Poses").publish(pub_config), rtable.getSubTable(str(i)).getStringArrayTopic("IDs").publish(pub_config)) for i in range(len(SecondSight.Cameras.CameraManager.getCameras()))}
+        self.publishers: Dict[int, Tuple[ntcore.DoubleArrayPublisher, ntcore.StringArrayPublisher]] = {i: (rtable.getSubTable(str(i)).getDoubleArrayTopic("Pose").publish(pub_config), rtable.getSubTable(str(i)).getStringArrayTopic("IDs").publish(pub_config)) for i in range(len(SecondSight.Cameras.CameraManager.getCameras()))}
         self.fetchApriltags()
 
     @LogMe
