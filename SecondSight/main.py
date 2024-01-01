@@ -75,6 +75,9 @@ def main_cli():
         SecondSight.Recorder.RecordingManager.getInst().startRecording()
     try:
         while True:
+            # Prevents loop overrun if no camera is in use
+            if len(SecondSight.Cameras.CameraManager.getCameras())==0:
+                time.sleep(0.1)
             # Update the cameras
             SecondSight.Cameras.CameraManager.updateAll()
             SecondSight.Recorder.RecordingManager.getInst().loop()
