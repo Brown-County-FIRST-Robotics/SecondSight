@@ -13,22 +13,6 @@ class Configuration(object):
     can be read or written to
     """
 
-    # Setting some defaults makes the initial configuration much easier
-    __default_config = {
-        "cameras": [
-            {
-                "port": "/dev/video0",
-                "calibration": None,
-                "role": "conecube",
-                "pos": None,
-                "record_by_default": False
-            }
-        ],
-        "nt_dest": "127.0.0.1",
-        "cube_hsv": [150, 138, 121],
-        "config_required": True
-    }
-
     variables = None
     file_path = None
 
@@ -51,7 +35,7 @@ class Configuration(object):
         self.file_path = file_path
 
         if not os.path.exists(self.file_path):
-            self.variables = self.__default_config
+            self.variables = {}
             self.write()
             logging.critical('No configuration found')
             logging.critical('Once the server starts, please go to http://localhost:5000/config')
