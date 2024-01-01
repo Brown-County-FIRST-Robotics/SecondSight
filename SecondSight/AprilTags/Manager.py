@@ -35,12 +35,14 @@ class ApriltagManager:
                 futures[i] = executor.submit(SecondSight.AprilTags.Detector.getCoords, cam.gray)
         for i, future in futures.items():
             dets = future.result()
-            if len(dets) > 0:
-                poses = []
-                ids = []
-                for det in dets:
-                    pos = SecondSight.AprilTags.Detector.getRelativePosition(det, SecondSight.Cameras.CameraManager.getCamera(i).camera_matrix, None)
-                    ids.append(str(pos.tagID))
-                    poses += [pos.x, pos.y, pos.z, pos.roll, pos.pitch, pos.yaw]
-                self.publishers[i][0].set(poses, math.floor(SecondSight.Cameras.CameraManager.getTime(i) * 1000000))
-                self.publishers[i][1].set(ids, math.floor(SecondSight.Cameras.CameraManager.getTime(i) * 1000000))
+            if len(dets) == 1:
+                a = SecondSight.AprilTags.Detector.getRelativePosition(dets[0], SecondSight.Cameras.CameraManager.getCamera(i).camera_matrix, None)
+                self.publishers[i][0].set([a.x,a.y,a.z,a.rotation.w,a.rotation.x,a.rotation.y,a.rotation.z], math.floor(SecondSight.Cameras.CameraManager.getTime(i) * 1000000))
+                self.publishers[i][1].set([str(a.tagID)], math.floor(SecondSight.Cameras.CameraManager.getTime(i) * 1000000))
+            elif len(dets) > 1:
+                a = SecondSight.AprilTags.Detector.getFieldPosition(dets, SecondSight.Cameras.CameraManager.getCamera(i).camera_matrix, None)
+                self.publishers[i][0].set([a.x, a.y, a.z, a.rotation.w, a.rotation.x, a.rotation.y, a.rotation.z], math.floor(SecondSight.Cameras.CameraManager.getTime(i) * 1000000))
+                self.publishers[i][1].set([str(det[1]) for det in dets], math.floor(SecondSight.Cameras.CameraManager.getTime(i) * 1000000))
+
+
+

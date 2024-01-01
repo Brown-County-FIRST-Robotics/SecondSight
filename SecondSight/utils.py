@@ -1,6 +1,8 @@
 import logging
+import math
 import time
 import ntcore
+import numpy as np
 
 
 def LogMe(func):
@@ -72,3 +74,22 @@ def getEventName():
     name = table.getString('EventName', None)
     assert name is not None
     return name
+
+
+class Quaternion:
+    @classmethod
+    def fromOpenCVAxisAngle(cls, rvec):
+        return cls.fromAxisAngle(np.array([rvec[2], -rvec[0], -rvec[1]]))
+
+    @classmethod
+    def fromAxisAngle(cls, rvec):
+        # https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation#Using_quaternions_as_rotations
+        angle = math.sqrt(rvec[0] ** 2 + rvec[1] ** 2 + rvec[2] ** 2)
+        sin = math.sin(angle / 2)
+        return cls(math.cos(angle / 2), sin * rvec[0], sin * rvec[1], sin * rvec[2])
+
+    def __init__(self, w, x, y, z):
+        self.w = w
+        self.x = x
+        self.y = y
+        self.z = z

@@ -4,14 +4,12 @@ import apriltag
 import cv2
 import numpy as np
 import SecondSight
-from SecondSight.utils import LogMe
+from SecondSight.utils import LogMe,Quaternion
 
 
 class PoseEstimate:
-    def __init__(self, yaw, pitch, roll, y, z, x, tagid):
-        self.yaw = yaw
-        self.pitch = pitch
-        self.roll = roll
+    def __init__(self, rotation: Quaternion, x, y, z, tagid):
+        self.rotation: Quaternion = rotation
         self.y = y
         self.z = z
         self.x = x
@@ -19,9 +17,9 @@ class PoseEstimate:
 
     def __repr__(self):
         if self.tagID is not None:
-            return f'RelativePoseEstimate({self.yaw}, {self.pitch}, {self.roll}, {self.y}, {self.z}, {self.x}, {self.tagID})'
+            return f'RelativePoseEstimate({self.rotation.w}, {self.rotation.x}, {self.rotation.y}, {self.rotation.z}, {self.x}, {self.y}, {self.z}, {self.tagID})'
         else:
-            return f'FieldPoseEstimate({self.yaw}, {self.pitch}, {self.roll}, {self.y}, {self.z}, {self.x})'
+            return f'FieldPoseEstimate({self.rotation.w}, {self.rotation.x}, {self.rotation.y}, {self.rotation.z}, {self.x}, {self.y}, {self.z})'
 
 
 @LogMe
@@ -71,19 +69,41 @@ def getRelativePosition(det, camera_matrix, dist_coefficients):
     good, rotation_vector, translation_vector, _ = cv2.solvePnPGeneric(object_pts, image_points,
                                                                        camera_matrix,
                                                                        dist_coefficients,
-                                                                       flags=cv2.SOLVEPNP_IPPE)
+                                                                       flags=cv2.SOLVEPNP_ITERATIVE)
     assert good, 'something went wrong with solvePnP'
-
-    # Map rotation_vector
-    pitch, yaw, roll = [float(i) for i in rotation_vector[0]]
 
     left_right = translation_vector[0][0]
     up_down = translation_vector[0][1]
     distance = translation_vector[0][2]
-    return PoseEstimate(yaw, pitch, roll, left_right, up_down, distance, det[1])
+    return PoseEstimate(Quaternion.fromOpenCVAxisAngle(rotation_vector[0]), distance, left_right, up_down, det[1])
 
 
-if __name__ == "main":
-    pass
-else:
+@LogMe
+def getFieldPosition(dets, camera_matrix, dist_coefficients):
+    image_points = np.array([i[0] for i in dets]).reshape(1, 4 * len(dets), 2)
+
+    q=SecondSight.AprilTags.Positions.apriltagFeatures['2023']  # TODO: make year configured
+    q2=[q[str(i[1])][:4] for i in dets]
+    object_pts = np.array(q2).reshape(1, 4 * len(dets), 3)
+
+    # Solve for rotation and translation
+    good, rotation_vector, translation_vector, _ = cv2.solvePnPGeneric(object_pts, image_points,
+                                                                       camera_matrix,
+                                                                       dist_coefficients,
+                                                                       flags=cv2.SOLVEPNP_ITERATIVE)
+    assert good, 'something went wrong with solvePnP'
+
+
+    # Map rotation_vector
+    R,_=cv2.Rodrigues(rotation_vector[0])
+    R=R.transpose()
+    translation_vector2=(R*-1).dot(translation_vector[0])
+    rvec,_=cv2.Rodrigues(R)
+    y = -translation_vector2[0]
+    z = -translation_vector2[1]
+    x = translation_vector2[2]
+    return PoseEstimate(Quaternion.fromOpenCVAxisAngle(rvec), x, y, z, None)
+
+
+if __name__ == "__main__":
     pass

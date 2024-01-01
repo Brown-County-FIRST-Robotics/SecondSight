@@ -1,0 +1,761 @@
+CRITICAL:root:No configuration found
+CRITICAL:root:Once the server starts, please go to http://localhost:5000/config
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.116:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.116:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+CRITICAL:root:Camera Read Failed
+DEBUG:root:Entered SecondSight.config.Configuration.set_path()
+DEBUG:root:SecondSight.config.Configuration.set_path(<SecondSight.config.Configuration object at 0x7f77ed2293c0>, 'config.json'): None
+DEBUG:root:Entered SecondSight.config.Configuration.get_value()
+DEBUG:root:SecondSight.config.Configuration.get_value(<SecondSight.config.Configuration object at 0x7f77ed2293c0>, 'cameras'): [{'port': '/dev/video0', 'calibration': None, 'role': 'conecube', 'pos': None}]
+DEBUG:root:Entered SecondSight.Cameras.Camera.__init__()
+DEBUG:root:SecondSight.Cameras.Camera.__init__(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, '/dev/video0', None, None, 'conecube'): None
+INFO:nt:starting network client
+DEBUG:root:Entered SecondSight.config.Configuration.get_value()
+DEBUG:root:SecondSight.config.Configuration.get_value(<SecondSight.config.Configuration object at 0x7f77ed2293c0>, 'nt_dest'): '127.0.0.1'
+INFO:nt:CONNECTED NT4 to 127.0.0.1 port 5810
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.116:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+DEBUG:root:Entered SecondSight.Cameras.Camera.update()
+DEBUG:root:SecondSight.Cameras.Camera.update(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>): None
+DEBUG:root:Entered SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags()
+DEBUG:root:Entered SecondSight.Cameras.Camera.hasRole()
+DEBUG:root:SecondSight.Cameras.Camera.hasRole(<SecondSight.Cameras.Camera object at 0x7f77ed2291e0>, 'apriltags'): False
+DEBUG:root:SecondSight.AprilTags.Manager.ApriltagManager.fetchApriltags(<SecondSight.AprilTags.Manager.ApriltagManager object at 0x7f77ed22b8e0>): None
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.116:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
