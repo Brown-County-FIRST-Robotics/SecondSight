@@ -16,11 +16,18 @@ class RecordingManager:
         return cls.instance
 
     def __init__(self):
-        self.writers = [None for _ in SecondSight.Cameras.CameraManager.getCameras()]
         self.isRecording = False
+        self.rebuild()
+
+    def rebuild(self):
+        self.stopRecording()
+        self.writers = [None for _ in SecondSight.Cameras.CameraManager.getCameras()]
         inst = ntcore.NetworkTableInstance.getDefault()
-        rtable = inst.getTable(SecondSight.config.Configuration().get_value('inst_name'))
+        rtable = inst.getTable(SecondSight.config.Configuration().get_value('inst_name', 'SS_INST'))
         self.publishers: List[Tuple[ntcore.BooleanPublisher, ntcore.StringPublisher]] = [(rtable.getSubTable(str(i)).getBooleanTopic("isRecording").publish(), rtable.getSubTable(str(i)).getStringTopic("recordingPath").publish()) for i in range(len(SecondSight.Cameras.CameraManager.getCameras()))]
+        if self.isRecording:
+            self.startRecording()
+
 
     def startRecording(self, name: str = SecondSight.utils.get8601date()):
         if self.isRecording:
@@ -36,12 +43,15 @@ class RecordingManager:
             self.publishers[i][1].set(f'recordings/{name}_{i}.avi')
 
     def loop(self):
+        if len(self.writers) != len(SecondSight.Cameras.CameraManager.getCameras()):
+            self.rebuild()
         if self.isRecording:
             for cam, writer in zip(SecondSight.Cameras.CameraManager.getCameras(), self.writers):
                 writer.write(cam.frame)
 
     def stopRecording(self):
-        self.isRecording = False
-        for i, writer in enumerate(self.writers):
-            self.publishers[i][0].set(False)
-            writer.release()
+        if self.isRecording:
+            self.isRecording = False
+            for i, writer in enumerate(self.writers):
+                self.publishers[i][0].set(False)
+                writer.release()

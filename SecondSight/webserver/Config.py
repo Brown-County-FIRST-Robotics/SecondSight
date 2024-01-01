@@ -61,6 +61,7 @@ def start(app):
                                    }])
             SecondSight.Cameras.CameraManager.loadCameras()
             conf.set_value('config_required', False)
+            SecondSight.Recorder.RecordingManager.getInst().rebuild()
             conf.write()
             return Response('Restart required for these changes to take effect' if needsRestart else 'Config updated')
 
