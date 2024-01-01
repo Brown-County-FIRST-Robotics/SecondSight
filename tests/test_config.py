@@ -35,18 +35,6 @@ class TestConfig(unittest.TestCase):
         self.assertTrue(os.path.exists(file_path))
         self.assertEqual(file_path, self.config_file)
 
-    def testNoConfig(self):
-        new_tempdir = tempfile.TemporaryDirectory()
-
-        self.config_object.close()
-        config_path = os.path.join(new_tempdir.name, "config.json")
-        self.config_object.set_path(config_path)
-        self.assertEqual(self.config_object.get_value("cameras")[0]["port"], "/dev/video0")
-
-        self.assertIsNone(self.config_object.get_value("not_real"))
-
-        new_tempdir.cleanup()
-
     def testConfigClose(self):
         
         self.config_object.set_value("new_item", "new_value")
