@@ -29,11 +29,13 @@ def start(app):
                 </div>
                 '''
             recordsByDefault = 'checked' if conf.get_value('record_by_default') else ''
-            return render_template('config.html', nt_dest=conf.get_value('nt_dest'), cams=Markup(cams), nt_name=conf.get_value('inst_name'), recordByDefault=Markup(recordsByDefault))
+            return render_template('config.html', nt_dest=conf.get_value('nt_dest', ''), cams=Markup(cams), nt_name=conf.get_value('inst_name', ''), recordByDefault=Markup(recordsByDefault))
         else:
-            needsRestart = (request.form['nt_addr'] != conf.get_value('nt_dest')) or (request.form['nt_name'] != conf.get_value('inst_name'))
-            conf.set_value('nt_dest', request.form['nt_addr'])
-            conf.set_value('inst_name', request.form['nt_name'])
+            needsRestart = (request.form['nt_addr'] != conf.get_value('nt_dest','')) or (request.form['nt_name'] != conf.get_value('inst_name',''))
+            if request.form['nt_addr']!='':
+                conf.set_value('nt_dest', request.form['nt_addr'])
+            if request.form['nt_name'] != '':
+                conf.set_value('inst_name', request.form['nt_name'])
             conf.set_value('record_by_default', 'recordByDefault' in request.form)
 
             conf.set_value('cameras', [])
@@ -59,8 +61,9 @@ def start(app):
                                        'role': roles,
                                        'pos': None
                                    }])
+            if len(conf.get_value('cameras',[])):
+                conf.del_value('cameras')
             SecondSight.Cameras.CameraManager.loadCameras()
-            conf.set_value('config_required', False)
             SecondSight.Recorder.RecordingManager.getInst().rebuild()
             conf.write()
             return Response('Restart required for these changes to take effect' if needsRestart else 'Config updated')
