@@ -25,7 +25,6 @@ def compress():
             threading.Thread(target=cmpr, args=(fname,)).start()
 
 
-
 def main_cli():
     """
     This function acts like the main function in a normal program.
@@ -34,6 +33,10 @@ def main_cli():
 
     # Setup logging
     # TODO: use environment variables for these options eventually
+    if not os.path.exists('logs/'):
+        os.mkdir('logs')
+    if not os.path.exists('recordings/'):
+        os.mkdir('recordings')
     file_handler = logging.FileHandler(filename=f'logs/{SecondSight.utils.get8601date()}')
     stderr_handler = logging.StreamHandler(stream=sys.stderr)
     logging.basicConfig(level=logging.DEBUG, handlers=[file_handler, stderr_handler])
@@ -71,7 +74,7 @@ def main_cli():
     # TODO: Any functionality specific to a module belongs in that module
     apriltag_manager = SecondSight.AprilTags.Manager.ApriltagManager.getInst()
     cams = SecondSight.Cameras.CameraManager.getCameras()
-    if config.get_value('record_by_default'):
+    if config.get_value('record_by_default', False):
         SecondSight.Recorder.RecordingManager.getInst().startRecording()
     try:
         while True:
@@ -84,8 +87,9 @@ def main_cli():
 
             # Acquire the AprilTag data
             apriltag_manager.fetchApriltags()
-    except Exception as _:
+    except Exception as e:
         SecondSight.Recorder.RecordingManager.getInst().stopRecording()
+        raise e
 
 
 if __name__ == "__main__":
