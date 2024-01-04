@@ -4,87 +4,32 @@ import apriltag
 import cv2
 import numpy as np
 import SecondSight
+from SecondSight.utils import LogMe,Quaternion
 
 
-tag_size = 6
-
-
-class ApriltagDetection:
-    def __init__(self, yaw, pitch, roll, left_right, up_down, distance, rms, tagid):
-        self.yaw = yaw
-        self.pitch = pitch
-        self.roll = roll
-        self.left_right = left_right
-        self.up_down = up_down
-        self.distance = distance
-        self.RMSError = rms
+class PoseEstimate:
+    def __init__(self, rotation: Quaternion, x, y, z, tagid, rms):
+        self.rotation: Quaternion = rotation
+        self.y = y
+        self.z = z
+        self.x = x
         self.tagID = tagid
+        self.rms=rms
 
-        self.field_yaw = None
-        self.field_x = None
-        self.field_y = None
-
-        self.yaw_std = None
-        self.left_right_std = None
-        self.distance_std = None
-        self.error = None
-
-    def calcError(self, error_matrix=None, error_threshold=3000):  # TODO: add error threshold
-        if error_matrix is None:
-            error_matrix = np.array([  # TODO: add real values
-                [1, 1, 1, 1],
-                [1, 1, 1, 1],
-                [1, 1, 1, 1],
-                [1, 1, 1, 1],
-            ])
-        input_matrix = np.array([  # TODO: rename
-            self.yaw,
-            self.left_right,
-            self.distance,
-            self.RMSError
-        ])
-        self.yaw_std, self.left_right_std, self.distance_std, self.error = [i for i in
-                                                                            np.dot(error_matrix, input_matrix).tolist()]
-        if self.error > error_threshold:
-            logging.info(f'discarded a value (error:{self.error})')
-
-    def json(self, error=False):
-        res = {
-            "left_right": self.left_right,
-            "up_down": self.up_down,
-            "distance": self.distance,
-            "pitch": self.pitch,
-            "yaw": self.yaw,
-            "roll": self.roll,
-            "tagid": self.tagID
-        }
-        if error:
-            self.calcError()
-            res['rms']=self.RMSError
-            res['yaw_std']=self.yaw_std
-            res['left_right_std'] = self.left_right_std
-            res['distance_std'] = self.distance_std
-            res['error'] = self.error
-        return res
-
-    def calcFieldPos(self, year):
-        pos = SecondSight.AprilTags.Positions.apriltagPositions[year][str(self.tagID)]
-        camera_theta = 180 + self.yaw + pos[3]
-        thetaCA = camera_theta - math.atan(self.left_right / self.distance) * 180 / math.pi
-        camera_Y = pos[1] - (math.sqrt(self.left_right ** 2 + self.distance ** 2) * math.sin(thetaCA * math.pi / 180))
-        camera_X = pos[0] - (math.sqrt(self.left_right ** 2 + self.distance ** 2) * math.cos(thetaCA * math.pi / 180))
-        self.field_x = camera_X
-        self.field_y = camera_Y
-        self.field_yaw=camera_theta
-        return camera_X, camera_Y, camera_theta
+    def __repr__(self):
+        if self.tagID is not None:
+            return f'RelativePoseEstimate({self.rotation.w}, {self.rotation.x}, {self.rotation.y}, {self.rotation.z}, {self.x}, {self.y}, {self.z}, {self.tagID}, {self.rms})'
+        else:
+            return f'FieldPoseEstimate({self.rotation.w}, {self.rotation.x}, {self.rotation.y}, {self.rotation.z}, {self.x}, {self.y}, {self.z}, {self.rms})'
 
 
-def getCoords(img, valid_tags=range(1, 9), check_hamming=True):
+@LogMe
+def getCoords(img, year, valid_tags=range(1, 9)):
     if img is None:
         return []
     if len(img.shape) != 2:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    options = apriltag.DetectorOptions(families='tag16h5',
+    options = apriltag.DetectorOptions(families='tag16h5' if year=='2023' else 'tag36h11',
                                        border=1,
                                        nthreads=1,
                                        quad_decimate=1.0,
@@ -110,56 +55,56 @@ def getCoords(img, valid_tags=range(1, 9), check_hamming=True):
     return detections
 
 
-def getPosition(img, camera_matrix, dist_coefficients, valid_tags=range(1, 9), check_hamming=True):
-    """
-    This function takes an image and returns the position of apriltags in the image
+@LogMe
+def getRelativePosition(det, camera_matrix, dist_coefficients, year):
+    image_points = np.array(det[0]).reshape(1, 4, 2)
 
-    :param img: The image you want to find apriltags in (must be grayscale)
-    :param camera_matrix: The camera's calibration matrix
-    :param dist_coefficients: The distortion coefficients of the camera
-    :param valid_tags: (Default: 1-9) The apriltags to look for
-    :param check_hamming: (Default: True) Checks if the hamming value is 0
-    :return: A list of ApriltagDetection objects, or None if it fails
-    :rtype: list(ApriltagDetection objects), or None if no apriltags are found
-    """
-    # Check if image is grayscale
-    if img is None:
-        return []
-    detection_results=getCoords(img, valid_tags=valid_tags, check_hamming=check_hamming)
-    detections = []
-    if len(detection_results) > 0:  # Check if there are any apriltags
-        for detection, tagid in detection_results:
-            # Check if apriltag is allowed
+    ob_pt1 = [-SecondSight.AprilTags.Positions.tag_size[year] / 2, -SecondSight.AprilTags.Positions.tag_size[year] / 2, 0.0]
+    ob_pt2 = [SecondSight.AprilTags.Positions.tag_size[year] / 2, -SecondSight.AprilTags.Positions.tag_size[year] / 2, 0.0]
+    ob_pt3 = [SecondSight.AprilTags.Positions.tag_size[year] / 2, SecondSight.AprilTags.Positions.tag_size[year] / 2, 0.0]
+    ob_pt4 = [-SecondSight.AprilTags.Positions.tag_size[year] / 2, SecondSight.AprilTags.Positions.tag_size[year] / 2, 0.0]
+    ob_pts = ob_pt1 + ob_pt2 + ob_pt3 + ob_pt4
+    object_pts = np.array(ob_pts).reshape(4, 3)
 
-            image_points = np.array(detection).reshape(1, 4, 2)
+    # Solve for rotation and translation
+    good, rotation_vector, translation_vector, rms = cv2.solvePnPGeneric(object_pts, image_points,
+                                                                         camera_matrix,
+                                                                         dist_coefficients,
+                                                                         flags=cv2.SOLVEPNP_ITERATIVE)
+    assert good, 'something went wrong with solvePnP'
 
-            ob_pt1 = [-tag_size / 2, -tag_size / 2, 0.0]
-            ob_pt2 = [tag_size / 2, -tag_size / 2, 0.0]
-            ob_pt3 = [tag_size / 2, tag_size / 2, 0.0]
-            ob_pt4 = [-tag_size / 2, tag_size / 2, 0.0]
-            ob_pts = ob_pt1 + ob_pt2 + ob_pt3 + ob_pt4
-            object_pts = np.array(ob_pts).reshape(4, 3)
-
-            # Solve for rotation and translation
-            good, rotation_vector, translation_vector, rms = cv2.solvePnPGeneric(object_pts, image_points,
-                                                                                 camera_matrix,
-                                                                                 dist_coefficients,
-                                                                                 flags=cv2.SOLVEPNP_ITERATIVE)
-            assert good, 'something went wrong with solvePnP'
-
-            # Map rotation_vector
-            pitch, yaw, roll = [float(i) for i in rotation_vector[0] * 180 / math.pi]
-
-            left_right = translation_vector[0][0] * 2.54
-            up_down = -translation_vector[0][1] * 2.54
-            distance = translation_vector[0][2] * 2.54
-
-            logging.info(f'april pos: yaw:{str(yaw)[:5]}, lr:{str(left_right)[:7]}, distance:{str(distance)[:7]}, rms:{rms}, tag:{tagid}')
-            detections.append(ApriltagDetection(yaw, pitch, roll, left_right[0], up_down[0], distance[0], rms[0][0], tagid))
-    return detections
+    left_right = translation_vector[0][0]
+    up_down = translation_vector[0][1]
+    distance = translation_vector[0][2]
+    return PoseEstimate(Quaternion.fromOpenCVAxisAngle(rotation_vector[0]), distance, left_right, up_down, det[1], rms[0][0])
 
 
-if __name__ == "main":
-    pass
-else:
+@LogMe
+def getFieldPosition(dets, camera_matrix, dist_coefficients, year):
+    image_points = np.array([i[0] for i in dets]).reshape(1, 4 * len(dets), 2)
+
+    q=SecondSight.AprilTags.Positions.apriltagFeatures[year]
+    q2=[q[str(i[1])] for i in dets]
+    object_pts = np.array(q2).reshape(1, 4 * len(dets), 3)
+
+    # Solve for rotation and translation
+    good, rotation_vector, translation_vector, rms = cv2.solvePnPGeneric(object_pts, image_points,
+                                                                         camera_matrix,
+                                                                         dist_coefficients,
+                                                                         flags=cv2.SOLVEPNP_ITERATIVE)
+    assert good, 'something went wrong with solvePnP'
+
+
+    # Map rotation_vector
+    R,_=cv2.Rodrigues(rotation_vector[0])
+    R=R.transpose()
+    translation_vector2=(R*-1).dot(translation_vector[0])
+    rvec,_=cv2.Rodrigues(R)
+    y = -translation_vector2[0]
+    z = -translation_vector2[1]
+    x = translation_vector2[2]
+    return PoseEstimate(Quaternion.fromOpenCVAxisAngle(rvec), x, y, z, None, rms[0][0])
+
+
+if __name__ == "__main__":
     pass

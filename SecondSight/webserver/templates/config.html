@@ -3,6 +3,11 @@
     <head>
         <title>Start here</title>
         <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+        <style>
+            .camera{
+                border: solid;
+            }
+        </style>
     </head>
     <body>
         <form action="/config" method="post">
@@ -16,6 +21,12 @@
             </label><br>
             <label for="nt_addr">Networktables address</label><br>
             <input type="text" id="nt_addr" name="nt_addr" value="{{ nt_dest }}"><br>
+            <label for="nt_name">Instance name</label><br>
+            <input type="text" id="nt_name" name="nt_name" value="{{ nt_name }}"><br>
+            <label>
+                <input type="checkbox" name="recordByDefault" id="recordByDefault" {{ recordByDefault }}>
+                Records by default
+            </label><br>
             {{ cams|safe }}
         </form>
         <button id="add_cam">Add camera</button>
@@ -24,16 +35,18 @@
             let cam_count=0;
             $("#add_cam").on('click', function (){
                 $("form").append(`
-                    <label for="cam_port_${cam_count}">Camera port</label><br>
-                    <input type="text" id="cam_port_${cam_count}" name="cam_port_${cam_count}"><br>
-                    <label>
-                        <input type="checkbox" name="game_objs_${cam_count}">
-                         game objects
-                    </label><br>
-                    <label>
-                        <input type="checkbox" name="apriltags_${cam_count}">
-                         apriltags
-                    </label><br>
+                    <div class="camera">
+                        <label for="cam_port_${cam_count}">Camera port</label><br>
+                        <input type="text" id="cam_port_${cam_count}" name="cam_port_${cam_count}"><br>
+                        <label>
+                            <input type="checkbox" name="game_objs_${cam_count}">
+                             game objects
+                        </label><br>
+                        <label>
+                            <input type="checkbox" name="apriltags_${cam_count}">
+                             apriltags
+                        </label><br>
+                    </div>
                 `);
                 cam_count+=1;
             });

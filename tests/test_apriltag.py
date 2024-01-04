@@ -38,7 +38,7 @@ class TestCamera(unittest.TestCase):
                 r_err = math.fabs(dets[0].pitch - rvec[0]) + math.fabs(dets[0].yaw - rvec[1]) + math.fabs(dets[0].roll - rvec[2])
                 self.assertTrue(r_err < rot_threshold, f"Rotational error exceeds limit. Error was {r_err}, limit is {rot_threshold}")
 
-                t_err = math.fabs(dets[0].left_right - tvec[0]) + math.fabs(dets[0].up_down + tvec[1]) + math.fabs(dets[0].distance - tvec[2])
+                t_err = math.fabs(dets[0].left_right_x - tvec[0]) + math.fabs(dets[0].up_down_z + tvec[1]) + math.fabs(dets[0].distance_y - tvec[2])
                 self.assertTrue(t_err < tr_threshold, f"Translation error exceeds limit. Error was {t_err}, limit is {tr_threshold}")
                 total_t_err += t_err
                 total_rot_err += r_err

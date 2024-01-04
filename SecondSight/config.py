@@ -3,6 +3,7 @@ import logging
 import sys
 import json
 import os
+from SecondSight.utils import LogMe
 
 
 class Configuration(object):
@@ -11,21 +12,6 @@ class Configuration(object):
     This object needs the set_path() to be called before configuration data
     can be read or written to
     """
-
-    # Setting some defaults makes the initial configuration much easier
-    __default_config = {
-        "cameras": [
-            {
-                "port": "/dev/video0",
-                "calibration": None,
-                "role": "conecube",
-                "pos": None
-            }
-        ],
-        "nt_dest": "127.0.0.1",
-        "cube_hsv": [150, 138, 121],
-        "config_required": True
-    }
 
     variables = None
     file_path = None
@@ -37,7 +23,8 @@ class Configuration(object):
         if not hasattr(cls, 'instance'):
             cls.instance = super(Configuration, cls).__new__(cls)
         return cls.instance
-    
+
+    @LogMe
     def set_path(self, file_path):
         """
         Set the file to store the configuration data.
@@ -48,7 +35,7 @@ class Configuration(object):
         self.file_path = file_path
 
         if not os.path.exists(self.file_path):
-            self.variables = self.__default_config
+            self.variables = {}
             self.write()
             logging.critical('No configuration found')
             logging.critical('Once the server starts, please go to http://localhost:5000/config')
@@ -56,6 +43,7 @@ class Configuration(object):
             with open(self.file_path, 'r') as fh_in:
                 self.variables = json.load(fh_in)
 
+    @LogMe
     def write(self):
         """
         Write the current configuration file to disk
@@ -63,6 +51,7 @@ class Configuration(object):
         with open(self.file_path, 'w') as fh_out:
             json.dump(self.variables, fh_out)
 
+    @LogMe
     def close(self):
         """
         Write the current configuration file to disk and set the
@@ -71,25 +60,33 @@ class Configuration(object):
         self.write()
         self.variables = None
 
-    def get_value(self, item):
+    @LogMe
+    def get_value(self, item, default=None):
         """
         Get a configuration value
         """
         if self.variables is not None and item in self.variables:
             return self.variables[item]
-        return None
+        return default
 
+    @LogMe
     def del_value(self, item):
         self.variables.pop(item)
 
+    @LogMe
     def value_exists(self, item):
         return item in self.variables
 
+    @LogMe
     def set_value(self, item, value):
         """
         Store a configuration value
         """
         self.variables[item] = value
+
+    @LogMe
+    def stringify(self):
+        return str(self.variables)
 
 
 if __name__ == "__main__":

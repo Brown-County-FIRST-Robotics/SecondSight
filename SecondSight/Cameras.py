@@ -7,7 +7,11 @@ import threading
 import SecondSight
 import numpy as np
 
-from typing import List
+from typing import List, Dict
+
+from SecondSight.utils import LogMe
+
+cameras: Dict[str, cv2.VideoCapture] = {}
 
 
 class Camera:
@@ -20,6 +24,7 @@ class Camera:
     # Calibration data shoudl be in the format of
     # calibration: {'camera_matrix': %%, 'dist':%%, 'calibration_res':%%, 'processing_res':%%}
 
+    @LogMe
     def __init__(self, device, calibration, position, roles):
         """Camera constructor
 
@@ -31,7 +36,6 @@ class Camera:
         :return:
         """
 
-        logging.debug(f"camera init {device}")
         self.frame = None
         self._hsv = None
         self._gray = None
@@ -39,14 +43,17 @@ class Camera:
         self._bytes = None
         self._bytes_uncalibrated = None
 
-
         self.id = None
         self.frame_count = 0
         self.last_frame_count = 0
         self.device = device
-        self.camera = cv2.VideoCapture(device)
+        if device not in cameras:
+            cameras[device]=cv2.VideoCapture(device)
+        self.camera = cameras[device]
         self.roles = roles
-        self.pos=position
+        self.pos = position
+
+        self.width, self.height = self.camera.get(cv2.CAP_PROP_FRAME_WIDTH), self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
         if calibration is not None:
             video_size = tuple(calibration["calibration_res"])
@@ -54,6 +61,7 @@ class Camera:
             self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, video_size[1])
             test_video_size = (self.camera.get(cv2.CAP_PROP_FRAME_WIDTH), self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
             assert tuple(test_video_size) == tuple(video_size), 'camera resolution didnt set'
+            self.width, self.height = test_video_size
 
             raw_camera_matrix = np.array(calibration['camera_matrix'])
             processing_resolution = np.array(calibration['processing_res'])
@@ -70,21 +78,28 @@ class Camera:
                 self.map2 = None
                 self.camera_matrix = raw_camera_matrix
         else:
-            self.map1=None
-            self.map2=None
-            self.camera_matrix=None
+            self.map1 = None
+            self.map2 = None
+            self.camera_matrix = None
 
+    @LogMe
+    def grab(self):
+        success = self.camera.grab()
+        if not success:
+            logging.critical("Camera Read Failed")
+
+    @LogMe
     def update(self):
         """Read a new camera frame from the camera
 
         :return:
         """
 
-        success, frame = self.camera.read()
+        success, frame = self.camera.retrieve()
         if frame is None or not success:
             logging.critical("Camera Read Failed")
-            return 
-        self.uncalibrated = frame.copy() 
+            return
+        self.uncalibrated = frame.copy()
         if self.map2 is not None:
             frame = cv2.remap(frame, self.map1, self.map2, cv2.INTER_CUBIC)
         self.frame = frame
@@ -93,6 +108,7 @@ class Camera:
         self._bytes = None
         self._bytes_uncalibrated = None
 
+    @LogMe
     def get_frame(self, flipped=False):
         """Return the current frame
         
@@ -106,34 +122,23 @@ class Camera:
             return self.frame
 
     @property
+    @LogMe
     def hsv(self):
         "Return the current frame HSV data"
-        logging.debug("camera.get_hsv")
         if self._hsv is None:
             self._hsv = cv2.cvtColor(self.frame, cv2.COLOR_BGR2HSV)
         return self._hsv
 
     @property
+    @LogMe
     def gray(self):
         "return the current frame in grayscale"
-        logging.debug("camera.get_gray")
         if self.frame is None:
             return None
         if self._gray is None:
             self._gray = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
         return self._gray
 
-    @property
-    def height(self):
-        "return the height of the image"
-        logging.debug("camera.get_height")
-        return len(self.frame)
-
-    @property
-    def width(self):
-        "return the width of the image"
-        logging.debug("camera.get_width")
-        return len(self.frame[0])
 
     def get_bytes(self, uncalibrated=False):
         """Return the current frame as a byte array of JPG data
@@ -146,33 +151,36 @@ class Camera:
         # TODO: This is confusing. We should probably call it "calibrated"
         if not uncalibrated:
             if self._bytes is None:
-                logging.debug("camera.get_bytes")
                 frame = self.frame
                 ret, buffer = cv2.imencode('.jpg', frame)
                 self._bytes = buffer.tobytes()
             return self._bytes
         else:
             if self._bytes_uncalibrated is None:
-                logging.debug("camera.get_bytes")
                 frame = self.uncalibrated
                 ret, buffer = cv2.imencode('.jpg', frame)
                 self._bytes_uncalibrated = buffer.tobytes()
             return self._bytes_uncalibrated
 
+    @LogMe
     def hasRole(self, role):
         return role in self.roles
 
 
 class CameraManager:
     camera_cache = []
+    capture_time = []
 
     @classmethod
     def loadCameras(cls) -> None:
         """
         Initialize the cameras as defined in the configuration file
         """
+        cls.camera_cache=[]
+        cls.capture_time=[]
         config = SecondSight.config.Configuration()
-        for cam_config in config.get_value('cameras'):
+        for cam_config in config.get_value('cameras',[]):
+            cls.capture_time.append(0)
             cls.camera_cache.append(Camera(cam_config['port'], cam_config['calibration'], cam_config['pos'], cam_config['role']))
 
     @classmethod
@@ -196,8 +204,15 @@ class CameraManager:
         """
         Update all the cameras
         """
+        for i, cam in enumerate(cls.getCameras()):
+            cam.grab()
+            cls.capture_time[i] = time.time()
         for cam in cls.getCameras():
             cam.update()
+
+    @classmethod
+    def getTime(cls, ind):
+        return cls.capture_time[ind]
 
 
 if __name__ == "__main__":

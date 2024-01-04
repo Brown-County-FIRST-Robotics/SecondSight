@@ -15,20 +15,29 @@ def start(app):
                 conf.set_value('cameras', [])
             for i, cam in enumerate(conf.get_value('cameras')):
                 cams += f'''
-                <label for="cam_port_{i}">Camera port</label><br>
-                <input type="text" id="cam_port_{i}" name="cam_port_{i}" value="{cam['port']}"><br>
-                <label>
-                        <input type="checkbox" name="game_objs_{i}" {'checked' if 'conecube' in cam['role'] else ''}>
-                         game objects
+                <div class="camera">
+                    <label for="cam_port_{i}">Camera port</label><br>
+                    <input type="text" id="cam_port_{i}" name="cam_port_{i}" value="{cam['port']}"><br>
+                    <label>
+                       <input type="checkbox" name="game_objs_{i}" {'checked' if 'conecube' in cam['role'] else ''}>
+                        game objects
                     </label><br>
                     <label>
                         <input type="checkbox" name="apriltags_{i}" {'checked' if 'apriltag' in cam['role'] else ''}>
                          apriltags
-                </label><br>
+                    </label><br>
+                </div>
                 '''
-            return render_template('config.html', nt_dest=conf.get_value('nt_dest'), cams=Markup(cams))
+            recordsByDefault = 'checked' if conf.get_value('record_by_default') else ''
+            return render_template('config.html', nt_dest=conf.get_value('nt_dest', ''), cams=Markup(cams), nt_name=conf.get_value('inst_name', ''), recordByDefault=Markup(recordsByDefault))
         else:
-            conf.set_value('nt_dest', request.form['nt_addr'])
+            needsRestart = (request.form['nt_addr'] != conf.get_value('nt_dest','')) or (request.form['nt_name'] != conf.get_value('inst_name',''))
+            if request.form['nt_addr']!='':
+                conf.set_value('nt_dest', request.form['nt_addr'])
+            if request.form['nt_name'] != '':
+                conf.set_value('inst_name', request.form['nt_name'])
+            conf.set_value('record_by_default', 'recordByDefault' in request.form)
+
             conf.set_value('cameras', [])
             conf.set_value('detects', [])
             for k, v in request.form.items():
@@ -41,10 +50,10 @@ def start(app):
                     roles = []
                     if f"apriltags_{k.split('_')[-1]}" in request.form:
                         if request.form[f"apriltags_{k.split('_')[-1]}"] == 'on':
-                            roles.append('apriltag')
+                            roles.append('apriltags')
                     if f"game_objs_{k.split('_')[-1]}" in request.form:
                         if request.form[f"game_objs_{k.split('_')[-1]}"] == 'on':
-                            roles.append('conecube')
+                            roles.append('gamepieces')
                     conf.set_value('cameras', conf.get_value('cameras') +
                                    [{
                                        'port': v,
@@ -52,10 +61,12 @@ def start(app):
                                        'role': roles,
                                        'pos': None
                                    }])
+            if len(conf.get_value('cameras',[])):
+                conf.del_value('cameras')
             SecondSight.Cameras.CameraManager.loadCameras()
-            conf.set_value('config_required', False)
+            SecondSight.Recorder.RecordingManager.getInst().rebuild()
             conf.write()
-            return Response('Please restart the code')
+            return Response('Restart required for these changes to take effect' if needsRestart else 'Config updated')
 
 
 if __name__ == "__main__":
