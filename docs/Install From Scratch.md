@@ -1,4 +1,4 @@
-# Installation
+# Installation from Scratch
 
 Install all the apt dependencies
 ```shell
