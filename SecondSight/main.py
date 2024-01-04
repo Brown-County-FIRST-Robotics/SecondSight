@@ -53,15 +53,20 @@ def main_cli():
     inst = ntcore.NetworkTableInstance.getDefault()
     inst.startClient4(config.get_value('inst_name', 'SS_INST'))
     inst.setServer(config.get_value('nt_dest', 'localhost'))
+    ping_start_time = time.time()
     while not inst.isConnected():
         time.sleep(0.01)
+        if ping_start_time + 5 < time.time():
+            break
+    else:
+        logging.critical("Failed to connect to networktables")
     table = inst.getTable(config.get_value('inst_name', 'SS_INST'))
     table.putString('config', config.stringify())
     repo = git.Repo('.')
     git_hash = repo.active_branch.commit.hexsha
     git_branch_name = repo.active_branch.name
-    logging.debug(f"Commit Hash:{git_hash}")
-    logging.debug(f"Branch Name:{git_branch_name}")
+    logging.info(f"Commit Hash:{git_hash}")
+    logging.info(f"Branch Name:{git_branch_name}")
     table.putString("Hash", git_hash)
     table.putString("Branch", git_branch_name)
     if len(config.variables) == 0:
