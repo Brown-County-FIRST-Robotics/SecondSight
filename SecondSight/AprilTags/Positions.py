@@ -56,7 +56,7 @@ tag_size = tag_size_in * .0254  # meters
 
 """
 0       1
-    4
+     
 3       2
 """
 
@@ -81,4 +81,4 @@ def corners(rulesX, rulesY, rulesZ, rulesZRot):
         return out
 
 
-apriltagFeatures = {'2023': {i: corners(x, y, z, r) + [toOurCoords(x, y, z)] for i, (x, y, z, r) in apriltagPositions['2023'].items()}}
+apriltagFeatures = {'2023': {i: corners(x, y, z, r) for i, (x, y, z, r) in apriltagPositions['2023'].items()}}

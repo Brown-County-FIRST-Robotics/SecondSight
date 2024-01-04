@@ -84,7 +84,7 @@ def getFieldPosition(dets, camera_matrix, dist_coefficients):
     image_points = np.array([i[0] for i in dets]).reshape(1, 4 * len(dets), 2)
 
     q=SecondSight.AprilTags.Positions.apriltagFeatures['2023']  # TODO: make year configured
-    q2=[q[str(i[1])][:4] for i in dets]
+    q2=[q[str(i[1])] for i in dets]
     object_pts = np.array(q2).reshape(1, 4 * len(dets), 3)
 
     # Solve for rotation and translation
