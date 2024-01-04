@@ -52,6 +52,7 @@ class Camera:
         self.camera = cameras[device]
         self.roles = roles
         self.pos = position
+        self.failing=False
 
         self.width, self.height = self.camera.get(cv2.CAP_PROP_FRAME_WIDTH), self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
@@ -87,6 +88,7 @@ class Camera:
         success = self.camera.grab()
         if not success:
             logging.critical("Camera Read Failed")
+            self.failing = True
 
     @LogMe
     def update(self):
@@ -98,11 +100,13 @@ class Camera:
         success, frame = self.camera.retrieve()
         if frame is None or not success:
             logging.critical("Camera Read Failed")
+            self.failing = True
             return
         self.uncalibrated = frame.copy()
         if self.map2 is not None:
             frame = cv2.remap(frame, self.map1, self.map2, cv2.INTER_CUBIC)
         self.frame = frame
+        self.failing = False
         self._hsv = None
         self._gray = None
         self._bytes = None
