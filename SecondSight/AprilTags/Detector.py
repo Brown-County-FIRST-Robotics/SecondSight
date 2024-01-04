@@ -8,18 +8,19 @@ from SecondSight.utils import LogMe,Quaternion
 
 
 class PoseEstimate:
-    def __init__(self, rotation: Quaternion, x, y, z, tagid):
+    def __init__(self, rotation: Quaternion, x, y, z, tagid, rms):
         self.rotation: Quaternion = rotation
         self.y = y
         self.z = z
         self.x = x
         self.tagID = tagid
+        self.rms=rms
 
     def __repr__(self):
         if self.tagID is not None:
-            return f'RelativePoseEstimate({self.rotation.w}, {self.rotation.x}, {self.rotation.y}, {self.rotation.z}, {self.x}, {self.y}, {self.z}, {self.tagID})'
+            return f'RelativePoseEstimate({self.rotation.w}, {self.rotation.x}, {self.rotation.y}, {self.rotation.z}, {self.x}, {self.y}, {self.z}, {self.tagID}, {self.rms})'
         else:
-            return f'FieldPoseEstimate({self.rotation.w}, {self.rotation.x}, {self.rotation.y}, {self.rotation.z}, {self.x}, {self.y}, {self.z})'
+            return f'FieldPoseEstimate({self.rotation.w}, {self.rotation.x}, {self.rotation.y}, {self.rotation.z}, {self.x}, {self.y}, {self.z}, {self.rms})'
 
 
 @LogMe
@@ -66,7 +67,7 @@ def getRelativePosition(det, camera_matrix, dist_coefficients):
     object_pts = np.array(ob_pts).reshape(4, 3)
 
     # Solve for rotation and translation
-    good, rotation_vector, translation_vector, _ = cv2.solvePnPGeneric(object_pts, image_points,
+    good, rotation_vector, translation_vector, rms = cv2.solvePnPGeneric(object_pts, image_points,
                                                                        camera_matrix,
                                                                        dist_coefficients,
                                                                        flags=cv2.SOLVEPNP_ITERATIVE)
@@ -75,7 +76,7 @@ def getRelativePosition(det, camera_matrix, dist_coefficients):
     left_right = translation_vector[0][0]
     up_down = translation_vector[0][1]
     distance = translation_vector[0][2]
-    return PoseEstimate(Quaternion.fromOpenCVAxisAngle(rotation_vector[0]), distance, left_right, up_down, det[1])
+    return PoseEstimate(Quaternion.fromOpenCVAxisAngle(rotation_vector[0]), distance, left_right, up_down, det[1], rms[0][0])
 
 
 @LogMe
@@ -87,7 +88,7 @@ def getFieldPosition(dets, camera_matrix, dist_coefficients):
     object_pts = np.array(q2).reshape(1, 4 * len(dets), 3)
 
     # Solve for rotation and translation
-    good, rotation_vector, translation_vector, _ = cv2.solvePnPGeneric(object_pts, image_points,
+    good, rotation_vector, translation_vector, rms = cv2.solvePnPGeneric(object_pts, image_points,
                                                                        camera_matrix,
                                                                        dist_coefficients,
                                                                        flags=cv2.SOLVEPNP_ITERATIVE)
@@ -102,7 +103,7 @@ def getFieldPosition(dets, camera_matrix, dist_coefficients):
     y = -translation_vector2[0]
     z = -translation_vector2[1]
     x = translation_vector2[2]
-    return PoseEstimate(Quaternion.fromOpenCVAxisAngle(rvec), x, y, z, None)
+    return PoseEstimate(Quaternion.fromOpenCVAxisAngle(rvec), x, y, z, None, rms[0][0])
 
 
 if __name__ == "__main__":
