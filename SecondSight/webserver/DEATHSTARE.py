@@ -2,6 +2,8 @@
 
 import logging
 from flask import Flask, render_template, Response, redirect, request, jsonify
+from markupsafe import Markup
+
 import SecondSight
 import time
 
@@ -37,12 +39,23 @@ def start(app):
     @app.route('/')
     def index():
         # if config is needed, redirect to create config screen
-        config = SecondSight.config.Configuration() 
-        if config.get_value('config_required'):
-            return redirect('/config')
+        config = SecondSight.config.Configuration()
+        cams=''
+        for i, cam in enumerate(config.get_value('cameras')):
+            cam=SecondSight.Cameras.CameraManager.getCamera(i)
+            cams += f'''
+            <div class="camera">
+                <h2{' class="error"' if cam.failing else ''}>Camera {i+1}{' (Failing!)' if cam.failing else ''}</h2>
+                <a href="/camera_feed/{i}">Feed</a>
+                <p>Port: {cam.device}</p>
+                <p>{'Roles:'+', '.join(cam.roles) if len(cam.roles)>0 else 'No roles assigned'}</p>
+                <p{' class="error">Not c' if cam.map2 is None else '>C'}alibrated</p>
+                <a href="/calibration?camera={i}">Calibrate</a>
+            </div>
+            '''
         
         """The default page"""
-        return render_template('index.html')
+        return render_template('index.html', cams=Markup(cams))
 
     # This code needs a few changes
     @app.route('/preview_image')
