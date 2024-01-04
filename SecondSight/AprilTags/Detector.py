@@ -24,12 +24,12 @@ class PoseEstimate:
 
 
 @LogMe
-def getCoords(img, valid_tags=range(1, 9)):
+def getCoords(img, year, valid_tags=range(1, 9)):
     if img is None:
         return []
     if len(img.shape) != 2:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    options = apriltag.DetectorOptions(families='tag16h5',
+    options = apriltag.DetectorOptions(families='tag16h5' if year=='2023' else 'tag36h11',
                                        border=1,
                                        nthreads=1,
                                        quad_decimate=1.0,
@@ -56,21 +56,21 @@ def getCoords(img, valid_tags=range(1, 9)):
 
 
 @LogMe
-def getRelativePosition(det, camera_matrix, dist_coefficients):
+def getRelativePosition(det, camera_matrix, dist_coefficients, year):
     image_points = np.array(det[0]).reshape(1, 4, 2)
 
-    ob_pt1 = [-SecondSight.AprilTags.Positions.tag_size / 2, -SecondSight.AprilTags.Positions.tag_size / 2, 0.0]
-    ob_pt2 = [SecondSight.AprilTags.Positions.tag_size / 2, -SecondSight.AprilTags.Positions.tag_size / 2, 0.0]
-    ob_pt3 = [SecondSight.AprilTags.Positions.tag_size / 2, SecondSight.AprilTags.Positions.tag_size / 2, 0.0]
-    ob_pt4 = [-SecondSight.AprilTags.Positions.tag_size / 2, SecondSight.AprilTags.Positions.tag_size / 2, 0.0]
+    ob_pt1 = [-SecondSight.AprilTags.Positions.tag_size[year] / 2, -SecondSight.AprilTags.Positions.tag_size[year] / 2, 0.0]
+    ob_pt2 = [SecondSight.AprilTags.Positions.tag_size[year] / 2, -SecondSight.AprilTags.Positions.tag_size[year] / 2, 0.0]
+    ob_pt3 = [SecondSight.AprilTags.Positions.tag_size[year] / 2, SecondSight.AprilTags.Positions.tag_size[year] / 2, 0.0]
+    ob_pt4 = [-SecondSight.AprilTags.Positions.tag_size[year] / 2, SecondSight.AprilTags.Positions.tag_size[year] / 2, 0.0]
     ob_pts = ob_pt1 + ob_pt2 + ob_pt3 + ob_pt4
     object_pts = np.array(ob_pts).reshape(4, 3)
 
     # Solve for rotation and translation
     good, rotation_vector, translation_vector, rms = cv2.solvePnPGeneric(object_pts, image_points,
-                                                                       camera_matrix,
-                                                                       dist_coefficients,
-                                                                       flags=cv2.SOLVEPNP_ITERATIVE)
+                                                                         camera_matrix,
+                                                                         dist_coefficients,
+                                                                         flags=cv2.SOLVEPNP_ITERATIVE)
     assert good, 'something went wrong with solvePnP'
 
     left_right = translation_vector[0][0]
@@ -80,18 +80,18 @@ def getRelativePosition(det, camera_matrix, dist_coefficients):
 
 
 @LogMe
-def getFieldPosition(dets, camera_matrix, dist_coefficients):
+def getFieldPosition(dets, camera_matrix, dist_coefficients, year):
     image_points = np.array([i[0] for i in dets]).reshape(1, 4 * len(dets), 2)
 
-    q=SecondSight.AprilTags.Positions.apriltagFeatures['2023']  # TODO: make year configured
+    q=SecondSight.AprilTags.Positions.apriltagFeatures[year]
     q2=[q[str(i[1])] for i in dets]
     object_pts = np.array(q2).reshape(1, 4 * len(dets), 3)
 
     # Solve for rotation and translation
     good, rotation_vector, translation_vector, rms = cv2.solvePnPGeneric(object_pts, image_points,
-                                                                       camera_matrix,
-                                                                       dist_coefficients,
-                                                                       flags=cv2.SOLVEPNP_ITERATIVE)
+                                                                         camera_matrix,
+                                                                         dist_coefficients,
+                                                                         flags=cv2.SOLVEPNP_ITERATIVE)
     assert good, 'something went wrong with solvePnP'
 
 

@@ -51,8 +51,11 @@ apriltagPositions = {
     }
 }
 
-tag_size_in = 6  # inches
-tag_size = tag_size_in * .0254  # meters
+tag_size_in = {
+    '2023': 6,
+    '2024': 6.5
+}  # inches
+tag_size = {i: ts * .0254 for i, ts in tag_size_in.items()}  # meters
 
 """
 0       1
@@ -67,18 +70,18 @@ def toOurCoords(rulesX, rulesY, rulesZ):
     return -rulesY, -rulesZ, rulesX
 
 
-def corners(rulesX, rulesY, rulesZ, rulesZRot):
+def corners(rulesX, rulesY, rulesZ, rulesZRot, year):
     assert rulesZRot == 0 or rulesZRot == 180
     if rulesZRot == 0:
         out = []
         for i, j in [(-.5, .5), (.5, .5), (.5, -.5), (-.5, -.5)]:
-            out.append(toOurCoords(rulesX, rulesY + i * tag_size_in, rulesZ + j * tag_size_in))
+            out.append(toOurCoords(rulesX, rulesY + i * tag_size_in[year], rulesZ + j * tag_size_in[year]))
         return out
     else:
         out = []
         for i, j in [(.5, .5), (-.5, .5), (-.5, -.5), (.5, -.5)]:
-            out.append(toOurCoords(rulesX, rulesY + i * tag_size_in, rulesZ + j * tag_size_in))
+            out.append(toOurCoords(rulesX, rulesY + i * tag_size_in[year], rulesZ + j * tag_size_in[year]))
         return out
 
 
-apriltagFeatures = {'2023': {i: corners(x, y, z, r) for i, (x, y, z, r) in apriltagPositions['2023'].items()}}
+apriltagFeatures = {year: {i: corners(x, y, z, r, year) for i, (x, y, z, r) in poses.items()} for year, poses in apriltagPositions.items()}
