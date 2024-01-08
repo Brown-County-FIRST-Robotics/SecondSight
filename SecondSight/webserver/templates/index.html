@@ -1,21 +1,17 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-    <title>Start here</title>
-</head>
-<body>
-<div class="contianer">
-    Hello World
-</div>
-<div>
-    <a href="/preview_image">Color Detection Preview</a>
-</div>
-<div>
-</div>
-    <a href="/camera_feed/0">Camera 0</a>
-</body>
+    <head>
+        <title>Start here</title>
+    </head>
+    <body>
+        <style>
+            .error{
+                color:red;
+            }
+        </style>
+        <h1>SecondSight</h1>
+        <a href="/config">Configuration</a>
+        <h1>Cameras</h1>
+        {{ cams|safe }}
+    </body>
 </html>
