@@ -41,7 +41,7 @@ def start(app):
         # if config is needed, redirect to create config screen
         config = SecondSight.config.Configuration()
         cams=''
-        for i, cam in enumerate(config.get_value('cameras')):
+        for i, cam in enumerate(config.get_value('cameras', [])):
             cam=SecondSight.Cameras.CameraManager.getCamera(i)
             cams += f'''
             <div class="camera">
