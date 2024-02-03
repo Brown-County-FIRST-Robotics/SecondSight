@@ -15,9 +15,9 @@ opencv-python==4.9.0.80
 packaging==23.2
 pluggy==1.4.0
 pytest==7.4.4
-pyntcore==2023.2.1.2
-robotpy-wpinet==2023.2.1.1
-robotpy-wpiutil==2023.2.1.1
+pyntcore @ file:///home/colin/secondsight/wheels/pyntcore-2023.2.1.2-cp310-cp310-linux_aarch64.whl
+robotpy-wpinet @ file:///home/colin/secondsight/wheels/robotpy_wpinet-2023.2.1.1-cp310-cp310-linux_aarch64.whl
+robotpy-wpiutil @ file:///home/colin/secondsight/wheels/robotpy_wpiutil-2023.2.1.1-cp310-cp310-linux_aarch64.whl
 smmap==5.0.1
 tomli==2.0.1
 Werkzeug==3.0.1
