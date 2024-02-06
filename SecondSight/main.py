@@ -33,14 +33,8 @@ def main_cli():
 
     # Setup logging
     # TODO: use environment variables for these options eventually
-    if not os.path.exists('logs/'):
-        os.mkdir('logs')
     if not os.path.exists('recordings/'):
         os.mkdir('recordings')
-    file_handler = logging.FileHandler(filename=f'logs/{SecondSight.utils.get8601date()}')
-    stderr_handler = logging.StreamHandler(stream=sys.stderr)
-    logging.basicConfig(level=logging.INFO, handlers=[file_handler, stderr_handler])
-
     # Load the config file and set the path
     # TODO: Put this config file in a home directory someday
     config = SecondSight.config.Configuration()
