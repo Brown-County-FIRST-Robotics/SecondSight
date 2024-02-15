@@ -23,6 +23,17 @@ def LogMe(func):
     return inner
 
 
+def LogEntryExit(func):
+    def inner(*args, **kwargs):
+        msg = f'{func.__module__}.{func.__qualname__}('
+        logging.debug(f'Entered {msg})')
+        fn_out = func(*args, **kwargs)
+        logging.debug(f'Exited {msg}')
+        return fn_out
+
+    return inner
+
+
 def get8601date():
     now = time.localtime()
     return f'{now.tm_year}-{now.tm_mon if now.tm_mon > 9 else "0" + str(now.tm_mon)}-{now.tm_mday if now.tm_mday > 9 else "0" + str(now.tm_mday)}_{now.tm_hour if now.tm_hour > 9 else "0" + str(now.tm_hour)}-{now.tm_min if now.tm_min > 9 else "0" + str(now.tm_min)}-{now.tm_sec if now.tm_sec > 9 else "0" + str(now.tm_sec)}'

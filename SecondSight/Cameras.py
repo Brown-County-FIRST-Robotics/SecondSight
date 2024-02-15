@@ -11,7 +11,7 @@ import numpy as np
 
 from typing import List, Dict
 
-from SecondSight.utils import LogMe
+from SecondSight.utils import LogMe,LogEntryExit
 
 cameras: Dict[str, cv2.VideoCapture] = {}
 
@@ -114,7 +114,7 @@ class Camera:
         self._bytes = None
         self._bytes_uncalibrated = None
 
-    @LogMe
+    @LogEntryExit
     def get_frame(self, flipped=False):
         """Return the current frame
         
@@ -128,7 +128,7 @@ class Camera:
             return self.frame
 
     @property
-    @LogMe
+    @LogEntryExit
     def hsv(self):
         "Return the current frame HSV data"
         if self._hsv is None:
@@ -136,7 +136,7 @@ class Camera:
         return self._hsv
 
     @property
-    @LogMe
+    @LogEntryExit
     def gray(self):
         "return the current frame in grayscale"
         if self.frame is None:
@@ -145,7 +145,7 @@ class Camera:
             self._gray = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
         return self._gray
 
-
+    @LogEntryExit
     def get_bytes(self, uncalibrated=False):
         """Return the current frame as a byte array of JPG data
 
