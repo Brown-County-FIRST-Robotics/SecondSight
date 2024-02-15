@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import logging
+import os.path
+
 import cv2
 import time
 import threading
@@ -46,10 +48,10 @@ class Camera:
         self.id = None
         self.frame_count = 0
         self.last_frame_count = 0
-        self.device = device
-        if device not in cameras:
-            cameras[device]=cv2.VideoCapture(device)
-        self.camera = cameras[device]
+        self.device = os.path.realpath(device)  # Follow symlinks
+        if self.device not in cameras:
+            cameras[self.device]=cv2.VideoCapture(self.device)
+        self.camera = cameras[self.device]
         self.roles = roles
         self.pos = position
         self.failing=False
