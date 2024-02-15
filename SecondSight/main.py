@@ -51,18 +51,10 @@ def main_cli():
     while not inst.isConnected():
         time.sleep(0.01)
         if ping_start_time + 5 < time.time():
+            logging.critical("Failed to connect to networktables")
             break
-    else:
-        logging.critical("Failed to connect to networktables")
     table = inst.getTable(config.get_value('inst_name', 'SS_INST'))
     table.putString('config', config.stringify())
-    repo = git.Repo('.')
-    git_hash = repo.active_branch.commit.hexsha
-    git_branch_name = repo.active_branch.name
-    logging.info(f"Commit Hash:{git_hash}")
-    logging.info(f"Branch Name:{git_branch_name}")
-    table.putString("Hash", git_hash)
-    table.putString("Branch", git_branch_name)
     if len(config.variables) == 0:
         table.putString("Error", "No_Config")
 
