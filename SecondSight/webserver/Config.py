@@ -61,8 +61,6 @@ def start(app):
                                        'role': roles,
                                        'pos': None
                                    }])
-            if len(conf.get_value('cameras',[])):
-                conf.del_value('cameras')
             SecondSight.Cameras.CameraManager.loadCameras()
             SecondSight.Recorder.RecordingManager.getInst().rebuild()
             conf.write()
