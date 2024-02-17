@@ -76,7 +76,7 @@ def getRelativePosition(det, camera_matrix, dist_coefficients, year):
     left_right = translation_vector[0][0]
     up_down = translation_vector[0][1]
     distance = translation_vector[0][2]
-    return PoseEstimate(Quaternion.fromOpenCVAxisAngle(rotation_vector[0]), distance, left_right, up_down, det[1], rms[0][0])
+    return PoseEstimate(Quaternion.fromOpenCVAxisAngle(rotation_vector[0]), distance, -left_right, -up_down, det[1], rms[0][0])
 
 
 @LogMe
