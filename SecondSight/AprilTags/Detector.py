@@ -24,7 +24,7 @@ class PoseEstimate:
 
 
 @LogMe
-def getCoords(img, year, valid_tags=range(1, 9)):
+def getCoords(img, year, valid_tags=range(1, 17)):
     if img is None:
         return []
     if len(img.shape) != 2:
