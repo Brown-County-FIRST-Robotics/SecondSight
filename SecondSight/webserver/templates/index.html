@@ -2,16 +2,54 @@
 <html lang="en">
     <head>
         <title>Start here</title>
+        <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='socket.io-3.0.1.min.js') }}"></script>
     </head>
     <body>
         <style>
-            .error{
-                color:red;
+            #cams > .camera{
+                border-style: solid;
+                border-width: 2px;
+                border-radius: 20px;
+                width: 98%;
+                margin-left: 1%;
+                margin-right: 1%;
+                margin-bottom: 1%;
+            }
+            #cams{
+                margin-left: auto;
+                margin-right: auto;
+                width: 80%;
+                display: grid;
+                grid-template-columns: 50% 50%;
             }
         </style>
         <h1>SecondSight</h1>
         <a href="/config">Configuration</a>
         <h1>Cameras</h1>
-        {{ cams|safe }}
+        <div id="cams">
+
+        </div>
+    <script>
+        var socket=io.connect(window.location.href);
+        socket.on('update_camera_properties',function (data) {
+            $('#cams').html('');
+            console.log(data[0]);
+            for (let i = 0; i < data.length; i++) {
+                makeCam(i,data[i].name,data[i].path,data[i].failing,data[i].calibrated);
+            }
+        });
+        function makeCam(ind,name,path,failing,calibrated){
+            let colorInd=failing?'red':(calibrated?'green':'orange');
+            $('#cams').append(
+                `
+                <div class="camera" style="border-color:${colorInd}">
+                    <p style="font-size: 14px">${path}</p>
+                    <h1 style="color:${colorInd}">${name}</h1>
+                </div>
+                `
+            );
+        }
+    </script>
     </body>
 </html>
