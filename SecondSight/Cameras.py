@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import logging
+import os.path
+
 import cv2
 import time
 import threading
@@ -9,7 +11,7 @@ import numpy as np
 
 from typing import List, Dict
 
-from SecondSight.utils import LogMe
+from SecondSight.utils import LogMe,LogEntryExit
 
 cameras: Dict[str, cv2.VideoCapture] = {}
 
@@ -46,12 +48,13 @@ class Camera:
         self.id = None
         self.frame_count = 0
         self.last_frame_count = 0
-        self.device = device
-        if device not in cameras:
-            cameras[device]=cv2.VideoCapture(device)
-        self.camera = cameras[device]
+        self.device = os.path.realpath(device)  # Follow symlinks
+        if self.device not in cameras:
+            cameras[self.device]=cv2.VideoCapture(self.device)
+        self.camera = cameras[self.device]
         self.roles = roles
         self.pos = position
+        self.failing=False
 
         self.width, self.height = self.camera.get(cv2.CAP_PROP_FRAME_WIDTH), self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
@@ -61,7 +64,7 @@ class Camera:
             self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, video_size[1])
             test_video_size = (self.camera.get(cv2.CAP_PROP_FRAME_WIDTH), self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
             assert tuple(test_video_size) == tuple(video_size), 'camera resolution didnt set'
-            self.width, self.height = test_video_size
+            self.width, self.height = [int(i) for i in test_video_size]
 
             raw_camera_matrix = np.array(calibration['camera_matrix'])
             processing_resolution = np.array(calibration['processing_res'])
@@ -87,6 +90,7 @@ class Camera:
         success = self.camera.grab()
         if not success:
             logging.critical("Camera Read Failed")
+            self.failing = True
 
     @LogMe
     def update(self):
@@ -98,17 +102,19 @@ class Camera:
         success, frame = self.camera.retrieve()
         if frame is None or not success:
             logging.critical("Camera Read Failed")
+            self.failing = True
             return
         self.uncalibrated = frame.copy()
         if self.map2 is not None:
             frame = cv2.remap(frame, self.map1, self.map2, cv2.INTER_CUBIC)
         self.frame = frame
+        self.failing = False
         self._hsv = None
         self._gray = None
         self._bytes = None
         self._bytes_uncalibrated = None
 
-    @LogMe
+    @LogEntryExit
     def get_frame(self, flipped=False):
         """Return the current frame
         
@@ -122,7 +128,7 @@ class Camera:
             return self.frame
 
     @property
-    @LogMe
+    @LogEntryExit
     def hsv(self):
         "Return the current frame HSV data"
         if self._hsv is None:
@@ -130,7 +136,7 @@ class Camera:
         return self._hsv
 
     @property
-    @LogMe
+    @LogEntryExit
     def gray(self):
         "return the current frame in grayscale"
         if self.frame is None:
@@ -139,7 +145,7 @@ class Camera:
             self._gray = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
         return self._gray
 
-
+    @LogEntryExit
     def get_bytes(self, uncalibrated=False):
         """Return the current frame as a byte array of JPG data
 

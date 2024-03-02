@@ -2,6 +2,8 @@
 
 import logging
 from flask import Flask, render_template, Response, redirect, request, jsonify
+from markupsafe import Markup
+
 import SecondSight
 import time
 
@@ -33,16 +35,6 @@ def start(app):
                 mimetype='multipart/x-mixed-replace; boundary=frame')
         return Response(gen_frames(cam, framerate=framerate),
                         mimetype='multipart/x-mixed-replace; boundary=frame')
-
-    @app.route('/')
-    def index():
-        # if config is needed, redirect to create config screen
-        config = SecondSight.config.Configuration() 
-        if config.get_value('config_required'):
-            return redirect('/config')
-        
-        """The default page"""
-        return render_template('index.html')
 
     # This code needs a few changes
     @app.route('/preview_image')

@@ -35,6 +35,7 @@ class TestCamera(unittest.TestCase):
     def testCameraOpen(self):
         cameras = SecondSight.Cameras.CameraManager.getCameras()
         camera = cameras[0]
+        camera.grab()
         camera.update()
 
         self.assertEqual(len(cameras), 1)
@@ -44,6 +45,7 @@ class TestCamera(unittest.TestCase):
     def testCameraFrame(self):
         cameras = SecondSight.Cameras.CameraManager.getCameras()
         camera = cameras[0]
+        camera.grab()
         camera.update()
 
         white_pixel = camera.get_frame()[100][100]
@@ -63,6 +65,7 @@ class TestCamera(unittest.TestCase):
     def testCameraFrameFlip(self):
         cameras = SecondSight.Cameras.CameraManager.getCameras()
         camera = cameras[0]
+        camera.grab()
         camera.update()
 
         white_pixel = camera.get_frame(flipped=True)[100][924]
@@ -82,6 +85,7 @@ class TestCamera(unittest.TestCase):
     def testCameraGray(self):
         cameras = SecondSight.Cameras.CameraManager.getCameras()
         camera = cameras[0]
+        camera.grab()
         camera.update()
 
         black_pixel = camera.gray[200][200]
@@ -95,6 +99,7 @@ class TestCamera(unittest.TestCase):
     def testCameraHSV(self):
         cameras = SecondSight.Cameras.CameraManager.getCameras()
         camera = cameras[0]
+        camera.grab()
         camera.update()
 
         white_pixel = camera.hsv[100][100]

@@ -33,14 +33,8 @@ def main_cli():
 
     # Setup logging
     # TODO: use environment variables for these options eventually
-    if not os.path.exists('logs/'):
-        os.mkdir('logs')
     if not os.path.exists('recordings/'):
         os.mkdir('recordings')
-    file_handler = logging.FileHandler(filename=f'logs/{SecondSight.utils.get8601date()}')
-    stderr_handler = logging.StreamHandler(stream=sys.stderr)
-    logging.basicConfig(level=logging.DEBUG, handlers=[file_handler, stderr_handler])
-
     # Load the config file and set the path
     # TODO: Put this config file in a home directory someday
     config = SecondSight.config.Configuration()
@@ -57,18 +51,10 @@ def main_cli():
     while not inst.isConnected():
         time.sleep(0.01)
         if ping_start_time + 5 < time.time():
+            logging.critical("Failed to connect to networktables")
             break
-    else:
-        logging.critical("Failed to connect to networktables")
     table = inst.getTable(config.get_value('inst_name', 'SS_INST'))
     table.putString('config', config.stringify())
-    repo = git.Repo('.')
-    git_hash = repo.active_branch.commit.hexsha
-    git_branch_name = repo.active_branch.name
-    logging.info(f"Commit Hash:{git_hash}")
-    logging.info(f"Branch Name:{git_branch_name}")
-    table.putString("Hash", git_hash)
-    table.putString("Branch", git_branch_name)
     if len(config.variables) == 0:
         table.putString("Error", "No_Config")
 
