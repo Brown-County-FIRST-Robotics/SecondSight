@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Start here</title>
+        <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='socket.io-3.0.1.min.js') }}"></script>
+        <link href="{{ url_for('static', filename='shared.css') }}" rel="stylesheet">
+    </head>
+    <body>
+    <style>
+        #main_content{
+            display: grid;
+            grid-template-columns: 50% 50%;
+        }
+    </style>
+    <div id="main_content">
+        <div id="config">
+            <h1 id="cam_name">Loading name ...</h1>
+            <label for="name">Name:</label>
+            <input type="text" id="name" value="Loading name ...">
+        </div>
+        <div id="cam_interface">
+            caminter
+            <img src="/camera_feed/{{ ind }}">
+        </div>
+    </div>
+    <button id="asdf">asdf</button>
+    <script>
+        var ind=parseInt("{{ ind }}"); //Prevents a weird syntax error
+        var socket=io.connect(window.location.host);
+        socket.onAny(function (as){
+            alert("eventttt");
+        })
+        socket.on('connect',function () {
+            alert("conn");
+        })
+        socket.on('update_camera_properties',function (data) {
+            // $('#cams').html('');
+            alert('sadfsafsdsd');
+            console.log(data[0]);
+            $('#name').val(data[0].name);
+            $('#cam_name').text(data[0].name);
+            // for (let i = 0; i < data.length; i++) {
+            //     makeCam(i,data[i].name,data[i].path,data[i].failing,data[i].calibrated);
+            // }
+        });
+        function makeCam(ind,name,path,failing,calibrated){
+            let colorInd=failing?'red':(calibrated?'green':'orange');
+        }
+        $('#asdf').on('click',function (){
+            socket.emit('resasdsadasend_data','');
+            socket.send('resasdsadasend_data','')
+        });
+    </script>
+    </body>
+</html>

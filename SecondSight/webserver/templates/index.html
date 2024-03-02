@@ -4,6 +4,7 @@
         <title>Start here</title>
         <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='socket.io-3.0.1.min.js') }}"></script>
+        <link href="{{ url_for('static', filename='shared.css') }}" rel="stylesheet">
     </head>
     <body>
         <style>
@@ -31,7 +32,7 @@
 
         </div>
     <script>
-        var socket=io.connect(window.location.href);
+        var socket=io.connect(window.location.host);
         socket.on('update_camera_properties',function (data) {
             $('#cams').html('');
             console.log(data[0]);

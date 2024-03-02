@@ -7,6 +7,10 @@
             .camera{
                 border: solid;
             }
+            .remover{
+                color:red;
+                font-size: 30px;
+            }
         </style>
     </head>
     <body>
@@ -36,6 +40,7 @@
             $("#add_cam").on('click', function (){
                 $("form").append(`
                     <div class="camera">
+                        <p id="rem_${cam_count}" class="remover" onclick="onRemove('#rem_${cam_count}')">-</p>
                         <label for="cam_port_${cam_count}">Camera port</label><br>
                         <input type="text" id="cam_port_${cam_count}" name="cam_port_${cam_count}"><br>
                         <label>
@@ -50,6 +55,9 @@
                 `);
                 cam_count+=1;
             });
+            function onRemove(selector){
+                $(selector).parent().remove();
+            }
             $("#submit").on('click', function (){
                 $('form').submit();
             });
